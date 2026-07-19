@@ -234,9 +234,16 @@ a:hover {
 .lang-tile__icon {
   width: 2.25rem;
   height: 2.25rem;
-  background-color: currentColor;
-  -webkit-mask: var(--icon) center / contain no-repeat;
-  mask: var(--icon) center / contain no-repeat;
+  display: block;
+  object-fit: contain;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+  opacity: 0.92;
+}
+.lang-tile:hover .lang-tile__icon {
+  opacity: 1;
+  /* Approximate fog → lime without rewriting SVG fills */
+  filter: brightness(0) saturate(100%) invert(89%) sepia(42%) saturate(600%)
+    hue-rotate(18deg) brightness(104%) contrast(95%);
 }
 .lang-tile__name {
   font-size: 0.72rem;

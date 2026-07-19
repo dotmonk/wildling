@@ -89,8 +89,8 @@ while IFS= read -r lang || [ -n "$lang" ]; do
     fi
     icon_file="$(basename "$icon")"
     cat >> "$WALL" <<EOF
-<a class="lang-tile" href="languages/${lang}/" style="--icon: url('assets/icons/${icon_file}')">
-  <span class="lang-tile__icon" aria-hidden="true"></span>
+<a class="lang-tile" href="languages/${lang}/">
+  <img class="lang-tile__icon" src="assets/icons/${icon_file}" alt="" width="36" height="36" />
   <span class="lang-tile__name">${label}</span>
 </a>
 EOF
