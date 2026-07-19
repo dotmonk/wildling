@@ -32,11 +32,12 @@ jobs:
         with:
           python-version: "3.12"
       - name: Build
+        working-directory: python
         run: |
           python -m pip install --upgrade build
-          cp docs/help.txt python/wildling/help.txt
+          cp ../docs/help.txt wildling/help.txt
           python -m build
-          ls -la python/dist
+          ls -la dist
       - name: Publish
         uses: pypa/gh-action-pypi-publish@release/v1
         continue-on-error: true
