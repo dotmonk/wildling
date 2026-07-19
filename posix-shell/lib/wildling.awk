@@ -387,18 +387,11 @@ BEGIN {
     load_data_file(data_file)
 
     if (mode == "check") {
-        if (check_patterns != "") {
-            n = split(check_patterns, cp, "\t")
-            printf "patterns:"
-            for (i = 1; i <= n; i++) {
-                if (cp[i] != "") {
-                    printf " %s", cp[i]
-                }
-            }
-            print ""
-        } else {
-            print "patterns:"
+        printf "patterns:"
+        for (i = 1; i <= gen_n; i++) {
+            printf " %s", gen_source[i]
         }
+        print ""
 
         printf "dictionaries:"
         for (i = 1; i <= dict_order_n; i++) {

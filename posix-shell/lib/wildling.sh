@@ -269,7 +269,6 @@ _wildling_run_engine() {
     awk -f "$_lib/wildling.awk" \
         -v mode="$_mode" \
         -v data_file="$_wildling_data_file" \
-        -v check_patterns="$_wildling_patterns" \
         -v select_list="$_wildling_selects" \
         -v range_list="$_wildling_ranges"
     return $?
