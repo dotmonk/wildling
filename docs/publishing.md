@@ -72,8 +72,10 @@ Pages sandbox). Prefer R-universe over CRAN initially.
 ### Wave 1 — tag consumers
 
 - **Go:** `go get github.com/dotmonk/wildling/go@vX.Y.Z` (requires `go/vX.Y.Z` tag).
-- **PHP:** Packagist package `dotmonk/wildling` (submit once at
-  https://packagist.org/packages/submit — GitHub URL, subdirectory `php/`).
+- **PHP:** Packagist package `dotmonk/wildling`. Submit
+  `https://github.com/dotmonk/wildling` only (not a `/php` URL). Packagist
+  reads the **root** [`composer.json`](../composer.json), which autoloads
+  `php/src/`. Versions come from git tags `vX.Y.Z`.
 - **Swift:** SwiftPM package at repo root (`Package.swift`) from tag `vX.Y.Z`.
 - **Zig:** dependency on the git tag via `build.zig.zon` / `zig fetch`.
 

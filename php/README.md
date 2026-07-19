@@ -18,23 +18,27 @@ Packagist (after the package is submitted — see [`docs/publishing.md`](../docs
 composer require dotmonk/wildling
 ```
 
-Until Packagist is live, use the VCS repo with the `php/` subdirectory:
+Packagist uses the **repository root** [`composer.json`](../composer.json) (paths into `php/`). Submit only:
+
+`https://github.com/dotmonk/wildling`
+
+Do not use a `/php` URL — that is not a separate Git repo.
+
+For local path development inside this monorepo:
 
 ```json
 {
   "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/dotmonk/wildling"
+      "type": "path",
+      "url": "./php"
     }
   ],
   "require": {
-    "dotmonk/wildling": "dev-main"
+    "dotmonk/wildling": "*"
   }
 }
 ```
-
-Composer needs `"url"` + package path: configure Packagist with subdirectory `php/`, or use a path repository when developing locally.
 
 As a library:
 
