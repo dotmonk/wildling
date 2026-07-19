@@ -39,7 +39,7 @@ Shared contracts:
 ## Website
 
 ```bash
-./scripts/fetch-icons.sh   # vendor Devicons / Simple Icons (optional refresh)
+./scripts/fetch-icons.sh   # vendor Simple Icons SVGs (optional refresh)
 ./scripts/build-site.sh    # writes _site/ (gitignored)
 ```
 

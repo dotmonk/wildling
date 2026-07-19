@@ -235,11 +235,14 @@ a:hover {
   width: 2.35rem;
   height: 2.35rem;
   display: block;
+  flex-shrink: 0;
   object-fit: contain;
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 .lang-tile:hover .lang-tile__icon {
   transform: scale(1.06);
+  filter: brightness(0) saturate(100%) invert(89%) sepia(42%) saturate(600%)
+    hue-rotate(18deg) brightness(104%) contrast(95%);
 }
 .lang-tile__name {
   font-size: 0.72rem;
