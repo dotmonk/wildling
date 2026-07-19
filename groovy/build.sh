@@ -3,7 +3,8 @@
 set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-DOCKER_IMAGE="eclipse-temurin:21-jdk-jammy"
+# Target Java 17 bytecode so GitHub Actions' default JRE (often 17) can run dist/.
+DOCKER_IMAGE="eclipse-temurin:17-jdk-jammy"
 CONTAINER_WORKDIR="/app"
 GROOVY_VERSION="4.0.24"
 HOST_UID="$(id -u)"

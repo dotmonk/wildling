@@ -1,6 +1,6 @@
 # wildling (Groovy)
 
-Groovy library and CLI for pattern-based string generation. **Zero third-party dependencies** (Groovy/Java stdlib only — hand-rolled JSON parser). Requires Groovy 4+ / JVM 11+.
+Groovy library and CLI for pattern-based string generation. **Zero third-party dependencies** (Groovy/Java stdlib only — hand-rolled JSON parser). Requires Groovy 4+ / JVM 17+.
 
 ## Install
 

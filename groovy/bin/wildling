@@ -3,8 +3,10 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$DIR/.." && pwd)"
 DIST="$ROOT/dist"
 GROOVY_HOME_DIR="$ROOT/.groovy"
-DOCKER_IMAGE="eclipse-temurin:21-jdk-jammy"
+DOCKER_IMAGE="eclipse-temurin:17-jdk-jammy"
 ENTRY_CLASS="wildling.Cli"
+# Must match the JDK used to compile in build.sh (class file 61 = Java 17).
+MIN_JAVA_MAJOR=17
 
 ensure_help() {
     if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
@@ -30,10 +32,26 @@ ready() {
     [ -d "$DIST" ] && [ -f "$DIST/wildling/Cli.class" ]
 }
 
+# Print host Java major version (8, 11, 17, 21, …) or empty.
+java_major() {
+    java -version 2>&1 | awk -F '"' '/version/ {
+        split($2, a, ".")
+        if (a[1] == "1") print a[2]
+        else print a[1]
+        exit
+    }'
+}
+
+host_java_ok() {
+    command -v java >/dev/null 2>&1 || return 1
+    maj="$(java_major)"
+    [ -n "$maj" ] || return 1
+    [ "$maj" -ge "$MIN_JAVA_MAJOR" ]
+}
+
 ensure_help
 
-# Prefer host Java + project-local Groovy jars (no JAVA_HOME needed for raw java).
-if ready && command -v java >/dev/null 2>&1 && [ -d "$GROOVY_HOME_DIR/lib" ]; then
+if ready && [ -d "$GROOVY_HOME_DIR/lib" ] && host_java_ok; then
     exec java -cp "$(classpath)" "$ENTRY_CLASS" "$@"
 fi
 
