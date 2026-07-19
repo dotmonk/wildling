@@ -46,4 +46,5 @@ That word can be a real generated combination, so it must not double as a
 sentinel.
 
 Library `get` / equivalent APIs may still return a **typed** false / `None` /
-`nil` for out-of-range access; that is distinct from the string `"false"`.
+`nil` / `undef` (Perl) for out-of-range access; that is distinct from the
+string `"false"`.

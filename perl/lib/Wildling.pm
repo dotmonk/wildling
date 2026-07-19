@@ -7,22 +7,11 @@ use Wildling::Generator;
 
 our $VERSION = '1.0.0';
 
-# Sentinel for out-of-range get() / exhausted next(). Stringifies to "false".
-{
-    package Wildling::FalseValue;
-    use overload
-      '""'     => sub {'false'},
-      'bool'   => sub {0},
-      'eq'     => sub { $_[1] eq 'false' || ( ref( $_[1] ) && $_[1]->isa('Wildling::FalseValue') ) },
-      'ne'     => sub { !( $_[0] eq $_[1] ) },
-      fallback => 1;
-}
-
-our $FALSE = bless {}, 'Wildling::FalseValue';
-
+# Out-of-range get() / exhausted next() return undef (not the string "false").
+# Empty-string combinations are defined and distinct from the sentinel.
 sub is_false {
     my ($value) = @_;
-    return defined($value) && ref($value) && $value->isa('Wildling::FalseValue');
+    return !defined($value);
 }
 
 sub create {
@@ -71,7 +60,7 @@ sub reset {
 
 sub next {
     my ($self) = @_;
-    return $Wildling::FALSE if $self->{internal_index} == $self->{pattern_count};
+    return if $self->{internal_index} == $self->{pattern_count};
     $self->{internal_index} += 1;
     return $self->get( $self->{internal_index} - 1 );
 }
@@ -83,7 +72,7 @@ sub generators {
 
 sub get {
     my ( $self, $index ) = @_;
-    return $Wildling::FALSE
+    return
       if $index > $self->{pattern_count} - 1 || $index < 0;
 
     my $segment_index = 0;
@@ -93,7 +82,7 @@ sub get {
           if $pattern_index < $generator->count();
         $segment_index += $generator->count();
     }
-    return $Wildling::FALSE;
+    return;
 }
 
 1;

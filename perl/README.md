@@ -17,11 +17,11 @@ use lib './lib';
 use Wildling;
 
 my $wildling = Wildling::create(['foo#']);
-my $value = $wildling->next();
-while (!Wildling::is_false($value)) {
+while (defined(my $value = $wildling->next())) {
     print "$value\n";
-    $value = $wildling->next();
 }
+# get()/next() return undef when out of range (not the string "false").
+# Empty combinations are defined "" — distinct from the sentinel.
 ```
 
 ## CLI
