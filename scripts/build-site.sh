@@ -35,9 +35,10 @@ rm -f "$OUT/assets/wildling.raw.js"
 # --- static assets ---
 cp "$SITE_SRC/assets/site.css" "$OUT/assets/site.css"
 cp "$SITE_SRC/assets/sandbox.js" "$OUT/assets/sandbox.js"
-  # Prefer the site-tuned (lime) logo for Pages; keep assets/logo.svg for README.
-  cp "$SITE_SRC/assets/logo.svg" "$OUT/assets/logo.svg"
-cp "$SITE_SRC/assets/icons/"*.svg "$OUT/assets/icons/"
+# Prefer the site-tuned (lime) logo for Pages; keep assets/logo.svg for README.
+cp "$SITE_SRC/assets/logo.svg" "$OUT/assets/logo.svg"
+find "$SITE_SRC/assets/icons" -maxdepth 1 -type f \( -name '*.svg' -o -name 'NOTICE.md' \) \
+    -exec cp {} "$OUT/assets/icons/" \;
 cp "$SITE_SRC/syntax.html" "$OUT/syntax.html"
 cp "$SITE_SRC/sandbox.html" "$OUT/sandbox.html"
 

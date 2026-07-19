@@ -232,16 +232,14 @@ a:hover {
   transform: translateY(-2px);
 }
 .lang-tile__icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.35rem;
+  height: 2.35rem;
   display: block;
   object-fit: contain;
-  transition: opacity 0.15s ease, filter 0.15s ease;
-  opacity: 1;
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
 .lang-tile:hover .lang-tile__icon {
-  filter: brightness(0) saturate(100%) invert(89%) sepia(42%) saturate(600%)
-    hue-rotate(18deg) brightness(104%) contrast(95%);
+  transform: scale(1.06);
 }
 .lang-tile__name {
   font-size: 0.72rem;

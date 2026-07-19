@@ -39,10 +39,12 @@ Shared contracts:
 ## Website
 
 ```bash
+./scripts/fetch-icons.sh   # vendor Devicons / Simple Icons (optional refresh)
 ./scripts/build-site.sh    # writes _site/ (gitignored)
 ```
 
-Sources: `site/`. Deployed from `.github/workflows/pages.yml` on `main`.
+Sources: `site/`. Icon attribution: `site/assets/icons/NOTICE.md`. Deployed from
+`.github/workflows/pages.yml` on `main`.
 
 ## Pull requests
 
