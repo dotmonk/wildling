@@ -1,0 +1,1 @@
+--dictionary planets:dictionaries/planets.txt --dictionary test:tests/dictionaries/test.txt %{'planets'} %{'test'}

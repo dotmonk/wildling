@@ -1,0 +1,17 @@
+[package]
+name = "wildling"
+version = "1.0.0"
+edition = "2021"
+description = "Pattern based string generator library and CLI"
+license = "MIT"
+publish = false
+
+[[bin]]
+name = "wildling"
+path = "src/main.rs"
+
+[lib]
+name = "wildling"
+path = "src/lib.rs"
+
+[dependencies]

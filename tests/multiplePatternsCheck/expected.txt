@@ -1,0 +1,12 @@
+patterns: !! ?? @@ ** && -- ##
+dictionaries:
+select:
+range:
+total: 10592
+generator: !! 676
+generator: ?? 1296
+generator: @@ 676
+generator: ** 1296
+generator: && 2704
+generator: -- 3844
+generator: ## 100

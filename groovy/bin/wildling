@@ -1,0 +1,59 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+DIST="$ROOT/dist"
+GROOVY_HOME_DIR="$ROOT/.groovy"
+DOCKER_IMAGE="eclipse-temurin:21-jdk-jammy"
+ENTRY_CLASS="wildling.Cli"
+
+ensure_help() {
+    if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/lib/wildling/help.txt"
+    fi
+    if [ -d "$DIST" ] && [ ! -f "$DIST/wildling/help.txt" ] && [ -f "$ROOT/lib/wildling/help.txt" ]; then
+        mkdir -p "$DIST/wildling"
+        cp "$ROOT/lib/wildling/help.txt" "$DIST/wildling/help.txt"
+    fi
+}
+
+classpath() {
+    printf '%s' "$DIST"
+    if [ -d "$GROOVY_HOME_DIR/lib" ]; then
+        for jar in "$GROOVY_HOME_DIR"/lib/*.jar; do
+            [ -f "$jar" ] || continue
+            printf ':%s' "$jar"
+        done
+    fi
+}
+
+ready() {
+    [ -d "$DIST" ] && [ -f "$DIST/wildling/Cli.class" ]
+}
+
+ensure_help
+
+# Prefer host Java + project-local Groovy jars (no JAVA_HOME needed for raw java).
+if ready && command -v java >/dev/null 2>&1 && [ -d "$GROOVY_HOME_DIR/lib" ]; then
+    exec java -cp "$(classpath)" "$ENTRY_CLASS" "$@"
+fi
+
+if [ ! -f "$ROOT/lib/wildling/help.txt" ]; then
+    echo "help.txt missing. Run groovy/build.sh first." >&2
+    exit 1
+fi
+if ! ready; then
+    echo "wildling classes not found. Run groovy/build.sh first." >&2
+    exit 1
+fi
+if [ ! -d "$GROOVY_HOME_DIR/lib" ]; then
+    echo "Groovy runtime missing. Run groovy/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    "$DOCKER_IMAGE" \
+    java -cp "/app/dist:/app/.groovy/lib/*" "$ENTRY_CLASS" "$@"

@@ -1,0 +1,130 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      languages: ${{ steps.pick.outputs.languages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve language matrix
+        id: pick
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -e
+          ALL="$(grep -v '^[[:space:]]*#' languages.txt | grep -v '^[[:space:]]*$' | tr '\n' ' ')"
+          CORE="javascript python c go rust"
+
+          if [ "$EVENT_NAME" = "push" ]; then
+            SELECTED="$ALL"
+          else
+            # PR: languages whose trees changed; always include javascript.
+            CHANGED="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" || true)"
+            SELECTED="javascript"
+            for lang in $ALL; do
+              if printf '%s\n' "$CHANGED" | grep -q "^${lang}/"; then
+                case " $SELECTED " in
+                  *" $lang "*) ;;
+                  *) SELECTED="$SELECTED $lang" ;;
+                esac
+              fi
+            done
+
+            # Shared contract / fixture / harness changes affect every port.
+            if printf '%s\n' "$CHANGED" | grep -Eq '^(tests/|docs/|test\.sh$|build\.sh$|languages\.txt$)'; then
+              SELECTED="$ALL"
+            else
+              ONLY_JS=1
+              for lang in $SELECTED; do
+                if [ "$lang" != "javascript" ]; then
+                  ONLY_JS=0
+                  break
+                fi
+              done
+              # Docs/site/CI-only (no language tree): run the core set.
+              if [ "$ONLY_JS" = 1 ]; then
+                NON_LANG="$(printf '%s\n' "$CHANGED" | grep -v '^javascript/' || true)"
+                if [ -n "$NON_LANG" ]; then
+                  SELECTED="$CORE"
+                fi
+              fi
+            fi
+          fi
+
+          # Deduplicate while preserving order
+          DEDUP=""
+          for lang in $SELECTED; do
+            case " $DEDUP " in
+              *" $lang "*) ;;
+              *) DEDUP="$DEDUP $lang" ;;
+            esac
+          done
+          DEDUP="$(echo "$DEDUP" | xargs)"
+
+          JSON='['
+          FIRST=1
+          for lang in $DEDUP; do
+            if [ "$FIRST" = 1 ]; then FIRST=0; else JSON="$JSON,"; fi
+            JSON="$JSON\"$lang\""
+          done
+          JSON="$JSON]"
+          echo "languages=$JSON" >> "$GITHUB_OUTPUT"
+          echo "Matrix: $JSON"
+
+  test:
+    needs: resolve
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(needs.resolve.outputs.languages) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build ${{ matrix.language }}
+        run: ./build.sh "${{ matrix.language }}"
+
+      - name: Test ${{ matrix.language }}
+        run: ./test.sh "${{ matrix.language }}"
+
+  site:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build site (check)
+        run: |
+          pip3 install --user markdown
+          ./scripts/build-site.sh
+          test -f _site/index.html
+          test -f _site/assets/wildling.js
+          test -f _site/sandbox.html
+          test -d _site/languages/javascript

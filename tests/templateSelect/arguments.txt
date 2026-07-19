@@ -1,0 +1,1 @@
+--template tests/templateSelect/config.json

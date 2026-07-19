@@ -1,0 +1,20 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+JAR="$DIR/../dist/wildling.jar"
+if [ ! -f "$JAR" ]; then
+    echo "wildling jar not found. Run java/build.sh first." >&2
+    exit 1
+fi
+
+if command -v java >/dev/null 2>&1; then
+    exec java -jar "$JAR" "$@"
+fi
+
+# No local JRE: reuse the Temurin image from build.sh
+exec docker run --rm \
+    -v "$DIR/../dist:/dist:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    eclipse-temurin:21-jdk-alpine \
+    java -jar /dist/wildling.jar "$@"

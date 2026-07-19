@@ -1,0 +1,62 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+EBIN="$ROOT/ebin"
+ELIXIR_HOME="$ROOT/.elixir"
+DOCKER_IMAGE="gcc:14-bookworm"
+
+ensure_help() {
+    if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/lib/wildling/help.txt"
+    fi
+    if [ -d "$EBIN" ] && [ ! -f "$EBIN/help.txt" ] && [ -f "$ROOT/lib/wildling/help.txt" ]; then
+        cp "$ROOT/lib/wildling/help.txt" "$EBIN/help.txt"
+    fi
+}
+
+ready() {
+    [ -d "$EBIN" ] && [ -f "$EBIN/Elixir.Wildling.Cli.beam" ]
+}
+
+run_local_elixir() {
+    export PATH="$ELIXIR_HOME/elixir/bin:$ELIXIR_HOME/erlang/bin:$PATH"
+    export ERL_ROOTDIR="$ELIXIR_HOME/erlang"
+    exec elixir -pa "$EBIN" -e 'Wildling.Cli.main()' -- "$@"
+}
+
+ensure_help
+
+# Prefer project-local Elixir/Erlang cached by build.sh.
+if ready && [ -x "$ELIXIR_HOME/elixir/bin/elixir" ] && ls "$ELIXIR_HOME"/erlang/erts-*/bin/erlexec >/dev/null 2>&1; then
+    run_local_elixir "$@"
+fi
+
+# Fall back to host elixir if available.
+if ready && command -v elixir >/dev/null 2>&1; then
+    exec elixir -pa "$EBIN" -e 'Wildling.Cli.main()' -- "$@"
+fi
+
+if [ ! -f "$ROOT/lib/wildling/help.txt" ]; then
+    echo "help.txt missing. Run elixir/build.sh first." >&2
+    exit 1
+fi
+if ! ready; then
+    echo "wildling beams not found. Run elixir/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    "$DOCKER_IMAGE" \
+    sh -c 'export DEBIAN_FRONTEND=noninteractive
+if [ -x /app/.elixir/elixir/bin/elixir ] && ls /app/.elixir/erlang/erts-*/bin/erlexec >/dev/null 2>&1; then
+  export PATH="/app/.elixir/elixir/bin:/app/.elixir/erlang/bin:$PATH"
+  export ERL_ROOTDIR="/app/.elixir/erlang"
+else
+  apt-get update -qq >/dev/null
+  apt-get install -y -qq --no-install-recommends elixir >/dev/null
+fi
+exec elixir -pa /app/ebin -e "Wildling.Cli.main()" -- "$@"' _ "$@"

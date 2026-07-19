@@ -1,0 +1,29 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+ENTRY="$DIR/wildling.php"
+
+ensure_help() {
+    if [ ! -f "$ROOT/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/help.txt"
+    fi
+}
+
+if command -v php >/dev/null 2>&1; then
+    ensure_help
+    exec php "$ENTRY" "$@"
+fi
+
+ensure_help
+if [ ! -f "$ROOT/help.txt" ]; then
+    echo "help.txt missing. Run php/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    php:8.3-cli-alpine \
+    php /app/bin/wildling.php "$@"

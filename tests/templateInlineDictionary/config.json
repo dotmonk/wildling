@@ -1,0 +1,7 @@
+{
+  "patterns": ["%{'colors'}", "%{'planets'}"],
+  "dictionaries": {
+    "colors": ["red", "blue"],
+    "planets": "dictionaries/planets.txt"
+  }
+}

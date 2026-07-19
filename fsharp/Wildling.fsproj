@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>WildlingLib</RootNamespace>
+    <AssemblyName>wildling</AssemblyName>
+    <Version>1.0.0</Version>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Token.fs" />
+    <Compile Include="ParsePattern.fs" />
+    <Compile Include="Generator.fs" />
+    <Compile Include="Wildling.fs" />
+    <Compile Include="Cli.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="help.txt" CopyToOutputDirectory="PreserveNewest" Condition="Exists('help.txt')" />
+  </ItemGroup>
+</Project>

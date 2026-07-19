@@ -1,0 +1,12 @@
+blue
+red
+green
+blueblue
+redblue
+greenblue
+bluered
+redred
+greenred
+bluegreen
+redgreen
+greengreen

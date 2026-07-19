@@ -1,0 +1,1 @@
+--template tests/templateInlineDictionary/config.json

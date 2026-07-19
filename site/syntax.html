@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Syntax — wildling</title>
+    <meta name="description" content="Language-neutral wildling pattern syntax reference." />
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="./">
+          <img class="brand__mark" src="assets/logo.svg" alt="" width="28" height="28" />
+          wildling
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="./">Home</a>
+          <a href="syntax.html" aria-current="page">Syntax</a>
+          <a href="sandbox.html">Sandbox</a>
+          <a href="./#languages">Languages</a>
+        </nav>
+      </header>
+
+      <main class="prose">
+        <h1>Pattern syntax</h1>
+        <p>
+          Every language port expands the same patterns. Length suffixes apply to
+          character-class wildcards and to word/dictionary tokens.
+          <a class="try" href="sandbox.html">Try in sandbox →</a>
+        </p>
+
+        <h2>Length forms</h2>
+        <pre><code>&lt;wildcard&gt;[{&lt;start&gt;[-&lt;end&gt;]}]</code></pre>
+        <p>Examples: <code>#</code>, <code>#{2}</code>, <code>#{1-3}</code>.</p>
+
+        <h2>Character classes</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Alphabet</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>#</code></td>
+              <td>digits <code>0-9</code></td>
+              <td><a class="try" href="sandbox.html?pattern=%23">try</a></td>
+            </tr>
+            <tr>
+              <td><code>@</code></td>
+              <td>lowercase <code>a-z</code></td>
+              <td><a class="try" href="sandbox.html?pattern=%40%7B1-2%7D">try</a></td>
+            </tr>
+            <tr>
+              <td><code>*</code></td>
+              <td>lowercase + digits</td>
+              <td><a class="try" href="sandbox.html?pattern=*%7B1-2%7D">try</a></td>
+            </tr>
+            <tr>
+              <td><code>&amp;</code></td>
+              <td>letters <code>a-zA-Z</code></td>
+              <td><a class="try" href="sandbox.html?pattern=%26">try</a></td>
+            </tr>
+            <tr>
+              <td><code>!</code></td>
+              <td>uppercase <code>A-Z</code></td>
+              <td><a class="try" href="sandbox.html?pattern=%21%21">try</a></td>
+            </tr>
+            <tr>
+              <td><code>?</code></td>
+              <td>uppercase + digits</td>
+              <td><a class="try" href="sandbox.html?pattern=%3F">try</a></td>
+            </tr>
+            <tr>
+              <td><code>-</code></td>
+              <td>letters + digits</td>
+              <td><a class="try" href="sandbox.html?pattern=-">try</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Word lists</h2>
+        <pre><code>${'blue,red,green',1-2}</code></pre>
+        <p>
+          Combinations of the comma-separated words, optional length range.
+          Escape a literal comma inside a word with <code>\,</code>.
+          <a class="try" href="sandbox.html?pattern=%24%7B%27blue%2Cred%2Cgreen%27%2C1-2%7D">try</a>
+        </p>
+
+        <h2>Dictionaries</h2>
+        <pre><code>%{'planets'}
+%{'colors',0-1}</code></pre>
+        <p>
+          Named word lists supplied by the host (CLI <code>--dictionary</code>,
+          template JSON, or library options). Built-in demo dictionaries include
+          <code>colors</code>, <code>planets</code>, and <code>passwords</code>.
+        </p>
+
+        <h2>Escaping</h2>
+        <p>
+          Prefix a wildcard character with <code>\</code> to treat it as literal
+          text, e.g. <code>\#</code> then <code>#</code> → <code>#0</code> … <code>#9</code>.
+          <a class="try" href="sandbox.html?pattern=%5C%23%23">try</a>
+        </p>
+
+        <h2>CLI (shared)</h2>
+        <pre><code>wildling [options] [pattern ...]
+
+--select #           print combination #
+--range #-#          print inclusive range
+--check              print generation info
+--dictionary n:path  load dictionary file as n
+--template path      load JSON template
+--help / --version</code></pre>
+        <p>
+          Full help text lives in
+          <a href="https://github.com/dotmonk/wildling/blob/main/docs/help.txt">docs/help.txt</a>.
+          Out-of-range <code>--select</code> / <code>--range</code> print lowercase
+          <code>false</code>.
+        </p>
+
+        <h2>Multipattern</h2>
+        <p>
+          Pass multiple patterns; iteration walks them in order. Total count is
+          the sum of per-pattern counts.
+          <a class="try" href="sandbox.html?pattern=abrakadabra%0Afoo%23">try</a>
+        </p>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          <a href="./">← Home</a>
+          ·
+          <a href="sandbox.html">Sandbox</a>
+          ·
+          <a href="https://github.com/dotmonk/wildling">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

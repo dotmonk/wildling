@@ -1,0 +1,30 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+ENTRY="$DIR/wildling.R"
+DOCKER_IMAGE="gcc:14-bookworm"
+
+ensure_help() {
+    if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/lib/wildling/help.txt"
+    fi
+}
+
+if command -v Rscript >/dev/null 2>&1; then
+    ensure_help
+    exec Rscript "$ENTRY" "$@"
+fi
+
+ensure_help
+if [ ! -f "$ROOT/lib/wildling/help.txt" ]; then
+    echo "help.txt missing. Run r/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    "$DOCKER_IMAGE" \
+    sh -c 'apt-get update -qq >/dev/null 2>&1 && apt-get install -y -qq --no-install-recommends r-base-core >/dev/null 2>&1; exec Rscript /app/bin/wildling.R "$@"' _ "$@"

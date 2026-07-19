@@ -1,0 +1,8 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+BIN="$DIR/../dist/wildling"
+if [ ! -x "$BIN" ]; then
+    echo "wildling binary not found. Run swift/build.sh first." >&2
+    exit 1
+fi
+exec "$BIN" "$@"

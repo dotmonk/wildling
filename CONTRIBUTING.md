@@ -1,0 +1,56 @@
+# Contributing
+
+Thanks for interest in wildling. This repo is a multi-language implementation of
+one pattern grammar and one CLI contract.
+
+## Requirements
+
+- Docker (every `*/build.sh` runs inside a container)
+- A POSIX shell for root `./build.sh` / `./test.sh`
+- Node.js 18+ only if you work on `javascript/` or the site
+
+## Build and test
+
+```bash
+./build.sh javascript      # one language
+./test.sh javascript
+
+./build.sh                 # all languages in languages.txt
+./test.sh
+```
+
+Fixtures live under `tests/`. Each case has `arguments.txt` and `expected.txt`.
+CLI stdout must match exactly.
+
+Shared contracts:
+
+- [`docs/cli.md`](docs/cli.md) — `--check` format, out-of-range `false`
+- [`docs/help.txt`](docs/help.txt) — `--help` text (copied into build artifacts)
+
+## Adding or changing a language
+
+1. Keep **zero third-party runtime dependencies** outside that language’s stdlib
+   (hand-roll template JSON unless the stdlib already includes JSON).
+2. Provide `\<lang>/build.sh` (Docker), `\<lang>/bin/wildling`, and a README.
+3. Add the id to [`languages.txt`](languages.txt) (popularity / status-table order).
+4. Pass `./build.sh <lang> && ./test.sh <lang>` including the shared fixtures.
+5. Update the root README status table and, if needed, `PLAN.md` stack notes.
+
+## Website
+
+```bash
+./scripts/build-site.sh    # writes _site/ (gitignored)
+```
+
+Sources: `site/`. Deployed from `.github/workflows/pages.yml` on `main`.
+
+## Pull requests
+
+- Prefer focused PRs (one language or one shared contract change).
+- CI on PRs tests changed languages (always includes `javascript`). Changes under
+  `tests/`, `docs/`, or root scripts trigger a broader matrix.
+- Do not commit generated trees (`*/dist`, toolchains, `_site/`).
+
+## Code of conduct
+
+Be respectful. Hostile or abusive behavior is not welcome.

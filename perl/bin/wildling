@@ -1,0 +1,30 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+ENTRY="$DIR/wildling.pl"
+DOCKER_IMAGE="python:3.13-alpine"
+
+ensure_help() {
+    if [ ! -f "$ROOT/lib/Wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/lib/Wildling/help.txt"
+    fi
+}
+
+if command -v perl >/dev/null 2>&1; then
+    ensure_help
+    exec perl "$ENTRY" "$@"
+fi
+
+ensure_help
+if [ ! -f "$ROOT/lib/Wildling/help.txt" ]; then
+    echo "help.txt missing. Run perl/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    "$DOCKER_IMAGE" \
+    sh -c 'apk add --no-cache perl >/dev/null 2>&1; exec perl /app/bin/wildling.pl "$@"' _ "$@"

@@ -1,0 +1,35 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+ENTRY="$DIR/wildling.lua"
+DOCKER_IMAGE="python:3.13-alpine"
+
+ensure_help() {
+    if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/lib/wildling/help.txt"
+    fi
+}
+
+if command -v lua5.4 >/dev/null 2>&1; then
+    ensure_help
+    exec lua5.4 "$ENTRY" "$@"
+fi
+
+if command -v lua >/dev/null 2>&1; then
+    ensure_help
+    exec lua "$ENTRY" "$@"
+fi
+
+ensure_help
+if [ ! -f "$ROOT/lib/wildling/help.txt" ]; then
+    echo "help.txt missing. Run lua/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    "$DOCKER_IMAGE" \
+    sh -c 'apk add --no-cache lua5.4 >/dev/null 2>&1; exec lua5.4 /app/bin/wildling.lua "$@"' _ "$@"

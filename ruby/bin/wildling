@@ -1,0 +1,29 @@
+#!/bin/sh
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$DIR/.." && pwd)"
+ENTRY="$DIR/wildling.rb"
+
+ensure_help() {
+    if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        cp "$ROOT/../docs/help.txt" "$ROOT/lib/wildling/help.txt"
+    fi
+}
+
+if command -v ruby >/dev/null 2>&1; then
+    ensure_help
+    exec ruby "$ENTRY" "$@"
+fi
+
+ensure_help
+if [ ! -f "$ROOT/lib/wildling/help.txt" ]; then
+    echo "help.txt missing. Run ruby/build.sh first." >&2
+    exit 1
+fi
+
+exec docker run --rm \
+    -v "$ROOT:/app:ro" \
+    -v "$(pwd):/work" \
+    -w /work \
+    --network=host \
+    ruby:3.3-alpine \
+    ruby /app/bin/wildling.rb "$@"
