@@ -255,12 +255,7 @@ function Format-WildlingCheckOutput {
 function Write-WildlingValue {
     param([object] $Value)
 
-    if ($Value -is [bool] -and $Value -eq $false) {
-        [Console]::Out.WriteLine('false')
-    }
-    else {
-        [Console]::Out.WriteLine([string]$Value)
-    }
+    [Console]::Out.WriteLine([string]$Value)
 }
 
 function Invoke-WildlingCli {
@@ -291,15 +286,30 @@ function Invoke-WildlingCli {
     }
 
     if ($parsed.Selects.Count -gt 0 -or $parsed.Ranges.Count -gt 0) {
+        $oor = $false
         foreach ($index in $parsed.Selects) {
-            Write-WildlingValue ($wildcard.Get($index))
+            $value = $wildcard.Get($index)
+            if ($value -is [bool] -and $value -eq $false) {
+                [Console]::Error.WriteLine("out of range: $index")
+                $oor = $true
+            }
+            else {
+                Write-WildlingValue $value
+            }
         }
         foreach ($range in $parsed.Ranges) {
             for ($index = $range.Start; $index -le $range.End; $index++) {
-                Write-WildlingValue ($wildcard.Get($index))
+                $value = $wildcard.Get($index)
+                if ($value -is [bool] -and $value -eq $false) {
+                    [Console]::Error.WriteLine("out of range: $index")
+                    $oor = $true
+                }
+                else {
+                    Write-WildlingValue $value
+                }
             }
         }
-        exit 0
+        if ($oor) { exit 1 } else { exit 0 }
     }
 
     $value = $wildcard.Next()

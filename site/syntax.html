@@ -125,8 +125,9 @@
         <p>
           Full help text lives in
           <a href="https://github.com/dotmonk/wildling/blob/main/docs/help.txt">docs/help.txt</a>.
-          Out-of-range <code>--select</code> / <code>--range</code> print lowercase
-          <code>false</code>.
+          Out-of-range <code>--select</code> / <code>--range</code> write
+          <code>out of range: &lt;index&gt;</code> on stderr and exit
+          <code>1</code> (no stdout line).
         </p>
 
         <h2>Multipattern</h2>

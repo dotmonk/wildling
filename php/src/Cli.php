@@ -346,17 +346,28 @@ final class Cli
         }
 
         if ($args['selects'] !== [] || $args['ranges'] !== []) {
+            $oor = false;
             foreach ($args['selects'] as $index) {
                 $value = $wildcard->get($index);
-                echo ($value === false ? 'false' : $value) . "\n";
+                if ($value === false) {
+                    fwrite(STDERR, "out of range: {$index}\n");
+                    $oor = true;
+                } else {
+                    echo $value . "\n";
+                }
             }
             foreach ($args['ranges'] as [$start, $end]) {
                 for ($index = $start; $index <= $end; $index++) {
                     $value = $wildcard->get($index);
-                    echo ($value === false ? 'false' : $value) . "\n";
+                    if ($value === false) {
+                        fwrite(STDERR, "out of range: {$index}\n");
+                        $oor = true;
+                    } else {
+                        echo $value . "\n";
+                    }
                 }
             }
-            exit(0);
+            exit($oor ? 1 : 0);
         }
 
         $value = $wildcard->next();

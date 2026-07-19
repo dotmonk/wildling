@@ -499,21 +499,25 @@ procedure Cli is
       Ada.Text_IO.New_Line;
    end Print_Check;
 
-   procedure Print_Value_Or_False
-     (W : Wildling_Type; Index : Long_Long_Integer)
+   procedure Print_Value_Or_Oor
+     (W : Wildling_Type; Index : Long_Long_Integer; Oor : in out Boolean)
    is
       Value : Unbounded_String;
    begin
       if Get (W, Index, Value) then
          Ada.Text_IO.Put_Line (To_String (Value));
       else
-         Ada.Text_IO.Put_Line ("false");
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "out of range: " & Strip_LL_Image (Index));
+         Oor := True;
       end if;
-   end Print_Value_Or_False;
+   end Print_Value_Or_Oor;
 
    Args  : Cli_Args;
    W     : Wildling_Type;
    Value : Unbounded_String;
+   Oor   : Boolean := False;
 
 begin
    begin
@@ -550,16 +554,19 @@ begin
      or else Natural (Args.Ranges.Length) > 0
    then
       for I in 1 .. Natural (Args.Selects.Length) loop
-         Print_Value_Or_False
-           (W, Long_Long_Integer (Args.Selects.Element (I)));
+         Print_Value_Or_Oor
+           (W, Long_Long_Integer (Args.Selects.Element (I)), Oor);
       end loop;
       for I in 1 .. Natural (Args.Ranges.Length) loop
          for J in Args.Ranges.Element (I).Start_Idx ..
            Args.Ranges.Element (I).End_Idx
          loop
-            Print_Value_Or_False (W, Long_Long_Integer (J));
+            Print_Value_Or_Oor (W, Long_Long_Integer (J), Oor);
          end loop;
       end loop;
+      if Oor then
+         Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
+      end if;
    else
       while Next (W, Value) loop
          Ada.Text_IO.Put_Line (To_String (Value));

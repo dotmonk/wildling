@@ -433,12 +433,15 @@ BEGIN {
     }
 
     if (select_list != "" || range_list != "") {
+        oor = 0
         if (select_list != "") {
             n = split(select_list, sl, " ")
             for (i = 1; i <= n; i++) {
-                val = wildling_get_value(sl[i] + 0)
+                idx = sl[i] + 0
+                val = wildling_get_value(idx)
                 if (val == "__FALSE__") {
-                    print "false"
+                    print "out of range: " idx > "/dev/stderr"
+                    oor = 1
                 } else {
                     print val
                 }
@@ -453,14 +456,15 @@ BEGIN {
                 for (idx = start; idx <= end; idx++) {
                     val = wildling_get_value(idx)
                     if (val == "__FALSE__") {
-                        print "false"
+                        print "out of range: " idx > "/dev/stderr"
+                        oor = 1
                     } else {
                         print val
                     }
                 }
             }
         }
-        exit 0
+        exit oor
     }
 
     for (idx = 0; idx < wildling_total; idx++) {

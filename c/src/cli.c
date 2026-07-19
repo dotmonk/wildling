@@ -455,13 +455,16 @@ int main(int argc, char **argv) {
     }
 
     if (args.selects_len > 0 || args.ranges_len > 0) {
+        int oor = 0;
         for (size_t i = 0; i < args.selects_len; i++) {
-            char *value = wildling_get(&w, args.selects[i]);
+            int index = args.selects[i];
+            char *value = wildling_get(&w, index);
             if (value) {
                 printf("%s\n", value);
                 free(value);
             } else {
-                printf("false\n");
+                fprintf(stderr, "out of range: %d\n", index);
+                oor = 1;
             }
         }
         for (size_t i = 0; i < args.ranges_len; i++) {
@@ -471,13 +474,14 @@ int main(int argc, char **argv) {
                     printf("%s\n", value);
                     free(value);
                 } else {
-                    printf("false\n");
+                    fprintf(stderr, "out of range: %d\n", index);
+                    oor = 1;
                 }
             }
         }
         wildling_free(&w);
         cliargs_free(&args);
-        return 0;
+        return oor;
     }
 
     char *value = wildling_next(&w);

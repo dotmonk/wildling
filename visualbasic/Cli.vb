@@ -268,15 +268,7 @@ Public NotInheritable Class Cli
         Return String.Join(vbLf, lines)
     End Function
 
-    ''' <summary>Print a result; out-of-range sentinel is lowercase false.</summary>
-    Friend Shared Sub WriteResult(value As Object)
-        If TypeOf value Is Boolean Then
-            Console.WriteLine("false")
-        Else
-            Console.WriteLine(value)
-        End If
-    End Sub
-
+    ''' <summary>True when value is the typed Boolean false sentinel.</summary>
     Friend Shared Function IsFalse(value As Object) As Boolean
         Return TypeOf value Is Boolean AndAlso Not CBool(value)
     End Function
@@ -307,15 +299,28 @@ Public NotInheritable Class Cli
         End If
 
         If parsed.Selects.Count > 0 OrElse parsed.Ranges.Count > 0 Then
+            Dim oor = False
             For Each index In parsed.Selects
-                WriteResult(wildcard.Get(index))
+                Dim selected = wildcard.Get(index)
+                If IsFalse(selected) Then
+                    Console.Error.WriteLine($"out of range: {index}")
+                    oor = True
+                Else
+                    Console.WriteLine(selected)
+                End If
             Next
             For Each range In parsed.Ranges
                 For index = range.Start To range.End
-                    WriteResult(wildcard.Get(index))
+                    Dim selected = wildcard.Get(index)
+                    If IsFalse(selected) Then
+                        Console.Error.WriteLine($"out of range: {index}")
+                        oor = True
+                    Else
+                        Console.WriteLine(selected)
+                    End If
                 Next
             Next
-            Return 0
+            Return If(oor, 1, 0)
         End If
 
         Dim value = wildcard.Next()

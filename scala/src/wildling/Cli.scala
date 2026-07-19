@@ -246,15 +246,30 @@ object Cli {
     }
 
     if (parsed.selects.nonEmpty || parsed.ranges.nonEmpty) {
-      parsed.selects.foreach(index => println(wildcard.get(index)))
+      var oor = false
+      parsed.selects.foreach { index =>
+        val value = wildcard.get(index)
+        if (value == false) {
+          System.err.println(s"out of range: $index")
+          oor = true
+        } else {
+          println(value)
+        }
+      }
       parsed.ranges.foreach { range =>
         var index = range.start
         while (index <= range.end) {
-          println(wildcard.get(index))
+          val value = wildcard.get(index)
+          if (value == false) {
+            System.err.println(s"out of range: $index")
+            oor = true
+          } else {
+            println(value)
+          }
           index += 1
         }
       }
-      sys.exit(0)
+      sys.exit(if (oor) 1 else 0)
     }
 
     var value = wildcard.next()

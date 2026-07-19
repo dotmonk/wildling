@@ -287,21 +287,28 @@ pub fn run_cli(args: &[String]) -> i32 {
     }
 
     if !parsed.selects.is_empty() || !parsed.ranges.is_empty() {
+        let mut oor = false;
         for index in &parsed.selects {
             match wildcard.get(*index) {
                 Some(value) => println!("{value}"),
-                None => println!("false"),
+                None => {
+                    eprintln!("out of range: {index}");
+                    oor = true;
+                }
             }
         }
         for (start, end) in &parsed.ranges {
             for index in *start..=*end {
                 match wildcard.get(index) {
                     Some(value) => println!("{value}"),
-                    None => println!("false"),
+                    None => {
+                        eprintln!("out of range: {index}");
+                        oor = true;
+                    }
                 }
             }
         }
-        return 0;
+        return if oor { 1 } else { 0 };
     }
 
     while let Some(value) = wildcard.next() {

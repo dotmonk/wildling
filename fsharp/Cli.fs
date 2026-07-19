@@ -210,10 +210,6 @@ module Cli =
         | :? bool as b -> b = false
         | _ -> false
 
-    /// Print a result; out-of-range sentinel is lowercase false.
-    let private printResult (value: obj) =
-        if isFalse value then printfn "false" else printfn "%O" value
-
     let run (args: string[]) =
         let parsed = parseArgs args
 
@@ -235,12 +231,23 @@ module Cli =
                 printfn "%s" (formatCheckOutput parsed (wildcard.Count()) (wildcard.Generators()))
                 0
             elif parsed.Selects.Count > 0 || parsed.Ranges.Count > 0 then
+                let mutable oor = false
                 for index in parsed.Selects do
-                    printResult (wildcard.Get(index))
+                    let value = wildcard.Get(index)
+                    if isFalse value then
+                        eprintfn "out of range: %d" index
+                        oor <- true
+                    else
+                        printfn "%O" value
                 for range in parsed.Ranges do
                     for index = range.Start to range.End do
-                        printResult (wildcard.Get(index))
-                0
+                        let value = wildcard.Get(index)
+                        if isFalse value then
+                            eprintfn "out of range: %d" index
+                            oor <- true
+                        else
+                            printfn "%O" value
+                if oor then 1 else 0
             else
                 let mutable value = wildcard.Next()
                 while not (isFalse value) do

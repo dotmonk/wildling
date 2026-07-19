@@ -43,7 +43,7 @@ end Example;
 ./bin/wildling --template ./config.json
 ```
 
-Help text and `--check` output follow [`docs/cli.md`](../docs/cli.md) / [`docs/help.txt`](../docs/help.txt). Out-of-range `--select` / `--range` indices print lowercase `false`.
+Help text and `--check` output follow [`docs/cli.md`](../docs/cli.md) / [`docs/help.txt`](../docs/help.txt). Out-of-range `--select` / `--range` write `out of range: <index>` on stderr and exit `1`.
 
 ## Build
 

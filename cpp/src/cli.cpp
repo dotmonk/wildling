@@ -378,12 +378,14 @@ int main(int argc, char** argv) {
     }
 
     if (!parsed.selects.empty() || !parsed.ranges.empty()) {
+        bool oor = false;
         for (int index : parsed.selects) {
             auto value = wildcard.get(index);
             if (value.has_value()) {
                 std::cout << *value << '\n';
             } else {
-                std::cout << "false\n";
+                std::cerr << "out of range: " << index << '\n';
+                oor = true;
             }
         }
         for (const auto& range : parsed.ranges) {
@@ -392,11 +394,12 @@ int main(int argc, char** argv) {
                 if (value.has_value()) {
                     std::cout << *value << '\n';
                 } else {
-                    std::cout << "false\n";
+                    std::cerr << "out of range: " << index << '\n';
+                    oor = true;
                 }
             }
         }
-        return 0;
+        return oor ? 1 : 0;
     }
 
     auto value = wildcard.next();

@@ -359,7 +359,7 @@ Language identifiers live in [`languages.txt`](languages.txt). Every
 ./scripts/build-site.sh # documentation site → _site/
 ```
 
-Shared CLI contracts (help text, `--check` format, out-of-range `false`):
+Shared CLI contracts (help text, `--check` format, out-of-range stderr + exit 1):
 [docs/cli.md](docs/cli.md).
 
 ## Contributing

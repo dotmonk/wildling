@@ -260,15 +260,28 @@ function main() {
   }
 
   if (args.selects.length > 0 || args.ranges.length > 0) {
+    let oor = false;
     for (const index of args.selects) {
-      console.log(wildcard.get(index));
-    }
-    args.ranges.forEach(([start, end]) => {
-      for (let i = start; i <= end; i++) {
-        console.log(wildcard.get(i));
+      const value = wildcard.get(index);
+      if (value === false) {
+        console.error(`out of range: ${index}`);
+        oor = true;
+      } else {
+        console.log(value);
       }
-    });
-    exit(0);
+    }
+    for (const [start, end] of args.ranges) {
+      for (let i = start; i <= end; i++) {
+        const value = wildcard.get(i);
+        if (value === false) {
+          console.error(`out of range: ${i}`);
+          oor = true;
+        } else {
+          console.log(value);
+        }
+      }
+    }
+    exit(oor ? 1 : 0);
   }
 
   let string = wildcard.next();

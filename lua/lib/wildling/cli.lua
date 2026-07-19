@@ -273,13 +273,29 @@ function M.main(argv)
     end
 
     if #args.selects > 0 or #args.ranges > 0 then
+        local oor = false
         for _, index in ipairs(args.selects) do
-            print(tostring(wildcard:get(index)))
+            local value = wildcard:get(index)
+            if value == false then
+                io.stderr:write("out of range: " .. tostring(index) .. "\n")
+                oor = true
+            else
+                print(value)
+            end
         end
         for _, range in ipairs(args.ranges) do
             for index = range[1], range[2] do
-                print(tostring(wildcard:get(index)))
+                local value = wildcard:get(index)
+                if value == false then
+                    io.stderr:write("out of range: " .. tostring(index) .. "\n")
+                    oor = true
+                else
+                    print(value)
+                end
             end
+        end
+        if oor then
+            os.exit(1)
         end
         os.exit(0)
     end

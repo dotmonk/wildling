@@ -230,14 +230,6 @@ format_check_output <- function(args, total, generators) {
   paste(lines, collapse = "\n")
 }
 
-print_get_result <- function(value) {
-  if (isFALSE(value)) {
-    cat("false\n")
-  } else {
-    cat(value, "\n", sep = "")
-  }
-}
-
 cli_main <- function(argv = NULL) {
   args <- parse_args(if (is.null(argv)) commandArgs(trailingOnly = TRUE) else argv)
 
@@ -264,15 +256,28 @@ cli_main <- function(argv = NULL) {
   }
 
   if (length(args$selects) > 0L || length(args$ranges) > 0L) {
+    oor <- FALSE
     for (index in args$selects) {
-      print_get_result(wildcard$get(index))
+      value <- wildcard$get(index)
+      if (isFALSE(value)) {
+        cat("out of range: ", index, "\n", sep = "", file = stderr())
+        oor <- TRUE
+      } else {
+        cat(value, "\n", sep = "")
+      }
     }
     for (range in args$ranges) {
       for (index in range[[1]]:range[[2]]) {
-        print_get_result(wildcard$get(index))
+        value <- wildcard$get(index)
+        if (isFALSE(value)) {
+          cat("out of range: ", index, "\n", sep = "", file = stderr())
+          oor <- TRUE
+        } else {
+          cat(value, "\n", sep = "")
+        }
       }
     }
-    quit(save = "no", status = 0)
+    quit(save = "no", status = if (oor) 1L else 0L)
   }
 
   value <- wildcard$`next`()

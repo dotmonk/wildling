@@ -332,11 +332,14 @@ pub fn runCli(allocator: Allocator, args: []const []const u8) !u8 {
     }
 
     if (parsed.selects.items.len > 0 or parsed.ranges.items.len > 0) {
+        var oor = false;
+        const stderr = std.io.getStdErr().writer();
         for (parsed.selects.items) |idx| {
             if (try wildcard.get(allocator, idx)) |value| {
                 try stdout.print("{s}\n", .{value});
             } else {
-                try stdout.writeAll("false\n");
+                try stderr.print("out of range: {d}\n", .{idx});
+                oor = true;
             }
         }
         for (parsed.ranges.items) |range| {
@@ -345,11 +348,12 @@ pub fn runCli(allocator: Allocator, args: []const []const u8) !u8 {
                 if (try wildcard.get(allocator, idx)) |value| {
                     try stdout.print("{s}\n", .{value});
                 } else {
-                    try stdout.writeAll("false\n");
+                    try stderr.print("out of range: {d}\n", .{idx});
+                    oor = true;
                 }
             }
         }
-        return 0;
+        return if (oor) @as(u8, 1) else @as(u8, 0);
     }
 
     while (try wildcard.next(allocator)) |value| {

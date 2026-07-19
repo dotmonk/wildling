@@ -299,15 +299,28 @@ class Cli {
         }
 
         if (!parsed.selects.isEmpty() || !parsed.ranges.isEmpty()) {
+            boolean oor = false
             for (int index : parsed.selects) {
-                System.out.println(wildcard.get(index))
+                Object value = wildcard.get(index)
+                if (Boolean.FALSE.equals(value)) {
+                    System.err.println("out of range: " + index)
+                    oor = true
+                } else {
+                    System.out.println(value)
+                }
             }
             for (Range range : parsed.ranges) {
                 for (int index = range.start; index <= range.end; index++) {
-                    System.out.println(wildcard.get(index))
+                    Object value = wildcard.get(index)
+                    if (Boolean.FALSE.equals(value)) {
+                        System.err.println("out of range: " + index)
+                        oor = true
+                    } else {
+                        System.out.println(value)
+                    }
                 }
             }
-            System.exit(0)
+            System.exit(oor ? 1 : 0)
         }
 
         Object value = wildcard.next()

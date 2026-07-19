@@ -24,7 +24,7 @@ CLI stdout must match exactly.
 
 Shared contracts:
 
-- [`docs/cli.md`](docs/cli.md) — `--check` format, out-of-range `false`
+- [`docs/cli.md`](docs/cli.md) — `--check` format, out-of-range stderr + exit 1
 - [`docs/help.txt`](docs/help.txt) — `--help` text (copied into build artifacts)
 
 ## Adding or changing a language

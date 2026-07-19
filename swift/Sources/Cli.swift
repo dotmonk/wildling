@@ -229,11 +229,13 @@ enum Cli {
         }
 
         if !args.selects.isEmpty || !args.ranges.isEmpty {
+            var oor = false
             for index in args.selects {
                 if let value = wildcard.get(index) {
                     print(value)
                 } else {
-                    print("false")
+                    fputs("out of range: \(index)\n", stderr)
+                    oor = true
                 }
             }
             for range in args.ranges {
@@ -241,11 +243,12 @@ enum Cli {
                     if let value = wildcard.get(index) {
                         print(value)
                     } else {
-                        print("false")
+                        fputs("out of range: \(index)\n", stderr)
+                        oor = true
                     }
                 }
             }
-            return 0
+            return oor ? 1 : 0
         }
 
         while let value = wildcard.next() {

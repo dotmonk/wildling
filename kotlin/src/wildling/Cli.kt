@@ -253,15 +253,28 @@ fun main(args: Array<String>) {
     }
 
     if (parsed.selects.isNotEmpty() || parsed.ranges.isNotEmpty()) {
+        var oor = false
         for (index in parsed.selects) {
-            println(wildcard.get(index))
+            val value = wildcard.get(index)
+            if (value == false) {
+                System.err.println("out of range: $index")
+                oor = true
+            } else {
+                println(value)
+            }
         }
         for (range in parsed.ranges) {
             for (index in range.start..range.end) {
-                println(wildcard.get(index))
+                val value = wildcard.get(index)
+                if (value == false) {
+                    System.err.println("out of range: $index")
+                    oor = true
+                } else {
+                    println(value)
+                }
             }
         }
-        exitProcess(0)
+        exitProcess(if (oor) 1 else 0)
     }
 
     var value = wildcard.next()

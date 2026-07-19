@@ -306,19 +306,6 @@ public static class Cli
         return string.Join("\n", lines);
     }
 
-    /// <summary>Print a result; out-of-range sentinel is lowercase false.</summary>
-    internal static void WriteResult(object value)
-    {
-        if (value is false)
-        {
-            Console.WriteLine("false");
-        }
-        else
-        {
-            Console.WriteLine(value);
-        }
-    }
-
     public static int Run(string[] args)
     {
         var parsed = ParseArgs(args);
@@ -351,18 +338,37 @@ public static class Cli
 
         if (parsed.Selects.Count > 0 || parsed.Ranges.Count > 0)
         {
+            var oor = false;
             foreach (var index in parsed.Selects)
             {
-                WriteResult(wildcard.Get(index));
+                var selected = wildcard.Get(index);
+                if (selected is false)
+                {
+                    Console.Error.WriteLine($"out of range: {index}");
+                    oor = true;
+                }
+                else
+                {
+                    Console.WriteLine(selected);
+                }
             }
             foreach (var range in parsed.Ranges)
             {
                 for (var index = range.Start; index <= range.End; index++)
                 {
-                    WriteResult(wildcard.Get(index));
+                    var selected = wildcard.Get(index);
+                    if (selected is false)
+                    {
+                        Console.Error.WriteLine($"out of range: {index}");
+                        oor = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine(selected);
+                    }
                 }
             }
-            return 0;
+            return oor ? 1 : 0;
         }
 
         var value = wildcard.Next();

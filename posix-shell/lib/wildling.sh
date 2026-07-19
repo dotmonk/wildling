@@ -272,6 +272,7 @@ _wildling_run_engine() {
         -v check_patterns="$_wildling_patterns" \
         -v select_list="$_wildling_selects" \
         -v range_list="$_wildling_ranges"
+    return $?
 }
 
 wildling_cli_main() {
@@ -301,4 +302,5 @@ wildling_cli_main() {
     fi
 
     _wildling_run_engine
+    exit $?
 }

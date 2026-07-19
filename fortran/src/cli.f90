@@ -28,10 +28,17 @@ program wildling_cli
   type(wildling_t) :: w
   character(len=:), allocatable :: value, help_text
   integer :: i, j, exit_code
-  logical :: ok
+  logical :: ok, oor
+
+  interface
+    subroutine c_exit(status) bind(c, name="exit")
+      integer, value :: status
+    end subroutine c_exit
+  end interface
 
   call parse_args(args)
   exit_code = 0
+  oor = .false.
 
   if (args%help) then
     help_text = load_help_text()
@@ -59,13 +66,14 @@ program wildling_cli
     call print_check(args, w)
   else if (args%nselect > 0 .or. args%nrange > 0) then
     do i = 1, args%nselect
-      call print_value_or_false(w, int(args%selects(i), int64))
+      call print_value_or_oor(w, int(args%selects(i), int64), oor)
     end do
     do i = 1, args%nrange
       do j = args%ranges(i)%start_idx, args%ranges(i)%end_idx
-        call print_value_or_false(w, int(j, int64))
+        call print_value_or_oor(w, int(j, int64), oor)
       end do
     end do
+    if (oor) exit_code = 1
   else
     do
       ok = wildling_next(w, value)
@@ -76,7 +84,7 @@ program wildling_cli
 
   call wildling_free(w)
   call cli_args_free(args)
-  if (exit_code /= 0) stop 1
+  if (exit_code /= 0) call c_exit(exit_code)
 
 contains
 
@@ -500,15 +508,17 @@ contains
     call str_list_free(range_strs)
   end subroutine print_check
 
-  subroutine print_value_or_false(w, index)
+  subroutine print_value_or_oor(w, index, oor)
     type(wildling_t), intent(in) :: w
     integer(int64), intent(in) :: index
+    logical, intent(inout) :: oor
     character(len=:), allocatable :: value
     if (wildling_get(w, index, value)) then
       write(*, '(A)') value
     else
-      write(*, '(A)') 'false'
+      write(error_unit, '(A,I0)') 'out of range: ', index
+      oor = .true.
     end if
-  end subroutine print_value_or_false
+  end subroutine print_value_or_oor
 
 end program wildling_cli

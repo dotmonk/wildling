@@ -42,17 +42,35 @@ defmodule Wildling.Cli do
         System.halt(0)
 
       args.selects != [] or args.ranges != [] ->
-        Enum.each(args.selects, fn index ->
-          IO.puts(Wildling.get(wildcard, index))
-        end)
+        oor =
+          Enum.reduce(args.selects, false, fn index, oor ->
+            case Wildling.get(wildcard, index) do
+              false ->
+                IO.puts(:stderr, "out of range: #{index}")
+                true
 
-        Enum.each(args.ranges, fn {start, finish} ->
-          Enum.each(start..finish, fn index ->
-            IO.puts(Wildling.get(wildcard, index))
+              value ->
+                IO.puts(value)
+                oor
+            end
           end)
-        end)
 
-        System.halt(0)
+        oor =
+          Enum.reduce(args.ranges, oor, fn {start, finish}, oor ->
+            Enum.reduce(start..finish, oor, fn index, oor ->
+              case Wildling.get(wildcard, index) do
+                false ->
+                  IO.puts(:stderr, "out of range: #{index}")
+                  true
+
+                value ->
+                  IO.puts(value)
+                  oor
+              end
+            end)
+          end)
+
+        System.halt(if(oor, do: 1, else: 0))
 
       true ->
         print_all(wildcard)

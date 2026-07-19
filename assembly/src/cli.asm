@@ -970,7 +970,7 @@ main:
     push r13
     push r14
     push r15
-    sub rsp, 152
+    sub rsp, 168
     mov r12, rsi
     lea rdx, [rsp]
     call parse_args
@@ -1047,12 +1047,14 @@ main:
     mov rax, [r13 + CLIARGS_SELECTS + VEC_LEN]
     or rax, [r13 + CLIARGS_RANGES + VEC_LEN]
     jz .plain_loop
+    mov qword [rsp + 160], 0
     xor r14, r14
 .sel_out_loop:
     cmp r14, [r13 + CLIARGS_SELECTS + VEC_LEN]
     jae .range_out_loop_init
     mov rax, [r13 + CLIARGS_SELECTS + VEC_ITEMS]
     mov rsi, [rax + r14*8]
+    mov [rsp + 152], rsi
     mov rdi, rbx
     call wildling_get
     test rax, rax
@@ -1065,8 +1067,12 @@ main:
     call free
     jmp .sel_next
 .sel_false:
-    lea rdi, [rel false_nl]
-    call printf
+    mov rdi, [rel stderr]
+    lea rsi, [rel oor_fmt]
+    mov rdx, [rsp + 152]
+    xor eax, eax
+    call fprintf
+    mov qword [rsp + 160], 1
 .sel_next:
     inc r14
     jmp .sel_out_loop
@@ -1096,8 +1102,12 @@ main:
     call free
     jmp .range_inner_next
 .range_false:
-    lea rdi, [rel false_nl]
-    call printf
+    mov rdi, [rel stderr]
+    lea rsi, [rel oor_fmt]
+    mov rdx, r12
+    xor eax, eax
+    call fprintf
+    mov qword [rsp + 160], 1
 .range_inner_next:
     inc r12
     jmp .range_inner
@@ -1109,7 +1119,7 @@ main:
     call wildling_free
     mov rdi, r13
     call cliargs_free
-    xor eax, eax
+    mov eax, [rsp + 160]
     jmp .out
 .plain_loop:
     mov rdi, rbx
@@ -1130,7 +1140,7 @@ main:
     call cliargs_free
     xor eax, eax
 .out:
-    add rsp, 152
+    add rsp, 168
     pop r15
     pop r14
     pop r13
@@ -1146,6 +1156,7 @@ fmt_lld:                db "%lld", 0
 true_str:               db "true", 0
 false_str:              db "false", 0
 false_nl:               db "false", 10, 0
+oor_fmt:                db "out of range: %lld", 10, 0
 fmt_s_nl:               db "%s", 10, 0
 fmt_space_s:            db " %s", 0
 fmt_space_d:            db " %lld", 0

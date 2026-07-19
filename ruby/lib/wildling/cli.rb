@@ -211,11 +211,28 @@ module Wildling
       end
 
       if !args.selects.empty? || !args.ranges.empty?
-        args.selects.each { |index| puts wildcard.get(index) }
-        args.ranges.each do |start, finish|
-          (start..finish).each { |index| puts wildcard.get(index) }
+        oor = false
+        args.selects.each do |index|
+          value = wildcard.get(index)
+          if value == false
+            $stderr.puts "out of range: #{index}"
+            oor = true
+          else
+            puts value
+          end
         end
-        exit 0
+        args.ranges.each do |start, finish|
+          (start..finish).each do |index|
+            value = wildcard.get(index)
+            if value == false
+              $stderr.puts "out of range: #{index}"
+              oor = true
+            else
+              puts value
+            end
+          end
+        end
+        exit(oor ? 1 : 0)
       end
 
       value = wildcard.next

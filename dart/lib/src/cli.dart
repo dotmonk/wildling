@@ -268,15 +268,28 @@ void runCli(List<String> argv) {
   }
 
   if (args.selects.isNotEmpty || args.ranges.isNotEmpty) {
+    var oor = false;
     for (final index in args.selects) {
-      stdout.writeln(wildcard.get(index));
+      final value = wildcard.get(index);
+      if (value == false) {
+        stderr.writeln('out of range: $index');
+        oor = true;
+      } else {
+        stdout.writeln(value);
+      }
     }
     for (final range in args.ranges) {
       for (var index = range.start; index <= range.end; index++) {
-        stdout.writeln(wildcard.get(index));
+        final value = wildcard.get(index);
+        if (value == false) {
+          stderr.writeln('out of range: $index');
+          oor = true;
+        } else {
+          stdout.writeln(value);
+        }
       }
     }
-    exit(0);
+    exit(oor ? 1 : 0);
   }
 
   var value = wildcard.next();

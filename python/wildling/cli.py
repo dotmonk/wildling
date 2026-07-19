@@ -195,14 +195,6 @@ def format_check_output(args: CliArgs, total: int, generators: List[Generator]) 
     return "\n".join(lines)
 
 
-def print_result(value: object) -> None:
-    """Print a result; out-of-range sentinel is lowercase false."""
-    if value is False:
-        print("false")
-    else:
-        print(value)
-
-
 def main(argv: Optional[List[str]] = None) -> None:
     args = parse_args(sys.argv[1:] if argv is None else argv)
 
@@ -225,12 +217,23 @@ def main(argv: Optional[List[str]] = None) -> None:
         sys.exit(0)
 
     if args.selects or args.ranges:
+        oor = False
         for index in args.selects:
-            print_result(wildcard.get(index))
+            value = wildcard.get(index)
+            if value is False:
+                print(f"out of range: {index}", file=sys.stderr)
+                oor = True
+            else:
+                print(value)
         for start, end in args.ranges:
             for index in range(start, end + 1):
-                print_result(wildcard.get(index))
-        sys.exit(0)
+                value = wildcard.get(index)
+                if value is False:
+                    print(f"out of range: {index}", file=sys.stderr)
+                    oor = True
+                else:
+                    print(value)
+        sys.exit(1 if oor else 0)
 
     value = wildcard.next()
     while value is not False:

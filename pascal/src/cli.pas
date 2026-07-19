@@ -422,14 +422,17 @@ begin
   WriteLn;
 end;
 
-procedure PrintValueOrFalse(W: TWildling; Index: Int64);
+procedure PrintValueOrOor(W: TWildling; Index: Int64; var Oor: Boolean);
 var
   Value: string;
 begin
   if W.Get(Index, Value) then
     WriteLn(Value)
   else
-    WriteLn('false');
+  begin
+    WriteLn(StdErr, 'out of range: ', Index);
+    Oor := True;
+  end;
 end;
 
 var
@@ -438,6 +441,7 @@ var
   Value: string;
   I, J: Integer;
   ExitCode: Integer;
+  Oor: Boolean;
 begin
   ExitCode := 0;
   Args := ParseArgs;
@@ -469,11 +473,14 @@ begin
         PrintCheck(Args, W)
       else if (Length(Args.Selects) > 0) or (Length(Args.Ranges) > 0) then
       begin
+        Oor := False;
         for I := 0 to High(Args.Selects) do
-          PrintValueOrFalse(W, Args.Selects[I]);
+          PrintValueOrOor(W, Args.Selects[I], Oor);
         for I := 0 to High(Args.Ranges) do
           for J := Args.Ranges[I].StartIdx to Args.Ranges[I].EndIdx do
-            PrintValueOrFalse(W, J);
+            PrintValueOrOor(W, J, Oor);
+        if Oor then
+          ExitCode := 1;
       end
       else
         while W.Next(Value) do

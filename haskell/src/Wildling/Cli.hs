@@ -283,9 +283,13 @@ formatCheckOutput args total generators =
              ]
    in intercalate "\n" lines_
 
-printResult :: WildlingResult -> IO ()
-printResult (WildlingString s) = putStrLn s
-printResult WildlingFalse = putStrLn "false"
+printGetResult :: Int -> WildlingResult -> IO Bool
+printGetResult index WildlingFalse = do
+  hPutStrLn stderr ("out of range: " ++ show index)
+  pure True
+printGetResult _ (WildlingString s) = do
+  putStrLn s
+  pure False
 
 runCli :: [String] -> IO ()
 runCli argv = do
@@ -316,15 +320,17 @@ runCli argv = do
 
   if not (null (cliSelects args)) || not (null (cliRanges args))
     then do
-      mapM_ (printResult . wildlingGet wildcard) (cliSelects args)
-      mapM_
-        ( \r ->
-            mapM_
-              (printResult . wildlingGet wildcard)
-              [rangeStart r .. rangeEnd r]
-        )
-        (cliRanges args)
-      exitWith ExitSuccess
+      oorSelects <- mapM (\i -> printGetResult i (wildlingGet wildcard i)) (cliSelects args)
+      oorRangesLists <-
+        mapM
+          ( \r ->
+              mapM
+                (\i -> printGetResult i (wildlingGet wildcard i))
+                [rangeStart r .. rangeEnd r]
+          )
+          (cliRanges args)
+      let oor = or (oorSelects ++ concat oorRangesLists)
+      exitWith (if oor then ExitFailure 1 else ExitSuccess)
     else do
       let loop = do
             value <- wildlingNext wildcard

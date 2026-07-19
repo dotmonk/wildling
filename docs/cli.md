@@ -34,6 +34,16 @@ Rules:
 
 ## Out-of-range `--select` / `--range`
 
-When an index is outside `[0, count)`, print the lowercase ASCII word `false`
-(one line, no quotes). Do **not** print language-localized booleans such as
-`False` or `FALSE`.
+When an index is outside `[0, count)`:
+
+- Write **nothing** to stdout for that index (no value line).
+- Write one line to **stderr**: `out of range: <index>` (decimal ASCII, no quotes).
+- After all selects/ranges are processed, exit with status `1` if any index was
+  out of range; otherwise `0`.
+
+Do **not** print the word `false` (or `False` / `FALSE`) on stdout for this case.
+That word can be a real generated combination, so it must not double as a
+sentinel.
+
+Library `get` / equivalent APIs may still return a **typed** false / `None` /
+`nil` for out-of-range access; that is distinct from the string `"false"`.

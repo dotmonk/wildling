@@ -276,11 +276,13 @@ func RunCLI(argv []string) int {
 	}
 
 	if len(args.Selects) > 0 || len(args.Ranges) > 0 {
+		oor := false
 		for _, index := range args.Selects {
 			if value, ok := wildcard.Get(index); ok {
 				fmt.Println(value)
 			} else {
-				fmt.Println("false")
+				fmt.Fprintf(os.Stderr, "out of range: %d\n", index)
+				oor = true
 			}
 		}
 		for _, r := range args.Ranges {
@@ -288,9 +290,13 @@ func RunCLI(argv []string) int {
 				if value, ok := wildcard.Get(index); ok {
 					fmt.Println(value)
 				} else {
-					fmt.Println("false")
+					fmt.Fprintf(os.Stderr, "out of range: %d\n", index)
+					oor = true
 				}
 			}
+		}
+		if oor {
+			return 1
 		}
 		return 0
 	}

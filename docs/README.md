@@ -34,7 +34,9 @@ Full reference: [syntax page](https://dotmonk.github.io/wildling/syntax.html) an
 
 Shared `--help` text and `--check` formatting: [`cli.md`](cli.md) · [`help.txt`](help.txt).
 
-Out-of-range `--select` / `--range` must print lowercase `false`.
+Out-of-range `--select` / `--range`: nothing on stdout for that index, one
+`out of range: <index>` line on stderr, exit `1` if any were out of range.
+See [`cli.md`](cli.md).
 
 ## Library usage (JavaScript)
 

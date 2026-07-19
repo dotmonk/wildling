@@ -236,16 +236,6 @@ sub format_check_output {
     return join( "\n", @lines );
 }
 
-sub print_get_result {
-    my ($value) = @_;
-    if ( Wildling::is_false($value) ) {
-        print "false\n";
-    }
-    else {
-        print "$value\n";
-    }
-}
-
 sub main {
     my ($argv) = @_;
     $argv = [@ARGV] unless defined $argv;
@@ -276,15 +266,30 @@ sub main {
     }
 
     if ( @{ $args->{selects} } || @{ $args->{ranges} } ) {
+        my $oor = 0;
         for my $index ( @{ $args->{selects} } ) {
-            print_get_result( $wildcard->get($index) );
+            my $value = $wildcard->get($index);
+            if ( Wildling::is_false($value) ) {
+                print STDERR "out of range: $index\n";
+                $oor = 1;
+            }
+            else {
+                print "$value\n";
+            }
         }
         for my $range ( @{ $args->{ranges} } ) {
             for my $index ( $range->[0] .. $range->[1] ) {
-                print_get_result( $wildcard->get($index) );
+                my $value = $wildcard->get($index);
+                if ( Wildling::is_false($value) ) {
+                    print STDERR "out of range: $index\n";
+                    $oor = 1;
+                }
+                else {
+                    print "$value\n";
+                }
             }
         }
-        exit 0;
+        exit $oor ? 1 : 0;
     }
 
     my $value = $wildcard->next();
