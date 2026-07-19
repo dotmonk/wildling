@@ -51,8 +51,20 @@
 }</textarea>
             </div>
             <div class="sandbox__meta">
-              <button type="button" class="btn btn--primary" id="run">Run</button>
               <span>Total: <strong id="count">—</strong></span>
+              <label class="pager" for="page">
+                Page
+                <input
+                  class="pager__input"
+                  type="number"
+                  id="page"
+                  min="1"
+                  step="1"
+                  value="1"
+                  inputmode="numeric"
+                />
+                <span class="pager__of">/ <strong id="pages">1</strong></span>
+              </label>
               <span>Showing: <strong id="shown">—</strong></span>
             </div>
           </div>
@@ -63,8 +75,9 @@
         </div>
 
         <p class="note">
-          Cap is 500 lines in the output panel. Native CLIs and libraries for each
-          language are documented under
+          Updates as you type. Up to 100 results per page; use the page control to
+          browse larger totals. Native CLIs and libraries for each language are
+          documented under
           <a href="./#languages">Languages</a>.
         </p>
       </main>

@@ -406,6 +406,37 @@ a:hover {
   font-weight: 700;
 }
 
+.pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--mist);
+}
+.pager__input {
+  width: 3.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--fog);
+  background: rgba(8, 12, 10, 0.85);
+  border: 1px solid var(--line);
+  padding: 0.25rem 0.35rem;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.pager__input::-webkit-outer-spin-button,
+.pager__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.pager__input:focus {
+  outline: 1px solid var(--lime-dim);
+  border-color: var(--lime-dim);
+}
+.pager__of {
+  white-space: nowrap;
+}
+
 .note {
   margin-top: 1.5rem;
   padding: 0.85rem 1rem;

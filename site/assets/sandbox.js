@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var MAX_LINES = 500;
+  var PAGE_SIZE = 100;
   var createWildling = window.wildling;
   if (typeof createWildling !== "function") {
     document.getElementById("output").value =
@@ -14,7 +14,13 @@
   var outputEl = document.getElementById("output");
   var countEl = document.getElementById("count");
   var shownEl = document.getElementById("shown");
+  var pageEl = document.getElementById("page");
+  var pagesEl = document.getElementById("pages");
   var examplesEl = document.getElementById("examples");
+
+  var page = 1;
+  var pageCount = 1;
+  var debounceTimer = null;
 
   var EXAMPLES = [
     { label: "foo#", patterns: "foo#" },
@@ -33,7 +39,8 @@
     btn.textContent = ex.label;
     btn.addEventListener("click", function () {
       patternsEl.value = ex.patterns;
-      run();
+      page = 1;
+      refresh();
     });
     examplesEl.appendChild(btn);
   });
@@ -56,7 +63,22 @@
     return out;
   }
 
-  function run() {
+  function clampPage(value, max) {
+    var n = parseInt(value, 10);
+    if (!isFinite(n) || n < 1) n = 1;
+    if (n > max) n = max;
+    return n;
+  }
+
+  function setMeta(total, shown, pages) {
+    countEl.textContent = String(total);
+    shownEl.textContent = String(shown);
+    pagesEl.textContent = String(pages);
+    pageEl.max = String(pages);
+    pageEl.value = String(page);
+  }
+
+  function refresh() {
     var patterns = patternsEl.value
       .split(/\r?\n/)
       .map(function (line) {
@@ -67,9 +89,10 @@
       });
 
     if (patterns.length === 0) {
+      page = 1;
+      pageCount = 1;
       outputEl.value = "";
-      countEl.textContent = "0";
-      shownEl.textContent = "0";
+      setMeta(0, 0, 1);
       return;
     }
 
@@ -78,39 +101,62 @@
       dictionaries = parseDictionaries(dictsEl.value);
     } catch (err) {
       outputEl.value = "Dictionary JSON error: " + err.message;
-      countEl.textContent = "—";
-      shownEl.textContent = "—";
+      pageCount = 1;
+      page = 1;
+      setMeta("—", "—", 1);
       return;
     }
 
     try {
       var w = createWildling({ patterns: patterns, dictionaries: dictionaries });
       var total = w.count();
-      countEl.textContent = String(total);
+      pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE) || 1);
+      if (total === 0) pageCount = 1;
+      page = clampPage(page, pageCount);
+
+      var start = (page - 1) * PAGE_SIZE;
+      var end = Math.min(start + PAGE_SIZE, total);
       var lines = [];
-      var n = Math.min(total, MAX_LINES);
-      for (var i = 0; i < n; i++) {
+      for (var i = start; i < end; i++) {
         var value = w.get(i);
         if (value === false) break;
         lines.push(value);
       }
-      shownEl.textContent = String(lines.length);
-      if (total > MAX_LINES) {
-        lines.push("… (" + (total - MAX_LINES) + " more)");
-      }
+      setMeta(total, lines.length, pageCount);
       outputEl.value = lines.join("\n");
     } catch (err) {
       outputEl.value = "Error: " + (err && err.message ? err.message : String(err));
-      countEl.textContent = "—";
-      shownEl.textContent = "—";
+      pageCount = 1;
+      page = 1;
+      setMeta("—", "—", 1);
     }
   }
 
-  document.getElementById("run").addEventListener("click", run);
-  patternsEl.addEventListener("keydown", function (ev) {
-    if ((ev.metaKey || ev.ctrlKey) && ev.key === "Enter") {
+  function refreshFromInputs() {
+    page = 1;
+    refresh();
+  }
+
+  function scheduleRefresh() {
+    if (debounceTimer !== null) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
+      debounceTimer = null;
+      refreshFromInputs();
+    }, 50);
+  }
+
+  patternsEl.addEventListener("input", scheduleRefresh);
+  dictsEl.addEventListener("input", scheduleRefresh);
+
+  pageEl.addEventListener("change", function () {
+    page = clampPage(pageEl.value, pageCount);
+    refresh();
+  });
+  pageEl.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") {
       ev.preventDefault();
-      run();
+      page = clampPage(pageEl.value, pageCount);
+      refresh();
     }
   });
 
@@ -118,5 +164,5 @@
   if (params.has("pattern")) {
     patternsEl.value = params.get("pattern");
   }
-  run();
+  refresh();
 })();
