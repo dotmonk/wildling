@@ -12,22 +12,35 @@ cd php
 ./bin/wildling "foo#"
 ```
 
-```bash
-composer require dotmonk/wildling:dev-main
-```
-
-Or from GitHub:
+Packagist (after the package is submitted — see [`docs/publishing.md`](../docs/publishing.md)):
 
 ```bash
-composer config repositories.wildling vcs https://github.com/dotmonk/wildling.git
-# then require with path / subdirectory as needed
+composer require dotmonk/wildling
 ```
+
+Until Packagist is live, use the VCS repo with the `php/` subdirectory:
+
+```json
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/dotmonk/wildling"
+    }
+  ],
+  "require": {
+    "dotmonk/wildling": "dev-main"
+  }
+}
+```
+
+Composer needs `"url"` + package path: configure Packagist with subdirectory `php/`, or use a path repository when developing locally.
 
 As a library:
 
 ```php
 <?php
-require 'vendor/autoload.php'; // or php/bootstrap.php
+require 'vendor/autoload.php';
 
 use Wildling\Wildling;
 

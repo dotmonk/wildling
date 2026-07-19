@@ -38,6 +38,8 @@ Out-of-range `--select` / `--range`: nothing on stdout for that index, one
 `out of range: <index>` line on stderr, exit `1` if any were out of range.
 See [`cli.md`](cli.md).
 
+Versioning and registry publishing: [`publishing.md`](publishing.md).
+
 ## Library usage (JavaScript)
 
 From this repository:

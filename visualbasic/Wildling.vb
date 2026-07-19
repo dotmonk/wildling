@@ -1,5 +1,5 @@
 Public NotInheritable Class Wildling
-    Public Const Version As String = "1.0.0"
+    Public Const Version As String = "2.0.0"
 
     Private ReadOnly _generators As List(Of Generator)
     Private ReadOnly _patternCount As Integer

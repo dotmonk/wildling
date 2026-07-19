@@ -4,10 +4,19 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>WildlingLib</RootNamespace>
     <AssemblyName>wildling</AssemblyName>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <OptionStrict>On</OptionStrict>
     <OptionExplicit>On</OptionExplicit>
     <OptionInfer>On</OptionInfer>
+    <PackageId>DotMonk.Wildling.VisualBasic</PackageId>
+    <Authors>dotmonk</Authors>
+    <Description>Pattern based string generator library and CLI (Visual Basic)</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dotmonk/wildling</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotmonk/wildling</RepositoryUrl>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>wildling-vb</ToolCommandName>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <None Update="help.txt" CopyToOutputDirectory="PreserveNewest" Condition="Exists('help.txt')" />

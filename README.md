@@ -360,7 +360,8 @@ Language identifiers live in [`languages.txt`](languages.txt). Every
 ```
 
 Shared CLI contracts (help text, `--check` format, out-of-range stderr + exit 1):
-[docs/cli.md](docs/cli.md).
+[docs/cli.md](docs/cli.md). Shared semver and registry publish waves:
+[docs/publishing.md](docs/publishing.md).
 
 ## Contributing
 
@@ -370,10 +371,10 @@ Architecture and stack notes: [PLAN.md](PLAN.md).
 
 ## Install notes
 
-Ports are used from this repository (clone, submodule, or sparse checkout of one
-language folder). Nothing is published to the npm registry (or other package
-indexes) from this project — install JavaScript via git or a local path, e.g.
-`npm install git+https://github.com/dotmonk/wildling.git#main:javascript`.
+All ports share one version in [`VERSION`](VERSION). Clone and build with
+`./build.sh <language>`, or use a registry once that wave is live (see
+[docs/publishing.md](docs/publishing.md)). **npm is not used** — JavaScript stays
+`private`; install via git or the [Pages sandbox](https://dotmonk.github.io/wildling/sandbox.html).
 
 ## License
 

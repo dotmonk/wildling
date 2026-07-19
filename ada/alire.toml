@@ -1,0 +1,15 @@
+name = "wildling"
+description = "Pattern based string generator library and CLI"
+version = "2.0.0"
+
+authors = [{name = "dotmonk", github = "dotmonk"}]
+
+licenses = "MIT"
+website = "https://github.com/dotmonk/wildling"
+tags = ["pattern", "generator", "text"]
+
+[available]
+gnat = ">=12"
+
+[origin]
+url = "git+https://github.com/dotmonk/wildling"

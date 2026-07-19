@@ -12,9 +12,22 @@ cd swift
 ./bin/wildling "foo#"
 ```
 
-Produces `dist/wildling`. As a library, compile the `Sources/` files (excluding `main.swift`) into your target.
+SwiftPM (root [`Package.swift`](../Package.swift), tag `vX.Y.Z`):
 
 ```swift
+dependencies: [
+    .package(url: "https://github.com/dotmonk/wildling.git", from: "1.0.0"),
+],
+targets: [
+    .target(name: "MyApp", dependencies: [
+        .product(name: "Wildling", package: "wildling"),
+    ]),
+]
+```
+
+```swift
+import Wildling
+
 let wildling = Wildling(patterns: ["foo#"])
 while let value = wildling.next() {
     print(value)

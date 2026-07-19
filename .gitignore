@@ -74,3 +74,9 @@ _site/
 .idea/
 .vscode/
 *.log
+*.gem
+**/nupkg/
+**/bin/Release/
+**/obj/
+python/dist/
+python/*.egg-info/

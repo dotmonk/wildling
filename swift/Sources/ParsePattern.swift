@@ -1,6 +1,6 @@
 import Foundation
 
-typealias Dictionaries = [String: [String]]
+public typealias Dictionaries = [String: [String]]
 
 enum ParsePattern {
     private static let tokenParsingPattern =

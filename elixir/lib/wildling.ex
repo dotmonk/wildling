@@ -5,7 +5,7 @@ defmodule Wildling do
 
   alias Wildling.Generator
 
-  @version "1.0.0"
+  @version "2.0.0"
 
   defstruct generators: [], pattern_count: 0, internal_index: 0
 

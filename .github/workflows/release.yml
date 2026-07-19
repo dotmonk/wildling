@@ -1,0 +1,269 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: release-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # --- Wave 2: OIDC trusted publishing ---
+
+  pypi:
+    name: PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      - name: Build
+        run: |
+          python -m pip install --upgrade build
+          cp docs/help.txt python/wildling/help.txt
+          python -m build
+        working-directory: .
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+        continue-on-error: true
+        with:
+          packages-dir: python/dist
+
+  crates:
+    name: crates.io
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Publish
+        continue-on-error: true
+        run: |
+          cp ../docs/help.txt help.txt 2>/dev/null || true
+          cargo publish --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  nuget:
+    name: NuGet (C#)
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: csharp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Pack
+        run: |
+          cp ../docs/help.txt help.txt
+          dotnet pack -c Release -o ./nupkg
+      - name: NuGet login
+        id: login
+        continue-on-error: true
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Push
+        if: steps.login.outcome == 'success'
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+  rubygems:
+    name: RubyGems
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: ruby
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Build gem
+        run: |
+          cp ../docs/help.txt help.txt
+          gem build wildling.gemspec
+      - name: Publish
+        continue-on-error: true
+        uses: rubygems/configure-rubygems-credentials@main
+      - name: Push gem
+        continue-on-error: true
+        run: gem push wildling-*.gem
+
+  pubdev:
+    name: pub.dev
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: dart
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: Publish
+        continue-on-error: true
+        run: dart pub publish --force
+        env:
+          PUB_TOKEN: ${{ secrets.PUB_CREDENTIALS }}
+
+  nuget-vb:
+    name: NuGet (VB)
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Pack
+        working-directory: visualbasic
+        run: |
+          cp ../docs/help.txt help.txt
+          dotnet pack -c Release -o ./nupkg
+      - name: NuGet login
+        id: login
+        continue-on-error: true
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Push
+        if: steps.login.outcome == 'success'
+        working-directory: visualbasic
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+  nuget-fs:
+    name: NuGet (F#)
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Pack
+        working-directory: fsharp
+        run: |
+          cp ../docs/help.txt help.txt
+          dotnet pack -c Release -o ./nupkg
+      - name: NuGet login
+        id: login
+        continue-on-error: true
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Push
+        if: steps.login.outcome == 'success'
+        working-directory: fsharp
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+  # --- Wave 3: Hex / LuaRocks / PowerShell Gallery ---
+
+  hex:
+    name: Hex.pm
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: elixir
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.16"
+          otp-version: "26"
+      - name: Publish
+        continue-on-error: true
+        run: |
+          mix local.hex --force
+          mix deps.get || true
+          mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+
+  luarocks:
+    name: LuaRocks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish
+        continue-on-error: true
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq luarocks
+          cd lua
+          luarocks upload wildling.rockspec --api-key="${{ secrets.LUAROCKS_API_KEY }}"
+
+  psgallery:
+    name: PowerShell Gallery
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          Publish-Module -Path ./powershell -NuGetApiKey $env:PSGALLERY_API_KEY -Repository PSGallery -Force
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+
+  # --- Wave 4: Maven Central (Java first) ---
+
+  maven-central:
+    name: Maven Central (Java)
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: java
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          server-id: central
+      - name: Publish
+        continue-on-error: true
+        run: |
+          if [ ! -f pom.xml ]; then
+            echo "pom.xml not configured for Central yet"
+            exit 0
+          fi
+          mvn -B -DskipTests deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}

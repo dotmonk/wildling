@@ -1,10 +1,10 @@
 [package]
 name = "wildling"
-version = "1.0.0"
+version = "2.0.0"
 edition = "2021"
 description = "Pattern based string generator library and CLI"
 license = "MIT"
-publish = false
+publish = true
 
 [[bin]]
 name = "wildling"

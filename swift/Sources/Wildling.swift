@@ -1,11 +1,11 @@
-final class Wildling {
-    static let version = "1.0.0"
+public final class Wildling {
+    public static let version = "2.0.0"
 
     private let generators: [Generator]
     private let patternCount: Int
     private var internalIndex: Int = 0
 
-    init(patterns: [String], dictionaries: Dictionaries? = nil) {
+    public init(patterns: [String], dictionaries: Dictionaries? = nil) {
         let dicts = dictionaries ?? [:]
         var gens: [Generator] = []
         var total = 0
@@ -18,16 +18,16 @@ final class Wildling {
         self.patternCount = total
     }
 
-    func index() -> Int { internalIndex }
+    public func index() -> Int { internalIndex }
 
-    func count() -> Int { patternCount }
+    public func count() -> Int { patternCount }
 
-    func reset() {
+    public func reset() {
         internalIndex = 0
     }
 
     /// Next combination, or `nil` when exhausted.
-    func next() -> String? {
+    public func next() -> String? {
         if internalIndex == patternCount {
             return nil
         }
@@ -38,7 +38,7 @@ final class Wildling {
     func generatorsList() -> [Generator] { generators }
 
     /// Combination at index, or `nil` if out of range.
-    func get(_ index: Int) -> String? {
+    public func get(_ index: Int) -> String? {
         if index > patternCount - 1 || index < 0 {
             return nil
         }

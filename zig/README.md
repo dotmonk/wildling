@@ -14,8 +14,25 @@ cd zig
 
 Produces `dist/wildling` (static-friendly ReleaseSafe binary) plus `dist/help.txt`.
 
+As a Zig package dependency (git tag `vX.Y.Z`, see [`build.zig.zon`](build.zig.zon) and [`docs/publishing.md`](../docs/publishing.md)):
+
 ```zig
-const wildling = @import("wildling.zig");
+.dependencies = .{
+    .wildling = .{
+        .url = "https://github.com/dotmonk/wildling/archive/refs/tags/v1.0.0.tar.gz",
+        .hash = "...", // fill via `zig fetch --save`
+    },
+},
+```
+
+Note: the Zig package root is the `zig/` subdirectory; prefer cloning this repo and depending via path while developing:
+
+```zig
+.wildling = .{ .path = "../wildling/zig" },
+```
+
+```zig
+const wildling = @import("wildling");
 
 var w = try wildling.Wildling.init(allocator, &.{"foo#"}, &dicts);
 while (try w.next(allocator)) |value| {

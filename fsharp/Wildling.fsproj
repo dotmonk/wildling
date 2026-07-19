@@ -4,8 +4,17 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>WildlingLib</RootNamespace>
     <AssemblyName>wildling</AssemblyName>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <PackageId>DotMonk.Wildling.FSharp</PackageId>
+    <Authors>dotmonk</Authors>
+    <Description>Pattern based string generator library and CLI (F#)</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dotmonk/wildling</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotmonk/wildling</RepositoryUrl>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>wildling-fs</ToolCommandName>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Token.fs" />

@@ -2,7 +2,7 @@ local generator = require("wildling.generator")
 
 local M = {}
 
-M.VERSION = "1.0.0"
+M.VERSION = "2.0.0"
 
 local Wildling = {}
 Wildling.__index = Wildling

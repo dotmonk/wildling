@@ -10,6 +10,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check shared VERSION sync
+        run: ./scripts/sync-version.sh --check
+
   resolve:
     runs-on: ubuntu-latest
     outputs:
@@ -47,7 +56,7 @@ jobs:
             done
 
             # Shared contract / fixture / harness changes affect every port.
-            if printf '%s\n' "$CHANGED" | grep -Eq '^(tests/|docs/|test\.sh$|build\.sh$|languages\.txt$)'; then
+            if printf '%s\n' "$CHANGED" | grep -Eq '^(tests/|docs/|scripts/|VERSION$|test\.sh$|build\.sh$|release\.sh$|languages\.txt$|Package\.swift$)'; then
               SELECTED="$ALL"
             else
               ONLY_JS=1
@@ -88,7 +97,7 @@ jobs:
           echo "Matrix: $JSON"
 
   test:
-    needs: resolve
+    needs: [resolve, version]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:

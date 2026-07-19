@@ -24,7 +24,7 @@ type Wildling
     let generatorsList, patternCount = generators
     let mutable internalIndex = 0
 
-    static member Version = "1.0.0"
+    static member Version = "2.0.0"
 
     static member Create
         (

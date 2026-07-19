@@ -27,6 +27,12 @@ Shared contracts:
 - [`docs/cli.md`](docs/cli.md) — `--check` format, out-of-range stderr + exit 1
 - [`docs/help.txt`](docs/help.txt) — `--help` text (copied into build artifacts)
 
+## Versioning
+
+All languages share one semver in the root [`VERSION`](VERSION) file. Sync with
+`./scripts/sync-version.sh` (also run by `./release.sh`). CI checks for drift.
+Publishing tags and registries: [`docs/publishing.md`](docs/publishing.md).
+
 ## Adding or changing a language
 
 1. Keep **zero third-party runtime dependencies** outside that language’s stdlib
@@ -52,6 +58,8 @@ Sources: `site/`. Icon attribution: `site/assets/icons/NOTICE.md`. Deployed from
 - CI on PRs tests changed languages (always includes `javascript`). Changes under
   `tests/`, `docs/`, or root scripts trigger a broader matrix.
 - Do not commit generated trees (`*/dist`, toolchains, `_site/`).
+- Do not hand-edit per-language version strings; change [`VERSION`](VERSION) and
+  run `./scripts/sync-version.sh`.
 
 ## Code of conduct
 

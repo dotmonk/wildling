@@ -1,7 +1,6 @@
 name: wildling
 description: Pattern based string generator library and CLI
-version: 1.0.0
-publish_to: none
+version: 2.0.0
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

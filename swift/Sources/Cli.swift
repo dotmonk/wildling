@@ -23,7 +23,7 @@ final class CliArgs {
     }
 }
 
-enum Cli {
+public enum Cli {
     static func parseRange(_ value: String) -> CliRange? {
         let parts = value.split(separator: "-", maxSplits: 1, omittingEmptySubsequences: false)
         guard parts.count == 2 else { return nil }
@@ -203,7 +203,7 @@ enum Cli {
         return lines.joined(separator: "\n")
     }
 
-    static func run(argv: [String]) -> Int32 {
+    public static func run(argv: [String]) -> Int32 {
         let args = parseArgs(argv)
 
         if args.help {

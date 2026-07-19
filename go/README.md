@@ -12,8 +12,14 @@ cd go
 ./bin/wildling "foo#"
 ```
 
+Tagged module (requires git tags `vX.Y.Z` and `go/vX.Y.Z` — see [`docs/publishing.md`](../docs/publishing.md)):
+
 ```bash
-go install github.com/dotmonk/wildling/go/cmd/wildling@latest
+go get github.com/dotmonk/wildling/go@v1.0.0
+```
+
+```bash
+go install github.com/dotmonk/wildling/go/cmd/wildling@v1.0.0
 ```
 
 As a library:

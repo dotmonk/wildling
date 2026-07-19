@@ -1,7 +1,7 @@
 import 'generator.dart';
 import 'parse_pattern.dart';
 
-const version = '1.0.0';
+const version = '2.0.0';
 
 class Wildling {
   final List<Generator> _generators;
