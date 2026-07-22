@@ -257,8 +257,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn splits_foo_hash() {
-        let parts = split_keeping_delimiters("foo#");
-        assert_eq!(parts, vec!["foo", "#"]);
+    fn splits_year_digits() {
+        let parts = split_keeping_delimiters("Year 19##");
+        assert_eq!(parts, vec!["Year 19", "#", "#"]);
     }
 }

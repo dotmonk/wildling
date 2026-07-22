@@ -16,9 +16,12 @@ CI runs `scripts/check-monorepo-root.sh` in the `version` job.
 | `docs/cli.md`, `docs/help.txt` | Shared CLI contracts |
 | `docs/publishing.md` | Versioning and releases |
 | `docs/ecosystem-repos.md` | PHP/Swift mirror setup |
+| `docs/snippets/example.md` | Shared pattern example for READMEs + Pages |
+| `site/lang-meta.json` | Per-language registry / docs links |
 | `<language>/README.md` | Install, git dependencies, library usage |
 
-Do not add `docs/README.md` or a central git-install index.
+Do not add `docs/README.md` or a central git-install index. Prefer extending
+`scripts/lang-preamble.py` / `build-site.sh` over adding Hugo or another site framework.
 
 ## Ecosystem mirrors
 

@@ -1,0 +1,249 @@
+{
+  "website": "https://dotmonk.github.io/wildling/",
+  "sandbox": "https://dotmonk.github.io/wildling/sandbox.html",
+  "syntax": "https://dotmonk.github.io/wildling/syntax.html",
+  "repo": "https://github.com/dotmonk/wildling",
+  "languages": {
+    "javascript": {
+      "label": "JavaScript",
+      "registries": [
+        {
+          "name": "npm",
+          "url": "https://www.npmjs.com/package/wildling",
+          "install": "npm install wildling"
+        }
+      ]
+    },
+    "python": {
+      "label": "Python",
+      "registries": [
+        {
+          "name": "PyPI",
+          "url": "https://pypi.org/project/wildling/",
+          "install": "pip install wildling"
+        }
+      ]
+    },
+    "java": {
+      "label": "Java",
+      "registries": [
+        {
+          "name": "Maven Central",
+          "url": "https://central.sonatype.com/artifact/io.github.dotmonk/wildling",
+          "install": null
+        }
+      ]
+    },
+    "csharp": {
+      "label": "C#",
+      "registries": [
+        {
+          "name": "NuGet",
+          "url": "https://www.nuget.org/packages/DotMonk.Wildling",
+          "install": "dotnet tool install -g DotMonk.Wildling"
+        }
+      ]
+    },
+    "visualbasic": {
+      "label": "Visual Basic",
+      "registries": [
+        {
+          "name": "NuGet",
+          "url": "https://www.nuget.org/packages/DotMonk.Wildling.VisualBasic",
+          "install": null
+        }
+      ]
+    },
+    "cpp": {
+      "label": "C++",
+      "registries": []
+    },
+    "php": {
+      "label": "PHP",
+      "registries": [
+        {
+          "name": "Packagist",
+          "url": "https://packagist.org/packages/dotmonk/wildling",
+          "install": "composer require dotmonk/wildling"
+        }
+      ]
+    },
+    "c": {
+      "label": "C",
+      "registries": []
+    },
+    "go": {
+      "label": "Go",
+      "registries": [
+        {
+          "name": "pkg.go.dev",
+          "url": "https://pkg.go.dev/github.com/dotmonk/wildling/go/v2",
+          "install": "go get github.com/dotmonk/wildling/go/v2@latest"
+        }
+      ]
+    },
+    "rust": {
+      "label": "Rust",
+      "registries": [
+        {
+          "name": "crates.io",
+          "url": "https://crates.io/crates/wildling",
+          "install": "cargo install wildling"
+        }
+      ]
+    },
+    "kotlin": {
+      "label": "Kotlin",
+      "registries": [
+        {
+          "name": "Maven Central",
+          "url": "https://central.sonatype.com/search?q=wildling",
+          "install": null
+        }
+      ]
+    },
+    "ruby": {
+      "label": "Ruby",
+      "registries": [
+        {
+          "name": "RubyGems",
+          "url": "https://rubygems.org/gems/wildling",
+          "install": "gem install wildling"
+        }
+      ]
+    },
+    "swift": {
+      "label": "Swift",
+      "registries": [
+        {
+          "name": "Swift Package Index",
+          "url": "https://swiftpackageindex.com/dotmonk/wildling-swift",
+          "install": null
+        },
+        {
+          "name": "Git (SwiftPM)",
+          "url": "https://github.com/dotmonk/wildling-swift",
+          "install": ".package(url: \"https://github.com/dotmonk/wildling-swift.git\", from: \"2.0.1\")"
+        }
+      ]
+    },
+    "scala": {
+      "label": "Scala",
+      "registries": [
+        {
+          "name": "Maven Central",
+          "url": "https://central.sonatype.com/search?q=wildling",
+          "install": null
+        }
+      ]
+    },
+    "dart": {
+      "label": "Dart",
+      "registries": [
+        {
+          "name": "pub.dev",
+          "url": "https://pub.dev/packages/wildling",
+          "install": "dart pub add wildling"
+        }
+      ]
+    },
+    "posix-shell": {
+      "label": "POSIX shell",
+      "registries": []
+    },
+    "powershell": {
+      "label": "PowerShell",
+      "registries": [
+        {
+          "name": "PowerShell Gallery",
+          "url": "https://www.powershellgallery.com/packages/Wildling",
+          "install": "Install-Module Wildling"
+        }
+      ]
+    },
+    "lua": {
+      "label": "Lua",
+      "registries": [
+        {
+          "name": "LuaRocks",
+          "url": "https://luarocks.org/modules/dotmonk/wildling",
+          "install": "luarocks install wildling"
+        }
+      ]
+    },
+    "assembly": {
+      "label": "Assembly",
+      "registries": []
+    },
+    "r": {
+      "label": "R",
+      "registries": []
+    },
+    "groovy": {
+      "label": "Groovy",
+      "registries": [
+        {
+          "name": "Maven Central",
+          "url": "https://central.sonatype.com/search?q=wildling",
+          "install": null
+        }
+      ]
+    },
+    "perl": {
+      "label": "Perl",
+      "registries": [
+        {
+          "name": "CPAN",
+          "url": "https://metacpan.org/pod/Wildling",
+          "install": null
+        }
+      ]
+    },
+    "elixir": {
+      "label": "Elixir",
+      "registries": [
+        {
+          "name": "Hex",
+          "url": "https://hex.pm/packages/wildling",
+          "install": "{:wildling, \"~> 2.0\"}"
+        }
+      ]
+    },
+    "pascal": {
+      "label": "Pascal",
+      "registries": []
+    },
+    "zig": {
+      "label": "Zig",
+      "registries": []
+    },
+    "fortran": {
+      "label": "Fortran",
+      "registries": []
+    },
+    "ada": {
+      "label": "Ada",
+      "registries": []
+    },
+    "fsharp": {
+      "label": "F#",
+      "registries": [
+        {
+          "name": "NuGet",
+          "url": "https://www.nuget.org/packages/DotMonk.Wildling.FSharp",
+          "install": null
+        }
+      ]
+    },
+    "haskell": {
+      "label": "Haskell",
+      "registries": [
+        {
+          "name": "Hackage",
+          "url": "https://hackage.haskell.org/package/wildling",
+          "install": null
+        }
+      ]
+    }
+  }
+}

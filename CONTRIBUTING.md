@@ -48,11 +48,13 @@ Publishing: [`docs/publishing.md`](docs/publishing.md). Maintainer conventions: 
 
 ```bash
 ./scripts/fetch-icons.sh   # vendor Simple Icons SVGs (optional refresh)
+python3 scripts/lang-preamble.py sync-readmes   # registry + example blocks in */README.md
 ./scripts/build-site.sh    # writes _site/ (gitignored)
 ```
 
-Sources: `site/`. Icon attribution: `site/assets/icons/NOTICE.md`. Deployed from
-`.github/workflows/pages.yml` on `main`.
+Shared language page bits live in `site/lang-meta.json` and `docs/snippets/example.md`
+(not Hugo — the existing `build-site.sh` generator is enough). Sources: `site/`.
+Icon attribution: `site/assets/icons/NOTICE.md`. Deployed from `.github/workflows/pages.yml` on `main`.
 
 ## Pull requests
 

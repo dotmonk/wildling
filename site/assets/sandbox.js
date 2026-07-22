@@ -23,12 +23,12 @@
   var debounceTimer = null;
 
   var EXAMPLES = [
-    { label: "foo#", patterns: "foo#" },
+    { label: "Year 19##", patterns: "Year 19##" },
     { label: "@{1-2}", patterns: "@{1-2}" },
     { label: "!!", patterns: "!!" },
     { label: "words", patterns: "${'blue,red,green',1-2}" },
     { label: "dict", patterns: "%{'colors'}#" },
-    { label: "multi", patterns: "abrakadabra\nfoo#" },
+    { label: "multi", patterns: "abrakadabra\nYear 19##" },
     { label: "escape", patterns: "\\##" },
   ];
 

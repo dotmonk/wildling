@@ -26,7 +26,7 @@ PATTERNS
 
 TEMPLATE JSON
     {
-      "patterns": ["foo#", "%{'colors'}"],
+      "patterns": ["Year 19##", "%{'colors'}"],
       "dictionaries": {
         "colors": "path/to/colors.txt",
         "inline": ["red", "blue"]

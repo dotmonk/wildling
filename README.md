@@ -75,14 +75,14 @@ Build the site locally with `./scripts/build-site.sh` (output in `_site/`). In t
 
 ```bash
 cd javascript && npm ci --include=dev && npm run build
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```
-foo0
-foo1
+Year 1900
+Year 1910
 …
-foo9
+Year 1999
 ```
 
 As a library (from this repo):
@@ -91,7 +91,7 @@ As a library (from this repo):
 const createWildling = require("./javascript/dist/index.js").default;
 
 const wildling = createWildling({
-  patterns: ["foo#"],
+  patterns: ["Year 19##"],
   dictionaries: {},
 });
 
@@ -105,13 +105,13 @@ while ((value = wildling.next())) {
 
 ```bash
 cd python && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```python
 from wildling import create_wildling
 
-wildling = create_wildling(patterns=["foo#"])
+wildling = create_wildling(patterns=["Year 19##"])
 value = wildling.next()
 while value is not False:
     print(value)
@@ -122,14 +122,14 @@ while value is not False:
 
 ```bash
 cd java && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```java
 import wildling.Wildling;
 import java.util.List;
 
-Wildling wildling = Wildling.create(List.of("foo#"));
+Wildling wildling = Wildling.create(List.of("Year 19##"));
 Object value = wildling.next();
 while (!Boolean.FALSE.equals(value)) {
     System.out.println(value);
@@ -141,13 +141,13 @@ while (!Boolean.FALSE.equals(value)) {
 
 ```bash
 cd csharp && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```csharp
 using WildlingLib;
 
-var wildling = Wildling.Create(new[] { "foo#" });
+var wildling = Wildling.Create(new[] { "Year 19##" });
 object value = wildling.Next();
 while (value is not false)
 {
@@ -160,13 +160,13 @@ while (value is not false)
 
 ```bash
 cd visualbasic && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```vb
 Imports WildlingLib
 
-Dim wildling = Wildling.Create({"foo#"})
+Dim wildling = Wildling.Create({"Year 19##"})
 Dim value As Object = wildling.Next()
 While Not (TypeOf value Is Boolean AndAlso Not CBool(value))
     Console.WriteLine(value)
@@ -178,7 +178,7 @@ End While
 
 ```bash
 cd cpp && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```cpp
@@ -186,7 +186,7 @@ cd cpp && ./build.sh
 #include <iostream>
 
 wildling::Dictionaries dictionaries;
-wildling::Wildling w({"foo#"}, dictionaries);
+wildling::Wildling w({"Year 19##"}, dictionaries);
 auto value = w.next();
 while (value.has_value()) {
     std::cout << *value << '\n';
@@ -198,7 +198,7 @@ while (value.has_value()) {
 
 ```bash
 cd php && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```php
@@ -207,7 +207,7 @@ require 'php/bootstrap.php';
 
 use Wildling\Wildling;
 
-$wildling = Wildling::create(['foo#']);
+$wildling = Wildling::create(['Year 19##']);
 $value = $wildling->next();
 while ($value !== false) {
     echo $value, "\n";
@@ -219,20 +219,20 @@ while ($value !== false) {
 
 ```bash
 cd c && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ## Quick start (Go)
 
 ```bash
 cd go && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```go
 import "github.com/dotmonk/wildling/go/wildling"
 
-w := wildling.New([]string{"foo#"}, nil)
+w := wildling.New([]string{"Year 19##"}, nil)
 for {
     value, ok := w.Next()
     if !ok {
@@ -246,14 +246,14 @@ for {
 
 ```bash
 cd rust && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```rust
 use wildling::{Dictionaries, Wildling};
 
 let dicts = Dictionaries::new();
-let mut w = Wildling::new(&["foo#".to_string()], &dicts);
+let mut w = Wildling::new(&["Year 19##".to_string()], &dicts);
 while let Some(value) = w.next() {
     println!("{value}");
 }
@@ -263,13 +263,13 @@ while let Some(value) = w.next() {
 
 ```bash
 cd kotlin && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```kotlin
 import wildling.Wildling
 
-val wildling = Wildling.create(listOf("foo#"))
+val wildling = Wildling.create(listOf("Year 19##"))
 var value = wildling.next()
 while (value != false) {
     println(value)
@@ -281,13 +281,13 @@ while (value != false) {
 
 ```bash
 cd ruby && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```ruby
 require_relative "lib/wildling"
 
-wildling = Wildling.create(["foo#"])
+wildling = Wildling.create(["Year 19##"])
 value = wildling.next
 while value != false
   puts value
@@ -299,11 +299,11 @@ end
 
 ```bash
 cd swift && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```swift
-let wildling = Wildling(patterns: ["foo#"])
+let wildling = Wildling(patterns: ["Year 19##"])
 while let value = wildling.next() {
     print(value)
 }
@@ -313,11 +313,11 @@ while let value = wildling.next() {
 
 ```bash
 cd scala && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```scala
-val wildling = Wildling(Seq("foo#"))
+val wildling = Wildling(Seq("Year 19##"))
 var value = wildling.next()
 while (value != false) {
   println(value)
@@ -329,13 +329,13 @@ while (value != false) {
 
 ```bash
 cd dart && ./build.sh
-./bin/wildling "foo#"
+./bin/wildling "Year 19##"
 ```
 
 ```dart
 import 'package:wildling/wildling.dart';
 
-final wildling = Wildling(['foo#']);
+final wildling = Wildling(['Year 19##']);
 var value = wildling.next();
 while (value != false) {
   print(value);

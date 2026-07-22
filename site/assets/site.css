@@ -328,6 +328,49 @@ a:hover {
   vertical-align: middle;
 }
 
+.lang-links {
+  margin: 0.35rem 0;
+  color: var(--mist);
+  font-size: 0.92rem;
+}
+.lang-example {
+  margin: 0.75rem 0 1.75rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  background: rgba(12, 18, 16, 0.55);
+}
+.lang-example h2 {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+}
+.lang-example pre {
+  margin: 0 0 0.85rem;
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  padding: 0.75rem 0.85rem;
+  background: rgba(8, 12, 10, 0.85);
+  border: 1px solid var(--line);
+  color: var(--fog);
+  line-height: 1.45;
+  font-size: 0.82rem;
+}
+.lang-example pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  white-space: inherit;
+}
+
+.lang-example p {
+  margin: 0.45rem 0;
+}
+.lang-example ul {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  color: var(--mist);
+}
+
 /* —— sandbox —— */
 .sandbox {
   display: grid;
