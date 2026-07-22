@@ -163,6 +163,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      created: ${{ steps.release.outputs.created }}
+      tag: ${{ steps.release.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -171,8 +174,19 @@ jobs:
           fetch-tags: true
 
       - name: Create tags and release when VERSION is untagged
+        id: release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x scripts/create-github-release.sh
           ./scripts/create-github-release.sh
+
+  # GITHUB_TOKEN cannot trigger release.yml via the release event; call it directly.
+  publish:
+    name: Publish
+    needs: [create-release]
+    if: needs.create-release.outputs.created == 'true'
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: ${{ needs.create-release.outputs.tag }}
+    secrets: inherit

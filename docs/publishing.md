@@ -20,11 +20,12 @@ pass, CI creates:
 | `vX.Y.Z` | Canonical release tag + GitHub Release |
 | `go/vX.Y.Z` | Go module tag for `github.com/dotmonk/wildling/go/v2` |
 
-If `vX.Y.Z` already exists, CI skips (bump `VERSION` for a new release).
+If `vX.Y.Z` already exists, CI skips creating a new release.
 
 Publishing mirrors and registry packages runs from
-[`.github/workflows/release.yml`](../.github/workflows/release.yml) when the
-GitHub Release is published.
+[`.github/workflows/release.yml`](../.github/workflows/release.yml), invoked
+directly after a new release is created (and also via Actions → Release → Run
+workflow, or a manually published GitHub Release).
 
 Never hand-edit per-language version constants. CI runs `./scripts/sync-version.sh --check`.
 

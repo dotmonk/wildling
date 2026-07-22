@@ -1,6 +1,10 @@
 #!/bin/sh
 # Create vX.Y.Z + go/vX.Y.Z tags and a GitHub Release when VERSION is untagged.
 # Intended for CI on main after tests pass. Safe to re-run (no-op if tag exists).
+#
+# When GITHUB_OUTPUT is set (Actions), writes:
+#   created=true|false
+#   tag=vX.Y.Z
 set -eu
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -10,10 +14,19 @@ VERSION="$(tr -d '[:space:]' < VERSION)"
 TAG="v${VERSION}"
 GO_TAG="go/v${VERSION}"
 
+set_output() {
+    if [ -n "${GITHUB_OUTPUT:-}" ]; then
+        echo "$1=$2" >> "$GITHUB_OUTPUT"
+    fi
+}
+
 git fetch --tags origin 2>/dev/null || true
+
+set_output tag "$TAG"
 
 if git rev-parse "refs/tags/${TAG}" >/dev/null 2>&1; then
     echo "Tag ${TAG} already exists — nothing to release."
+    set_output created false
     exit 0
 fi
 
@@ -31,4 +44,5 @@ gh release create "${TAG}" \
     --generate-notes \
     --verify-tag
 
+set_output created true
 echo "Created ${TAG}, ${GO_TAG}, and GitHub Release."

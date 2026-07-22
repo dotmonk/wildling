@@ -10,12 +10,18 @@ on:
         required: false
         default: "manual"
       tag:
-        description: "Release tag for ecosystem mirrors (e.g. v2.0.0); required for manual mirror runs"
+        description: "Release tag for ecosystem mirrors (e.g. v2.0.1); required for manual mirror runs"
         required: false
         default: ""
+  workflow_call:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v2.0.1)"
+        required: true
+        type: string
 
 concurrency:
-  group: release-${{ github.event.release.tag_name || github.ref }}
+  group: release-${{ inputs.tag || github.event.release.tag_name || github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -27,14 +33,13 @@ jobs:
   ecosystem-mirror-php:
     name: Ecosystem mirror (php)
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Mirror php/ → wildling-php
         continue-on-error: true
         env:
           PHP_MIRROR_TOKEN: ${{ secrets.PHP_MIRROR_TOKEN }}
-          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name }}
         run: |
           if [ -z "$PHP_MIRROR_TOKEN" ] || [ -z "$TAG" ]; then
             echo "Skip: set PHP_MIRROR_TOKEN secret and tag (release or workflow input)"
@@ -46,14 +51,13 @@ jobs:
   ecosystem-mirror-swift:
     name: Ecosystem mirror (swift)
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Mirror swift/ → wildling-swift
         continue-on-error: true
         env:
           SWIFT_MIRROR_TOKEN: ${{ secrets.SWIFT_MIRROR_TOKEN }}
-          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name }}
         run: |
           if [ -z "$SWIFT_MIRROR_TOKEN" ] || [ -z "$TAG" ]; then
             echo "Skip: set SWIFT_MIRROR_TOKEN secret and tag"
