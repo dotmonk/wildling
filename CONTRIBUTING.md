@@ -16,7 +16,8 @@ one pattern grammar and one CLI contract.
 ./test.sh javascript
 
 ./build.sh                 # all languages in languages.txt
-./test.sh
+./test.sh                  # all language fixtures + publish-artifact smoke
+./test.sh --publish-artifacts   # registry packs only (npm/PyPI/crates/…, no upload)
 ```
 
 Fixtures live under `tests/`. Each case has `arguments.txt` and `expected.txt`.

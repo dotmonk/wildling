@@ -21,7 +21,7 @@ After syncing and pushing the version commit:
 | Tag | Purpose |
 |-----|---------|
 | `vX.Y.Z` | Canonical release tag (GitHub Release, monorepo consumers, mirror sync) |
-| `go/vX.Y.Z` | Go module tag for `github.com/dotmonk/wildling/go` (subdirectory module) |
+| `go/vX.Y.Z` | Go module tag for `github.com/dotmonk/wildling/go/v2` (subdirectory module) |
 
 Example:
 
@@ -57,7 +57,7 @@ See language READMEs (`javascript/`, `python/`, `go/`, …).
 |---------|-----------|-----------|
 | **Ecosystem mirrors** | PHP, Swift | CI → `wildling-php`, `wildling-swift` |
 | **Artifact CI** | Python, Rust, Java, C#, Ruby, Dart, npm, … | Build in `lang/` → upload to registry |
-| **Monorepo git tags** | Go, Zig, git URL installs | Tags on `wildling` (+ `go/vX.Y.Z` for Go) |
+| **Monorepo git tags** | Go, Zig, git URL installs | Tags on `wildling` (+ `go/vX.Y.Z` for `…/go/v2`) |
 
 See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 

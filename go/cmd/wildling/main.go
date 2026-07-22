@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/dotmonk/wildling/go/wildling"
+	"github.com/dotmonk/wildling/go/v2/wildling"
 )
 
 func main() {

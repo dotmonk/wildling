@@ -4,6 +4,8 @@ version = "2.0.0"
 edition = "2021"
 description = "Pattern based string generator library and CLI"
 license = "MIT"
+repository = "https://github.com/dotmonk/wildling"
+readme = "README.md"
 publish = true
 
 [[bin]]

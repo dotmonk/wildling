@@ -15,14 +15,14 @@ cd go
 **Module** (tags `vX.Y.Z` and `go/vX.Y.Z` on the monorepo — see [`docs/publishing.md`](../docs/publishing.md)):
 
 ```bash
-go get github.com/dotmonk/wildling/go@v2.0.0
-go install github.com/dotmonk/wildling/go/cmd/wildling@v2.0.0
+go get github.com/dotmonk/wildling/go/v2@v2.0.0
+go install github.com/dotmonk/wildling/go/v2/cmd/wildling@v2.0.0
 ```
 
 As a library:
 
 ```go
-import "github.com/dotmonk/wildling/go/wildling"
+import "github.com/dotmonk/wildling/go/v2/wildling"
 
 w := wildling.New([]string{"foo#"}, nil)
 for {

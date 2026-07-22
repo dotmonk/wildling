@@ -30,6 +30,7 @@ scala/.scala
 dart/dist
 dart/.dart_tool
 dart/pubspec.lock
+dart/help.txt
 posix-shell/help.txt
 powershell/help.txt
 powershell/StartupProfileData-NonInteractive
@@ -44,6 +45,7 @@ perl/lib/Wildling/help.txt
 elixir/ebin
 elixir/lib/wildling/help.txt
 elixir/.elixir
+elixir/*.tar
 zig/dist
 zig/.zig
 zig/zig-out
@@ -80,4 +82,8 @@ _site/
 **/obj/
 python/dist/
 python/*.egg-info/
+java/target/
+java/help.txt
+ruby/help.txt
+rust/help.txt
 scripts/ecosystem-repos.env

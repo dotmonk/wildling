@@ -1,6 +1,9 @@
 name: wildling
 description: Pattern based string generator library and CLI
 version: 2.0.0
+repository: https://github.com/dotmonk/wildling
+homepage: https://github.com/dotmonk/wildling
+issue_tracker: https://github.com/dotmonk/wildling/issues
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
