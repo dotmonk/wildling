@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>WildlingLib</RootNamespace>
     <AssemblyName>wildling</AssemblyName>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
     <LangVersion>latest</LangVersion>
     <PackageId>DotMonk.Wildling</PackageId>
     <Authors>dotmonk</Authors>
@@ -16,11 +16,13 @@
     <RepositoryUrl>https://github.com/dotmonk/wildling</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>pattern;generator;wildcard;wordlist</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>wildling</ToolCommandName>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
     <None Update="help.txt" CopyToOutputDirectory="PreserveNewest" Condition="Exists('help.txt')" />
   </ItemGroup>
 </Project>

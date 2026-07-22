@@ -16,7 +16,7 @@ import Wildling.Generator (Generator, createGenerator, generatorCount, generator
 import Wildling.ParsePattern (Dictionaries)
 
 version :: String
-version = "2.0.1"
+version = "2.0.2"
 
 data WildlingResult
   = WildlingString String

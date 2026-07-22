@@ -1,6 +1,6 @@
 name = "wildling"
 description = "Pattern based string generator library and CLI"
-version = "2.0.1"
+version = "2.0.2"
 
 authors = [{name = "dotmonk", github = "dotmonk"}]
 

@@ -1,6 +1,6 @@
 Package: wildling
 Title: Pattern based string generator
-Version: 2.0.1
+Version: 2.0.2
 Authors: dotmonk
 Description: Enumerate pattern combinations for wordlists, domains, and test data.
 License: MIT

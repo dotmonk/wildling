@@ -5,7 +5,7 @@ use warnings;
 
 use Wildling::Generator;
 
-our $VERSION = '2.0.1';
+our $VERSION = '2.0.2';
 
 # Out-of-range get() / exhausted next() return undef (not the string "false").
 # Empty-string combinations are defined and distinct from the sentinel.

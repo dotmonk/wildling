@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>WildlingLib</RootNamespace>
     <AssemblyName>wildling</AssemblyName>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
     <OptionStrict>On</OptionStrict>
     <OptionExplicit>On</OptionExplicit>
     <OptionInfer>On</OptionInfer>
@@ -14,11 +14,14 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/dotmonk/wildling</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dotmonk/wildling</RepositoryUrl>
+    <PackageTags>pattern;generator;wildcard;wordlist;visualbasic</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>wildling-vb</ToolCommandName>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
     <None Update="help.txt" CopyToOutputDirectory="PreserveNewest" Condition="Exists('help.txt')" />
   </ItemGroup>
 </Project>

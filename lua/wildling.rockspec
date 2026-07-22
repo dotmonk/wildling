@@ -1,8 +1,8 @@
 package = "wildling"
-version = "2.0.1-1"
+version = "2.0.2-1"
 source = {
    url = "git+https://github.com/dotmonk/wildling.git",
-   tag = "v2.0.1",
+   tag = "v2.0.2",
    dir = "lua",
 }
 description = "Pattern based string generator library and CLI"

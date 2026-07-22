@@ -1,7 +1,7 @@
 package wildling
 
 object Wildling {
-  val Version: String = "2.0.1"
+  val Version: String = "2.0.2"
 
   def apply(
       patterns: Seq[String],

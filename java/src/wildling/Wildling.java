@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class Wildling {
-    public static final String VERSION = "2.0.1";
+    public static final String VERSION = "2.0.2";
 
     private final List<Generator> generators;
     private final int patternCount;

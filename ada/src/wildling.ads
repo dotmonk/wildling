@@ -6,7 +6,7 @@ with Token; use Token;
 
 package Wildling is
 
-   WILDLING_VERSION : constant String := "2.0.1";
+   WILDLING_VERSION : constant String := "2.0.2";
 
    package Generator_Vectors is new Ada.Containers.Vectors
      (Index_Type   => Positive,
