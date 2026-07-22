@@ -192,10 +192,11 @@ jobs:
           cp ../docs/help.txt help.txt
           gem build wildling.gemspec
       - name: Configure credentials
+        id: rubygems-auth
         continue-on-error: true
         uses: rubygems/configure-rubygems-credentials@main
       - name: Push gem
-        continue-on-error: true
+        if: steps.rubygems-auth.outcome == 'success'
         run: gem push wildling-*.gem
 
   pubdev:
