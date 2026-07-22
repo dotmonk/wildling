@@ -155,6 +155,17 @@ replace dart/pubspec.yaml \
     's/^version:\s*.*/version: $ENV{VERSION}/' \
     "version: $VERSION"
 
+# pub.dev rejects publish when CHANGELOG omits the current version.
+if [ "$CHECK" -eq 1 ]; then
+    check_contains dart/CHANGELOG.md "## $VERSION"
+elif [ -f dart/CHANGELOG.md ]; then
+    if ! grep -Fq "## $VERSION" dart/CHANGELOG.md; then
+        VERSION="$VERSION" perl -i -0pe \
+            's/(All notable changes[^\n]*\n\n)/$1## $ENV{VERSION}\n\n- See [GitHub Releases](https:\/\/github.com\/dotmonk\/wildling\/releases)\n\n/s' \
+            dart/CHANGELOG.md
+    fi
+fi
+
 replace posix-shell/lib/wildling.sh \
     's/WILDLING_VERSION="[^"]+"/WILDLING_VERSION="$ENV{VERSION}"/' \
     "WILDLING_VERSION=\"$VERSION\""
