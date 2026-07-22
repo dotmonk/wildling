@@ -12,6 +12,12 @@ cd r
 ./bin/wildling "foo#"
 ```
 
+**Git:**
+
+```r
+remotes::install_github("dotmonk/wildling", subdir = "r", ref = "v2.0.0")
+```
+
 ```r
 root <- normalizePath("r")
 source(file.path(root, "lib", "wildling", "token.R"))

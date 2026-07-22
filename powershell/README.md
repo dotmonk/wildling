@@ -2,6 +2,25 @@
 
 Pattern-based string generator — library and CLI for PowerShell 5.1+ / PowerShell 7.
 
+## Install
+
+From this repository:
+
+```bash
+cd powershell
+./build.sh
+```
+
+From a release tag:
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+./build.sh powershell
+```
+
+**Registry:** PowerShell Gallery `Wildling` (when published)
+
 ## Build
 
 Requires Docker (host does not need `pwsh` installed):

@@ -226,6 +226,10 @@ sync_optional lua/wildling.rockspec \
     's/version\s*=\s*"[^"]+"/version = "$ENV{VERSION}-1"/' \
     "version = \"$VERSION-1\""
 
+sync_optional lua/wildling.rockspec \
+    's/tag\s*=\s*"[^"]+"/tag = "v$ENV{VERSION}"/' \
+    "tag = \"v$VERSION\""
+
 sync_optional powershell/Wildling.psd1 \
     "s/ModuleVersion\s*=\s*'[^']+'/ModuleVersion = '\$ENV{VERSION}'/" \
     "ModuleVersion = '$VERSION'"

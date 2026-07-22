@@ -1,19 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="wildling">
-  <!-- Chaotic asterisk: still a 6-arm wildcard, arms bent and splintered -->
-  <g fill="#0c1210" transform="translate(64 64)">
-    <!-- Primary arms (uneven lengths, slight bends via polygons) -->
+  <style>
+    .fg { fill: #0c1210; }
+    @media (prefers-color-scheme: dark) {
+      .fg { fill: #c8f542; }
+    }
+  </style>
+  <g class="fg" transform="translate(64 64)">
     <polygon points="-7,-52 7,-50 5,-8 -5,-10"/>
     <polygon points="-7,10 5,8 9,48 -4,52"/>
     <polygon points="12,-6 52,-14 50,0 10,6"/>
     <polygon points="-52,-4 -10,-6 -12,5 -48,12"/>
     <polygon points="6,-14 38,-42 46,-34 14,-6"/>
     <polygon points="-40,28 -8,8 -2,16 -36,42"/>
-    <!-- Off-axis shards -->
     <polygon points="18,14 34,28 28,34 14,20"/>
     <polygon points="-28,-32 -18,-22 -12,-28 -24,-38"/>
     <polygon points="2,22 10,40 4,42 -2,26"/>
     <polygon points="-46,-18 -30,-8 -26,-14 -42,-24"/>
-    <!-- Core knot -->
     <circle r="9"/>
     <circle cx="11" cy="-7" r="3.2"/>
     <circle cx="-9" cy="10" r="2.4"/>

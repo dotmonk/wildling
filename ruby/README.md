@@ -12,6 +12,14 @@ cd ruby
 ./bin/wildling "foo#"
 ```
 
+**Git (Bundler):**
+
+```ruby
+gem "wildling", git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.0", glob: "ruby/wildling.gemspec"
+```
+
+**Registry:** `gem install wildling`
+
 ```ruby
 require_relative "lib/wildling"
 

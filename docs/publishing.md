@@ -12,8 +12,7 @@ echo 1.2.0 > VERSION
 ./scripts/sync-version.sh
 ```
 
-Never hand-edit per-language version constants. CI runs
-`./scripts/sync-version.sh --check` on every push/PR.
+Never hand-edit per-language version constants. CI runs `./scripts/sync-version.sh --check`.
 
 ## Git tags
 
@@ -21,7 +20,7 @@ After syncing and pushing the version commit:
 
 | Tag | Purpose |
 |-----|---------|
-| `vX.Y.Z` | Canonical release tag (GitHub Release, Packagist, SwiftPM, Zig, PyPI, …) |
+| `vX.Y.Z` | Canonical release tag (GitHub Release, monorepo consumers, mirror sync) |
 | `go/vX.Y.Z` | Go module tag for `github.com/dotmonk/wildling/go` (subdirectory module) |
 
 Example:
@@ -33,9 +32,8 @@ git tag -a "go/v${VERSION}" -m "wildling go module ${VERSION}"
 git push origin "v${VERSION}" "go/v${VERSION}"
 ```
 
-Create a GitHub Release from `vX.Y.Z` (UI or `gh release create`). The
-[`.github/workflows/release.yml`](../.github/workflows/release.yml) workflow
-publishes to configured registries when that release is published.
+Create a GitHub Release from `vX.Y.Z`. [`.github/workflows/release.yml`](../.github/workflows/release.yml)
+syncs ecosystem mirrors and publishes artifacts.
 
 ## Release notes template
 
@@ -46,49 +44,35 @@ publishes to configured registries when that release is published.
 - …
 
 ### Install
-See [docs/publishing.md](https://github.com/dotmonk/wildling/blob/main/docs/publishing.md)
-and language READMEs. Shared CLI contract: [docs/cli.md](https://github.com/dotmonk/wildling/blob/main/docs/cli.md).
+See language READMEs (`javascript/`, `python/`, `go/`, …).
 
 ### Tags
 - `vX.Y.Z`
 - `go/vX.Y.Z`
 ```
 
-## Registry waves
+## Publish channels
 
-| Wave | Registries | GitHub integration |
-|------|------------|--------------------|
-| 0 | GitHub Releases only | Tag + Release |
-| 1 | Go proxy, Packagist, SwiftPM (git), Zig (git) | Tags / Packagist GitHub hook |
-| 2 | PyPI, crates.io, NuGet, RubyGems, pub.dev | OIDC trusted publishing |
-| 3 | Hex.pm, LuaRocks, PowerShell Gallery | API keys / CI secrets |
-| 4 | Maven Central (Java, then Kotlin/Scala/Groovy) | Sonatype + CI |
-| 5 | CPAN, Hackage, R-universe, Alire, fpm | Accounts / git |
-| 6 | C/C++ via Releases (+ optional vcpkg later) | Releases |
+| Channel | Languages | Mechanism |
+|---------|-----------|-----------|
+| **Ecosystem mirrors** | PHP, Swift | CI → `wildling-php`, `wildling-swift` |
+| **Artifact CI** | Python, Rust, Java, C#, Ruby, Dart, npm, … | Build in `lang/` → upload to registry |
+| **Monorepo git tags** | Go, Zig, git URL installs | Tags on `wildling` (+ `go/vX.Y.Z` for Go) |
 
-**Not published:** npm (JavaScript stays `private: true`; install from git or use the
-Pages sandbox). Prefer R-universe over CRAN initially.
+See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 
-### Wave 1 — tag consumers
+### Registry waves (artifact uploads)
 
-- **Go:** `go get github.com/dotmonk/wildling/go@vX.Y.Z` (requires `go/vX.Y.Z` tag).
-- **PHP:** Packagist package `dotmonk/wildling`. Submit
-  `https://github.com/dotmonk/wildling` only (not a `/php` URL). Packagist
-  reads the **root** [`composer.json`](../composer.json), which autoloads
-  `php/src/`. Versions come from git tags `vX.Y.Z`.
-- **Swift:** SwiftPM package at repo root (`Package.swift`) from tag `vX.Y.Z`.
-- **Zig:** dependency on the git tag via `build.zig.zon` / `zig fetch`.
+| Wave | Registries |
+|------|------------|
+| 2 | PyPI, crates.io, NuGet, RubyGems, pub.dev |
+| 3 | Hex.pm, LuaRocks, PowerShell Gallery |
+| 4 | Maven Central (Java, then Kotlin/Scala/Groovy) |
+| 5 | CPAN, Hackage, R-universe, Alire, fpm |
+| 6 | C/C++ via GitHub Releases (+ optional vcpkg) |
 
-### Wave 2+ — CI publish
+Configure trusted publishers (or secrets), then publish a GitHub Release.
 
-Configure trusted publishers (or secrets) for each registry, then publish a
-GitHub Release. Jobs in `release.yml` are no-ops until credentials exist.
+## Install
 
-## Install from git (any language)
-
-```bash
-git clone https://github.com/dotmonk/wildling.git
-cd wildling
-./build.sh <language>
-./test.sh <language>
-```
+Each `<language>/README.md` documents registry packages, git dependencies, and clone-and-build steps.

@@ -9,6 +9,10 @@ on:
         description: "Why re-run (e.g. after fixing workflow or adding secrets)"
         required: false
         default: "manual"
+      tag:
+        description: "Release tag for ecosystem mirrors (e.g. v2.0.0); required for manual mirror runs"
+        required: false
+        default: ""
 
 concurrency:
   group: release-${{ github.event.release.tag_name || github.ref }}
@@ -18,7 +22,71 @@ permissions:
   contents: read
 
 jobs:
-  # --- Wave 2: OIDC trusted publishing ---
+  # --- Ecosystem mirrors (PHP, Swift) ---
+
+  ecosystem-mirror-php:
+    name: Ecosystem mirror (php)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror php/ → wildling-php
+        continue-on-error: true
+        env:
+          PHP_MIRROR_TOKEN: ${{ secrets.PHP_MIRROR_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          if [ -z "$PHP_MIRROR_TOKEN" ] || [ -z "$TAG" ]; then
+            echo "Skip: set PHP_MIRROR_TOKEN secret and tag (release or workflow input)"
+            exit 0
+          fi
+          chmod +x scripts/mirror-php-packagist.sh
+          ./scripts/mirror-php-packagist.sh "$TAG"
+
+  ecosystem-mirror-swift:
+    name: Ecosystem mirror (swift)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror swift/ → wildling-swift
+        continue-on-error: true
+        env:
+          SWIFT_MIRROR_TOKEN: ${{ secrets.SWIFT_MIRROR_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          if [ -z "$SWIFT_MIRROR_TOKEN" ] || [ -z "$TAG" ]; then
+            echo "Skip: set SWIFT_MIRROR_TOKEN secret and tag"
+            exit 0
+          fi
+          chmod +x scripts/mirror-swift-spm.sh
+          ./scripts/mirror-swift-spm.sh "$TAG"
+
+  npm:
+    name: npm
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+      - name: Publish to npm
+        continue-on-error: true
+        working-directory: javascript
+        run: |
+          npm ci --include=dev
+          npm run build
+          cp ../docs/help.txt dist/help.txt
+          node -e "const p=require('./package.json'); p.private=false; require('fs').writeFileSync('package.json', JSON.stringify(p,null,2)+'\n')"
+          npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # --- Wave 2: OIDC trusted publishing (artifact registries; no extra git repos) ---
 
   pypi:
     name: PyPI

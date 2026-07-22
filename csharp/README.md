@@ -12,6 +12,17 @@ cd csharp
 ./bin/wildling "foo#"
 ```
 
+From a release tag:
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+./build.sh csharp
+```
+
+
+**Registry:** NuGet (when published)
+
 Produces `dist/wildling.dll` (and dependencies). Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
 
 As a library, reference the project or published assembly:

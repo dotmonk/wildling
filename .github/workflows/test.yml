@@ -19,6 +19,9 @@ jobs:
       - name: Check shared VERSION sync
         run: ./scripts/sync-version.sh --check
 
+      - name: Check monorepo root
+        run: ./scripts/check-monorepo-root.sh
+
   resolve:
     runs-on: ubuntu-latest
     outputs:

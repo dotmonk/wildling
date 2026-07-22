@@ -15,8 +15,12 @@ cp ../docs/help.txt wildling/help.txt
 
 The CLI is `./bin/wildling`.
 
+**Registry:** `pip install wildling`
+
+**Git:**
+
 ```bash
-pip install "git+https://github.com/dotmonk/wildling.git#subdirectory=python"
+pip install "git+https://github.com/dotmonk/wildling.git@v2.0.0#subdirectory=python"
 ```
 
 ## Library

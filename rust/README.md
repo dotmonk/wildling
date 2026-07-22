@@ -12,7 +12,15 @@ cd rust
 ./bin/wildling "foo#"
 ```
 
-As a library, depend on this path / git subdirectory and use:
+**Git** (`Cargo.toml`):
+
+```toml
+wildling = { git = "https://github.com/dotmonk/wildling", tag = "v2.0.0", path = "rust" }
+```
+
+**Registry:** `cargo install wildling`
+
+Or after clone: `cargo install --path .`
 
 ```rust
 use wildling::{Dictionaries, Wildling};

@@ -12,6 +12,16 @@ cd groovy
 ./bin/wildling "foo#"
 ```
 
+From a release tag:
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+./build.sh groovy
+```
+
+**Registry:** Maven Central (when published)
+
 ```groovy
 import wildling.Wildling
 

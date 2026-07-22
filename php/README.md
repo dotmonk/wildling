@@ -12,31 +12,18 @@ cd php
 ./bin/wildling "foo#"
 ```
 
-Packagist (after the package is submitted — see [`docs/publishing.md`](../docs/publishing.md)):
+**Registry** (Packagist via [`dotmonk/wildling-php`](https://github.com/dotmonk/wildling-php)):
 
 ```bash
 composer require dotmonk/wildling
 ```
 
-Packagist uses the **repository root** [`composer.json`](../composer.json) (paths into `php/`). Submit only:
-
-`https://github.com/dotmonk/wildling`
-
-Do not use a `/php` URL — that is not a separate Git repo.
-
-For local path development inside this monorepo:
+**Path** (monorepo clone):
 
 ```json
 {
-  "repositories": [
-    {
-      "type": "path",
-      "url": "./php"
-    }
-  ],
-  "require": {
-    "dotmonk/wildling": "*"
-  }
+  "repositories": [{ "type": "path", "url": "./php" }],
+  "require": { "dotmonk/wildling": "*" }
 }
 ```
 

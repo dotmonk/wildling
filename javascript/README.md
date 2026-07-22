@@ -2,9 +2,27 @@
 
 TypeScript library and CLI for pattern-based string generation. Runtime has **zero npm dependencies** (Node.js only); TypeScript is a build-time devDependency.
 
-This package is **not** published to the npm registry. Install from git or use it from a clone of this repository.
-
 ## Install
+
+**Registry:**
+
+```bash
+npm install wildling
+```
+
+**Git (monorepo subdirectory):**
+
+```bash
+npm install "git+https://github.com/dotmonk/wildling.git#v2.0.0:javascript"
+```
+
+`prepare` builds `dist/` when missing (Node 18+, network for TypeScript on first install).
+
+In `package.json`:
+
+```json
+"wildling": "github:dotmonk/wildling#v2.0.0:javascript"
+```
 
 From this repository:
 
@@ -15,12 +33,6 @@ npm run build
 ```
 
 The CLI is `./bin/wildling`. The library entry is `dist/index.js`.
-
-From another project:
-
-```bash
-npm install git+https://github.com/dotmonk/wildling.git#main:javascript
-```
 
 ## Library
 

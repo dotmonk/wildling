@@ -1,6 +1,10 @@
 package = "wildling"
 version = "2.0.0-1"
-source = { url = "git+https://github.com/dotmonk/wildling.git", branch = "main" }
+source = {
+   url = "git+https://github.com/dotmonk/wildling.git",
+   tag = "v2.0.0",
+   dir = "lua",
+}
 description = "Pattern based string generator library and CLI"
 detailed_description = [[
 Enumerate pattern combinations for wordlists, domains, and test data.

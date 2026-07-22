@@ -12,6 +12,17 @@ cd java
 ./bin/wildling "foo#"
 ```
 
+From a release tag:
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+./build.sh java
+```
+
+
+**Registry:** Maven Central (when published)
+
 Produces `dist/wildling.jar`. Requires a JRE to run (`java -jar`), or Docker (the launcher falls back to the Temurin image if `java` is not on `PATH`).
 
 As a library, add `dist/wildling.jar` to your classpath:

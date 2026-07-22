@@ -12,6 +12,14 @@ cd ada
 ./bin/wildling "foo#"
 ```
 
+From a release tag:
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+./build.sh ada
+```
+
 Produces `dist/wildling`. Use the packages under `src/` (except `cli.adb`) as a library.
 
 ```ada

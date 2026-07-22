@@ -31,6 +31,14 @@ resulting object files are linked with `gcc -o dist/wildling src/*.o`.
 ```bash
 ./bin/wildling "foo#"
 ./bin/wildling --help
+
+From a release tag:
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+./build.sh assembly
+```
 ```
 
 Shared CLI contracts: [../docs/cli.md](../docs/cli.md).

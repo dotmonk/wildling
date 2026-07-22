@@ -80,3 +80,4 @@ _site/
 **/obj/
 python/dist/
 python/*.egg-info/
+scripts/ecosystem-repos.env

@@ -12,11 +12,11 @@ cd swift
 ./bin/wildling "foo#"
 ```
 
-SwiftPM (root [`Package.swift`](../Package.swift), tag `vX.Y.Z`):
+SwiftPM ([`dotmonk/wildling-swift`](https://github.com/dotmonk/wildling-swift)):
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/dotmonk/wildling.git", from: "1.0.0"),
+    .package(url: "https://github.com/dotmonk/wildling-swift.git", from: "2.0.0"),
 ],
 targets: [
     .target(name: "MyApp", dependencies: [

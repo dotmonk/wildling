@@ -12,6 +12,16 @@ cd lua
 ./bin/wildling "foo#"
 ```
 
+**Git** (from monorepo root after clone):
+
+```bash
+git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling
+luarocks make lua/wildling.rockspec
+```
+
+**Registry:** `luarocks install wildling`
+
 ```lua
 package.path = "./lib/?.lua;" .. "./lib/?/init.lua;" .. package.path
 local wildling = require("wildling")

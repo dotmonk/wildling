@@ -1,8 +1,7 @@
 // swift-tools-version:5.9
 import PackageDescription
 
-// Root Package.swift so GitHub tags work with SwiftPM:
-//   .package(url: "https://github.com/dotmonk/wildling.git", from: "1.0.0")
+// Generated in dotmonk/wildling-swift by scripts/mirror-swift-spm.sh — do not edit in monorepo.
 let package = Package(
     name: "wildling",
     products: [
@@ -12,13 +11,13 @@ let package = Package(
     targets: [
         .target(
             name: "Wildling",
-            path: "swift/Sources",
+            path: "Sources",
             exclude: ["main.swift"]
         ),
         .executableTarget(
             name: "wildlingCLI",
             dependencies: ["Wildling"],
-            path: "swift/Executable"
+            path: "Executable"
         ),
     ]
 )

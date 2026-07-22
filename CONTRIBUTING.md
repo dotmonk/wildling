@@ -31,7 +31,8 @@ Shared contracts:
 
 All languages share one semver in the root [`VERSION`](VERSION) file. Sync with
 `./scripts/sync-version.sh` (also run by `./release.sh`). CI checks for drift.
-Publishing tags and registries: [`docs/publishing.md`](docs/publishing.md).
+
+Publishing: [`docs/publishing.md`](docs/publishing.md). Maintainer conventions: [`AGENTS.md`](AGENTS.md).
 
 ## Adding or changing a language
 

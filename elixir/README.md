@@ -12,6 +12,14 @@ cd elixir
 ./bin/wildling "foo#"
 ```
 
+**Git (`mix.exs`):**
+
+```elixir
+{:wildling, git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.0", path: "elixir"}
+```
+
+**Registry:** `{:wildling, "~> 2.0"}` on Hex
+
 ```elixir
 w = Wildling.create(["foo#"])
 value = Wildling.next(w)

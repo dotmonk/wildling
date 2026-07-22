@@ -14,6 +14,17 @@ cd dart
 
 Produces a standalone AOT binary at `dist/wildling`.
 
+**Git:**
+
+```bash
+dart pub add wildling \
+  --git-url=https://github.com/dotmonk/wildling.git \
+  --git-path=dart \
+  --git-ref=v2.0.0
+```
+
+**Registry:** `dart pub add wildling`
+
 ```dart
 import 'package:wildling/wildling.dart';
 
