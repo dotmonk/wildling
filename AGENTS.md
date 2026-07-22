@@ -28,7 +28,11 @@ JavaScript publishes to npm from `javascript/` in CI. `javascript/package.json` 
 
 ## Releases
 
-Version in root `VERSION`; sync with `scripts/sync-version.sh`. Tags: `vX.Y.Z` and `go/vX.Y.Z`.
-Go module path for major ≥ 2 is `github.com/dotmonk/wildling/go/v2`. See `docs/publishing.md` and `.github/workflows/release.yml`.
+Version in root `VERSION`; sync with `scripts/sync-version.sh`.
+Push to `main` after bumping `VERSION`: when Test + publish-artifact smoke pass,
+`scripts/create-github-release.sh` creates `vX.Y.Z`, `go/vX.Y.Z`, and a GitHub Release
+(skipped if the tag already exists). That Release triggers `.github/workflows/release.yml`.
+
+Go module path for major ≥ 2 is `github.com/dotmonk/wildling/go/v2`.
 
 Publish-artifact smoke (no upload): `./test.sh --publish-artifacts` → `scripts/smoke-publish-artifacts.sh`.

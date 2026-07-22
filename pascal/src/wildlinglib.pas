@@ -8,7 +8,7 @@ uses
   Generator, ParsePattern, Token;
 
 const
-  WILDLING_VERSION = '2.0.0';
+  WILDLING_VERSION = '2.0.1';
 
 type
   TGeneratorArray = array of TGenerator;

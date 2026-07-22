@@ -155,3 +155,24 @@ jobs:
           test -f _site/assets/wildling.js
           test -f _site/sandbox.html
           test -d _site/languages/javascript
+
+  create-release:
+    name: Create GitHub Release
+    needs: [test, publish-artifacts]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Create tags and release when VERSION is untagged
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/create-github-release.sh
+          ./scripts/create-github-release.sh

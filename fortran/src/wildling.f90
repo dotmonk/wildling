@@ -10,7 +10,7 @@ module wl_wildling
   public :: wildling_t, wildling_init, wildling_free
   public :: wildling_count, wildling_reset, wildling_next, wildling_get
 
-  character(len=*), parameter :: WILDLING_VERSION = '2.0.0'
+  character(len=*), parameter :: WILDLING_VERSION = '2.0.1'
 
   type :: wildling_t
     type(generator_t), allocatable :: generators(:)

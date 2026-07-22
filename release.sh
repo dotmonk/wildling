@@ -15,3 +15,8 @@ echo "$NEW_VERSION" > VERSION
 
 ./scripts/sync-version.sh
 ./build.sh
+
+echo
+echo "VERSION is now ${NEW_VERSION}."
+echo "Commit and push to main; CI will create tags v${NEW_VERSION} / go/v${NEW_VERSION}"
+echo "and a GitHub Release after tests pass."
