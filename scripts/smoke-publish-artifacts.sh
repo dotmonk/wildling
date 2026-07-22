@@ -9,11 +9,30 @@ cd "$ROOT"
 UID_GID="$(id -u):$(id -g)"
 fail=0
 
+# Match language build.sh images; alpine is what CI already pulls for csharp/vb/fsharp.
+DOTNET_SDK_IMAGE="mcr.microsoft.com/dotnet/sdk:8.0-alpine"
+
+docker_pull() {
+    _image="$1"
+    _attempt=1
+    while [ "${_attempt}" -le 3 ]; do
+        if docker pull "${_image}"; then
+            return 0
+        fi
+        echo "docker pull failed for ${_image} (attempt ${_attempt}/3); retrying…" >&2
+        _attempt=$((_attempt + 1))
+        sleep $((_attempt * 2))
+    done
+    echo "docker pull failed for ${_image}" >&2
+    return 1
+}
+
 run_docker() {
     _image="$1"
     _workdir="$2"
     _cmd="$3"
     shift 3
+    docker_pull "${_image}" || return 1
     docker run --rm \
         -v "${ROOT}:${ROOT}" \
         -v "${ROOT}/docs:/docs:ro" \
@@ -107,7 +126,7 @@ dart pub publish --dry-run
 
 smoke_nuget() {
     _dir="$1"
-    run_docker "mcr.microsoft.com/dotnet/sdk:8.0" "${_dir}" '
+    run_docker "${DOTNET_SDK_IMAGE}" "${_dir}" '
 set -e
 export HOME=/tmp
 export DOTNET_CLI_HOME=/tmp/dotnet
