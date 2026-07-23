@@ -306,6 +306,10 @@ sync_optional_slurp java/pom.xml \
     's/(<!-- WILDLING_PROJECT_VERSION -->\s*<version>)[^<]+(<\/version>)/${1}$ENV{VERSION}${2}/'
 sync_optional_slurp kotlin/pom.xml \
     's/(<!-- WILDLING_PROJECT_VERSION -->\s*<version>)[^<]+(<\/version>)/${1}$ENV{VERSION}${2}/'
+sync_optional_slurp scala/pom.xml \
+    's/(<!-- WILDLING_PROJECT_VERSION -->\s*<version>)[^<]+(<\/version>)/${1}$ENV{VERSION}${2}/'
+sync_optional_slurp groovy/pom.xml \
+    's/(<!-- WILDLING_PROJECT_VERSION -->\s*<version>)[^<]+(<\/version>)/${1}$ENV{VERSION}${2}/'
 if [ "$CHECK" -eq 1 ]; then
     if [ "$fail" -ne 0 ]; then
         echo "Version check failed against VERSION=$VERSION" >&2

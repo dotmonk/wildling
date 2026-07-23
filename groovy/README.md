@@ -5,7 +5,7 @@ Groovy library and CLI for pattern-based string generation. **Zero third-party d
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/groovy)
 
-**Registry:** [Maven Central](https://central.sonatype.com/search?q=wildling)
+**Registry:** [Maven Central](https://central.sonatype.com/artifact/io.github.dotmonk/wildling-groovy)
 
 ## Example
 
@@ -46,7 +46,13 @@ cd wildling
 ./build.sh groovy
 ```
 
-**Registry:** Maven Central (when published)
+**Registry:** Maven Central — `io.github.dotmonk:wildling-groovy`
+
+```groovy
+implementation 'io.github.dotmonk:wildling-groovy:2.0.2'
+```
+
+Produces `dist/wildling.jar` via `./build.sh`. Requires a JRE to run (`java -jar`), or Docker (the launcher falls back to the Temurin image if `java` is not on `PATH`).
 
 ```groovy
 import wildling.Wildling

@@ -5,7 +5,7 @@ Scala library and CLI for pattern-based string generation. **Zero third-party de
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/scala)
 
-**Registry:** [Maven Central](https://central.sonatype.com/search?q=wildling)
+**Registry:** [Maven Central](https://central.sonatype.com/artifact/io.github.dotmonk/wildling-scala)
 
 ## Example
 
@@ -47,9 +47,13 @@ cd wildling
 ```
 
 
-**Registry:** Maven Central (when published)
+**Registry:** Maven Central — `io.github.dotmonk:wildling-scala`
 
-Produces `dist/wildling.jar` (includes `scala-library`). Requires a JRE to run, or Docker (the launcher falls back to Temurin if `java` is not on `PATH`).
+```scala
+libraryDependencies += "io.github.dotmonk" % "wildling-scala" % "2.0.2"
+```
+
+Produces `dist/wildling.jar` via `./build.sh` (includes `scala-library`). Requires a JRE to run, or Docker (the launcher falls back to Temurin if `java` is not on `PATH`).
 
 ```scala
 val wildling = Wildling(Seq("Year 19##"))

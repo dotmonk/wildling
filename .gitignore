@@ -84,6 +84,12 @@ python/dist/
 python/*.egg-info/
 java/target/
 java/help.txt
+kotlin/target/
+kotlin/help.txt
+scala/target/
+scala/help.txt
+groovy/target/
+groovy/help.txt
 ruby/help.txt
 rust/help.txt
 scripts/ecosystem-repos.env

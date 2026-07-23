@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.dotmonk</groupId>
+  <artifactId>wildling-scala</artifactId>
+  <!-- WILDLING_PROJECT_VERSION -->
+  <version>2.0.2</version>
+  <packaging>jar</packaging>
+
+  <name>wildling-scala</name>
+  <description>Pattern based string generator library and CLI (Scala)</description>
+  <url>https://github.com/dotmonk/wildling</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>dotmonk</id>
+      <url>https://github.com/dotmonk</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/dotmonk/wildling.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/dotmonk/wildling.git</developerConnection>
+    <url>https://github.com/dotmonk/wildling/tree/main/scala</url>
+  </scm>
+
+  <properties>
+    <scala.version>2.13.15</scala.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>${project.basedir}</directory>
+        <includes>
+          <include>help.txt</include>
+        </includes>
+        <targetPath>wildling</targetPath>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>4.9.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>doc-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+          <args>
+            <arg>-deprecation</arg>
+          </args>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <skipMain>true</skipMain>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>wildling.Cli</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals><goal>jar-no-fork</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>central</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.7</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.9.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
+              <waitUntil>published</waitUntil>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
