@@ -60,7 +60,7 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 | 2 | PyPI, crates.io, NuGet, RubyGems, pub.dev |
 | 3 | Hex.pm, LuaRocks, PowerShell Gallery |
 | 4 | Maven Central (Java, then Kotlin/Scala/Groovy) |
-| 5 | CPAN, Hackage, R-universe |
+| 5 | CPAN, R-universe |
 | 6 | C/C++ via GitHub Releases (+ optional vcpkg) |
 
 ### Wave 5 secrets / one-time setup
@@ -68,10 +68,9 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 | Job | Secret / var | Notes |
 |-----|--------------|--------|
 | CPAN | `CPAN_USER`, `CPAN_PASSWORD` | PAUSE credentials |
-| Hackage | `HACKAGE_TOKEN` | Account → Manage → API token |
 | R-universe | `RUNIVERSE_TOKEN` (optional), `RUNIVERSE_OWNER` (repo var, default `dotmonk`) | Builds `r/` always; token updates `OWNER/universe` `packages.json`. Also install the [R-universe GitHub App](https://docs.r-universe.dev/publish/set-up.html). |
 
-Ada and Fortran have no package registries in this project — install from git + `gprbuild` / `gfortran` (see their READMEs).
+Ada, Fortran, and Haskell have no package registries in this project — install from git (see their READMEs).
 
 Configure trusted publishers (or secrets), then bump `VERSION` and push to `main`.
 

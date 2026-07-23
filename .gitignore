@@ -57,7 +57,6 @@ zig/zig-out
 zig/zig-cache
 zig/.zig-cache
 haskell/dist
-haskell/dist-newstyle/
 haskell/.ghc
 pascal/dist
 pascal/obj

@@ -659,48 +659,6 @@ jobs:
           fi
           exit "$status"
 
-  hackage:
-    name: Hackage
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: haskell
-    steps:
-      - uses: actions/checkout@v4
-      - uses: haskell-actions/setup@v2
-        with:
-          ghc-version: "9.6"
-          cabal-version: "3.10"
-      - name: Publish
-        env:
-          HACKAGE_TOKEN: ${{ secrets.HACKAGE_TOKEN }}
-        run: |
-          if [ -z "${HACKAGE_TOKEN}" ]; then
-            echo "HACKAGE_TOKEN not set; skipping Hackage"
-            exit 0
-          fi
-          cp ../LICENSE LICENSE
-          cabal update
-          cabal sdist
-          tarball="$(ls -1 dist-newstyle/sdist/wildling-*.tar.gz | head -n 1)"
-          if [ -z "$tarball" ]; then
-            echo "No wildling sdist found" >&2
-            exit 1
-          fi
-          set +e
-          out="$(cabal upload --publish --token="$HACKAGE_TOKEN" "$tarball" 2>&1)"
-          status=$?
-          set -e
-          printf '%s\n' "$out"
-          if [ "$status" -eq 0 ]; then
-            exit 0
-          fi
-          if printf '%s\n' "$out" | grep -Eqi 'already (exists|uploaded|present)|Package already exists|version .+ already'; then
-            echo "Version already on Hackage; skipping"
-            exit 0
-          fi
-          exit "$status"
-
   runiverse:
     name: R-universe
     runs-on: ubuntu-latest

@@ -243,13 +243,7 @@
     },
     "haskell": {
       "label": "Haskell",
-      "registries": [
-        {
-          "name": "Hackage",
-          "url": "https://hackage.haskell.org/package/wildling",
-          "install": "cabal install wildling"
-        }
-      ]
+      "registries": []
     }
   }
 }

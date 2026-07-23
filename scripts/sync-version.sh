@@ -269,10 +269,6 @@ sync_optional zig/build.zig.zon \
     's/\.version\s*=\s*"[^"]+"/.version = "$ENV{VERSION}"/' \
     ".version = \"$VERSION\""
 
-sync_optional haskell/wildling.cabal \
-    's/^version:\s*.*/version:              $ENV{VERSION}/' \
-    "version:              $VERSION"
-
 sync_optional r/DESCRIPTION \
     's/^Version:\s*.*/Version: $ENV{VERSION}/' \
     "Version: $VERSION"
