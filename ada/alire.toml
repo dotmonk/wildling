@@ -2,8 +2,8 @@ name = "wildling"
 description = "Pattern based string generator library and CLI"
 version = "2.0.2"
 
-authors = [{name = "dotmonk", github = "dotmonk"}]
-maintainers = ["dotmonk@users.noreply.github.com"]
+authors = ["dotmonk"]
+maintainers = ["dotmonk <dotmonk@users.noreply.github.com>"]
 maintainers-logins = ["dotmonk"]
 
 licenses = "MIT"
