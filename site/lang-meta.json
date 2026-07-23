@@ -177,14 +177,20 @@
     },
     "r": {
       "label": "R",
-      "registries": []
+      "registries": [
+        {
+          "name": "R-universe",
+          "url": "https://dotmonk.r-universe.dev/wildling",
+          "install": "install.packages(\"wildling\", repos = \"https://dotmonk.r-universe.dev\")"
+        }
+      ]
     },
     "groovy": {
       "label": "Groovy",
       "registries": [
         {
           "name": "Maven Central",
-          "url": "https://central.sonatype.com/search?q=wildling",
+          "url": "https://central.sonatype.com/artifact/io.github.dotmonk/wildling-groovy",
           "install": null
         }
       ]
@@ -195,7 +201,7 @@
         {
           "name": "CPAN",
           "url": "https://metacpan.org/pod/Wildling",
-          "install": null
+          "install": "cpanm Wildling"
         }
       ]
     },
@@ -219,11 +225,23 @@
     },
     "fortran": {
       "label": "Fortran",
-      "registries": []
+      "registries": [
+        {
+          "name": "fpm",
+          "url": "https://fpm.fortran-lang.org/registry/",
+          "install": null
+        }
+      ]
     },
     "ada": {
       "label": "Ada",
-      "registries": []
+      "registries": [
+        {
+          "name": "Alire",
+          "url": "https://alire.ada.dev/crates/wildling.html",
+          "install": "alr with wildling"
+        }
+      ]
     },
     "fsharp": {
       "label": "F#",
@@ -241,7 +259,7 @@
         {
           "name": "Hackage",
           "url": "https://hackage.haskell.org/package/wildling",
-          "install": null
+          "install": "cabal install wildling"
         }
       ]
     }

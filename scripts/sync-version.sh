@@ -182,7 +182,7 @@ replace assembly/src/cli.asm \
     's/version_str:\s*db "[^"]+"/version_str:            db "$ENV{VERSION}"/' \
     "db \"$VERSION\""
 
-replace r/lib/wildling/wildling.R \
+replace r/R/wildling.R \
     's/WILDLING_VERSION <- "[^"]+"/WILDLING_VERSION <- "$ENV{VERSION}"/' \
     "WILDLING_VERSION <- \"$VERSION\""
 

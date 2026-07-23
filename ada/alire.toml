@@ -3,6 +3,8 @@ description = "Pattern based string generator library and CLI"
 version = "2.0.2"
 
 authors = [{name = "dotmonk", github = "dotmonk"}]
+maintainers = ["dotmonk@users.noreply.github.com"]
+maintainers-logins = ["dotmonk"]
 
 licenses = "MIT"
 website = "https://github.com/dotmonk/wildling"
@@ -10,6 +12,3 @@ tags = ["pattern", "generator", "text"]
 
 [available]
 gnat = ">=12"
-
-[origin]
-url = "git+https://github.com/dotmonk/wildling"

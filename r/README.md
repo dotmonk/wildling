@@ -5,6 +5,8 @@ R library and CLI for pattern-based string generation. **Zero third-party depend
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/r)
 
+**Registry:** [R-universe](https://dotmonk.r-universe.dev/wildling) (after registration)
+
 ## Example
 
 ```text
@@ -28,6 +30,16 @@ Try it in the [sandbox](https://dotmonk.github.io/wildling/sandbox.html?pattern=
 
 ## Install
 
+```r
+install.packages("wildling", repos = "https://dotmonk.r-universe.dev")
+```
+
+Or from GitHub:
+
+```r
+remotes::install_github("dotmonk/wildling", subdir = "r", ref = "v2.0.2")
+```
+
 From this repository:
 
 ```bash
@@ -36,18 +48,8 @@ cd r
 ./bin/wildling "Year 19##"
 ```
 
-**Git:**
-
 ```r
-remotes::install_github("dotmonk/wildling", subdir = "r", ref = "v2.0.0")
-```
-
-```r
-root <- normalizePath("r")
-source(file.path(root, "lib", "wildling", "token.R"))
-source(file.path(root, "lib", "wildling", "parse_pattern.R"))
-source(file.path(root, "lib", "wildling", "generator.R"))
-source(file.path(root, "lib", "wildling", "wildling.R"))
+library(wildling)
 
 w <- create_wildling(c("Year 19##"))
 value <- w$`next`()

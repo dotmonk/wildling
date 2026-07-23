@@ -5,8 +5,9 @@ ENTRY="$DIR/wildling.R"
 DOCKER_IMAGE="gcc:14-bookworm"
 
 ensure_help() {
-    if [ ! -f "$ROOT/lib/wildling/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
-        cp "$ROOT/../docs/help.txt" "$ROOT/lib/wildling/help.txt"
+    if [ ! -f "$ROOT/inst/help.txt" ] && [ -f "$ROOT/../docs/help.txt" ]; then
+        mkdir -p "$ROOT/inst"
+        cp "$ROOT/../docs/help.txt" "$ROOT/inst/help.txt"
     fi
 }
 
@@ -16,7 +17,7 @@ if command -v Rscript >/dev/null 2>&1; then
 fi
 
 ensure_help
-if [ ! -f "$ROOT/lib/wildling/help.txt" ]; then
+if [ ! -f "$ROOT/inst/help.txt" ]; then
     echo "help.txt missing. Run r/build.sh first." >&2
     exit 1
 fi

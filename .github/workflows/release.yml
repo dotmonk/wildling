@@ -613,3 +613,261 @@ jobs:
             exit 0
           fi
           exit "$status"
+
+  cpan:
+    name: CPAN
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: perl
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish
+        env:
+          CPAN_USER: ${{ secrets.CPAN_USER }}
+          CPAN_PASSWORD: ${{ secrets.CPAN_PASSWORD }}
+        run: |
+          if [ -z "${CPAN_USER}" ] || [ -z "${CPAN_PASSWORD}" ]; then
+            echo "CPAN_USER / CPAN_PASSWORD not set; skipping CPAN"
+            exit 0
+          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cpanminus
+          sudo cpanm --notest ExtUtils::MakeMaker CPAN::Uploader
+          mkdir -p lib/Wildling
+          cp ../docs/help.txt lib/Wildling/help.txt
+          cp ../LICENSE LICENSE
+          perl Makefile.PL
+          make manifest
+          make dist
+          tarball="$(ls -1 Wildling-*.tar.gz | head -n 1)"
+          if [ -z "$tarball" ]; then
+            echo "No Wildling-*.tar.gz produced" >&2
+            exit 1
+          fi
+          set +e
+          out="$(cpan-upload -u "$CPAN_USER" -p "$CPAN_PASSWORD" "$tarball" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already exists|This version .+ already exists|duplicate'; then
+            echo "Version already on CPAN; skipping"
+            exit 0
+          fi
+          exit "$status"
+
+  hackage:
+    name: Hackage
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: haskell
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.6"
+          cabal-version: "3.10"
+      - name: Publish
+        env:
+          HACKAGE_TOKEN: ${{ secrets.HACKAGE_TOKEN }}
+        run: |
+          if [ -z "${HACKAGE_TOKEN}" ]; then
+            echo "HACKAGE_TOKEN not set; skipping Hackage"
+            exit 0
+          fi
+          cp ../LICENSE LICENSE
+          cabal update
+          cabal sdist
+          tarball="$(ls -1 dist-newstyle/sdist/wildling-*.tar.gz | head -n 1)"
+          if [ -z "$tarball" ]; then
+            echo "No wildling sdist found" >&2
+            exit 1
+          fi
+          set +e
+          out="$(cabal upload --publish --token="$HACKAGE_TOKEN" "$tarball" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|uploaded|present)|Package already exists|version .+ already'; then
+            echo "Version already on Hackage; skipping"
+            exit 0
+          fi
+          exit "$status"
+
+  runiverse:
+    name: R-universe
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: r
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - name: Build package and ensure universe registry
+        env:
+          RUNIVERSE_TOKEN: ${{ secrets.RUNIVERSE_TOKEN }}
+          RUNIVERSE_OWNER: ${{ vars.RUNIVERSE_OWNER }}
+        run: |
+          mkdir -p inst
+          cp ../docs/help.txt inst/help.txt
+          cp ../LICENSE LICENSE
+          R CMD build .
+          tarball="$(ls -1 wildling_*.tar.gz | head -n 1)"
+          if [ -z "$tarball" ]; then
+            echo "R CMD build failed to produce wildling_*.tar.gz" >&2
+            exit 1
+          fi
+          echo "Built $tarball"
+          if [ -z "${RUNIVERSE_TOKEN}" ]; then
+            echo "RUNIVERSE_TOKEN not set; package built but universe registry not updated"
+            echo "One-time: install the R-universe GitHub App and add to packages.json:"
+            echo '  {"package":"wildling","url":"https://github.com/dotmonk/wildling","subdir":"r"}'
+            exit 0
+          fi
+          export GH_TOKEN="$RUNIVERSE_TOKEN"
+          owner="${RUNIVERSE_OWNER:-dotmonk}"
+          repo="${owner}/universe"
+          tmp="$(mktemp)"
+          if gh api "repos/${repo}/contents/packages.json" --jq .content 2>/dev/null | base64 -d >"$tmp" 2>/dev/null; then
+            :
+          else
+            echo '[]' >"$tmp"
+          fi
+          python3 - "$tmp" <<'PY'
+          import json, sys
+          path = sys.argv[1]
+          with open(path) as f:
+              data = json.load(f)
+          if not isinstance(data, list):
+              data = []
+          entry = {
+              "package": "wildling",
+              "url": "https://github.com/dotmonk/wildling",
+              "subdir": "r",
+          }
+          found = False
+          for i, item in enumerate(data):
+              if isinstance(item, dict) and item.get("package") == "wildling":
+                  data[i] = entry
+                  found = True
+                  break
+          if not found:
+              data.append(entry)
+          with open(path, "w") as f:
+              json.dump(data, f, indent=2)
+              f.write("\n")
+          print("registry entries:", len(data))
+          PY
+          sha="$(gh api "repos/${repo}/contents/packages.json" --jq .sha 2>/dev/null || true)"
+          args=(-X PUT "repos/${repo}/contents/packages.json"
+            -f message="Register wildling for R-universe"
+            -f content="$(base64 -w0 "$tmp")")
+          if [ -n "$sha" ]; then
+            args+=(-f sha="$sha")
+          fi
+          set +e
+          out="$(gh api "${args[@]}" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already exists|Not Found'; then
+            echo "Universe registry update skipped or repo missing; package tarball is ready"
+            exit 0
+          fi
+          exit "$status"
+
+  alire:
+    name: Alire
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ada
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.ALIRE_GITHUB_TOKEN }}
+        run: |
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "ALIRE_GITHUB_TOKEN not set; skipping Alire"
+            exit 0
+          fi
+          curl -fsSL https://github.com/alire-project/alire/releases/download/v2.1.1/alr-2.1.1-bin-x86_64-linux.zip -o /tmp/alr.zip
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq unzip gnat gprbuild
+          unzip -qo /tmp/alr.zip -d /tmp/alr
+          # Zip may nest bin/ under a versioned dir
+          ALR_BIN="$(find /tmp/alr -type f -name alr | head -n 1)"
+          export PATH="$(dirname "$ALR_BIN"):$PATH"
+          alr --version
+          alr settings --set --global user.github_login "${GITHUB_REPOSITORY_OWNER}"
+          TAG="${{ github.event.release.tag_name || inputs.tag }}"
+          if [ -z "$TAG" ]; then
+            TAG="v$(tr -d '[:space:]' < ../VERSION)"
+          fi
+          COMMIT="$(git rev-list -n 1 "$TAG" 2>/dev/null || git rev-parse HEAD)"
+          set +e
+          # Non-interactive publish submits an index PR when GH_TOKEN is set.
+          out="$(alr -n publish "https://github.com/${GITHUB_REPOSITORY}" "$COMMIT" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already exists|already present|duplicate|pull request already'; then
+            echo "Version already submitted to Alire; skipping"
+            exit 0
+          fi
+          exit "$status"
+
+  fpm:
+    name: fpm registry
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fortran
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish
+        env:
+          FPM_TOKEN: ${{ secrets.FPM_TOKEN }}
+        run: |
+          if [ -z "${FPM_TOKEN}" ]; then
+            echo "FPM_TOKEN not set; skipping fpm registry (git install still works)"
+            exit 0
+          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq gfortran
+          curl -fsSL https://github.com/fortran-lang/fpm/releases/download/v0.13.0/fpm-0.13.0-linux-x86_64-gcc-12 -o /tmp/fpm
+          chmod +x /tmp/fpm
+          sudo mv /tmp/fpm /usr/local/bin/fpm
+          fpm --version
+          set +e
+          out="$(fpm publish --token="$FPM_TOKEN" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|uploaded|published)|version .+ already'; then
+            echo "Version already on fpm registry; skipping"
+            exit 0
+          fi
+          exit "$status"

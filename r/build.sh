@@ -13,10 +13,11 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq >/dev/null
 apt-get install -y -qq --no-install-recommends r-base-core >/dev/null
-cp /docs/help.txt lib/wildling/help.txt
-chown ${HOST_UID}:${HOST_GID} lib/wildling/help.txt
+mkdir -p inst
+cp /docs/help.txt inst/help.txt
+chown ${HOST_UID}:${HOST_GID} inst/help.txt
 Rscript --version >/dev/null
-Rscript -e \"for (f in c(Sys.glob('lib/wildling/*.R'), 'lib/wildling.R', 'bin/wildling.R')) parse(file=f)\"
+Rscript -e \"for (f in c(Sys.glob('R/*.R'), 'bin/wildling.R')) parse(file=f)\"
 "
 
 docker run --rm \

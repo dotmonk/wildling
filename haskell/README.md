@@ -7,6 +7,10 @@ Haskell library and CLI for pattern-based string generation. **Zero Cabal/Hackag
 
 **Registry:** [Hackage](https://hackage.haskell.org/package/wildling)
 
+```haskell
+cabal install wildling
+```
+
 ## Example
 
 ```text

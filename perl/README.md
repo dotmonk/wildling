@@ -30,6 +30,19 @@ Try it in the [sandbox](https://dotmonk.github.io/wildling/sandbox.html?pattern=
 
 ## Install
 
+**Registry:** [CPAN](https://metacpan.org/pod/Wildling) — `cpanm Wildling`
+
+```perl
+use Wildling;
+
+my $wildling = Wildling::create(['Year 19##']);
+while (defined(my $value = $wildling->next())) {
+    print "$value\n";
+}
+# get()/next() return undef when out of range (not the string "false").
+# Empty combinations are defined "" — distinct from the sentinel.
+```
+
 From this repository:
 
 ```bash
@@ -41,21 +54,9 @@ cd perl
 From a release tag:
 
 ```bash
-git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.2 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling
 ./build.sh perl
-```
-
-```perl
-use lib './lib';
-use Wildling;
-
-my $wildling = Wildling::create(['Year 19##']);
-while (defined(my $value = $wildling->next())) {
-    print "$value\n";
-}
-# get()/next() return undef when out of range (not the string "false").
-# Empty combinations are defined "" — distinct from the sentinel.
 ```
 
 ## CLI

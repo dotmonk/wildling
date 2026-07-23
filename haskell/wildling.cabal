@@ -4,6 +4,7 @@ version:              2.0.2
 synopsis:           Pattern based string generator library and CLI
 description:        Enumerate pattern combinations for wordlists, domains, and test data.
 license:            MIT
+license-file:       LICENSE
 author:             dotmonk
 maintainer:         dotmonk@users.noreply.github.com
 homepage:           https://github.com/dotmonk/wildling

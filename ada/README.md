@@ -5,6 +5,8 @@ GNAT Ada library and CLI for pattern-based string generation. **Zero third-party
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/ada)
 
+**Registry:** [Alire](https://alire.ada.dev/crates/wildling.html) — `alr with wildling`
+
 ## Example
 
 ```text

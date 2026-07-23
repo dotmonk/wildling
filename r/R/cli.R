@@ -195,10 +195,18 @@ parse_args <- function(args) {
 }
 
 load_help_text <- function() {
-  lib_dir <- Sys.getenv("WILDLING_LIB_DIR", unset = "")
+  pkg_help <- tryCatch(
+    system.file("help.txt", package = "wildling", mustWork = FALSE),
+    error = function(e) ""
+  )
+  root <- Sys.getenv("WILDLING_ROOT", unset = "")
   candidates <- c(
-    file.path(lib_dir, "wildling", "help.txt"),
-    file.path(lib_dir, "..", "..", "docs", "help.txt")
+    pkg_help,
+    file.path(root, "inst", "help.txt"),
+    file.path(root, "..", "docs", "help.txt"),
+    file.path("inst", "help.txt"),
+    file.path("..", "docs", "help.txt"),
+    file.path("docs", "help.txt")
   )
   for (path in candidates) {
     if (nzchar(path) && file.exists(path)) {

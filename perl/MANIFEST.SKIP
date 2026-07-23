@@ -1,0 +1,9 @@
+# Avoid shipping monorepo / build helpers in the CPAN tarball.
+build.sh
+bin/wildling
+\.git
+Wildling-.*\.tar\.gz
+MYMETA\..*
+Makefile
+blib/.*
+pm_to_blib

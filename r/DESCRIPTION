@@ -1,11 +1,14 @@
 Package: wildling
-Title: Pattern based string generator
+Title: Pattern Based String Generator
 Version: 2.0.2
-Authors: dotmonk
+Authors@R: person(
+    "dotmonk",
+    email = "dotmonk@users.noreply.github.com",
+    role = c("aut", "cre")
+  )
 Description: Enumerate pattern combinations for wordlists, domains, and test data.
 License: MIT
 URL: https://github.com/dotmonk/wildling
 BugReports: https://github.com/dotmonk/wildling/issues
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.3.0
+NeedsCompilation: no
