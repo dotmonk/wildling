@@ -235,13 +235,7 @@
     },
     "ada": {
       "label": "Ada",
-      "registries": [
-        {
-          "name": "Alire",
-          "url": "https://alire.ada.dev/crates/wildling.html",
-          "install": "alr with wildling"
-        }
-      ]
+      "registries": []
     },
     "fsharp": {
       "label": "F#",

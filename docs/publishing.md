@@ -60,7 +60,7 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 | 2 | PyPI, crates.io, NuGet, RubyGems, pub.dev |
 | 3 | Hex.pm, LuaRocks, PowerShell Gallery |
 | 4 | Maven Central (Java, then Kotlin/Scala/Groovy) |
-| 5 | CPAN, Hackage, R-universe, Alire, fpm |
+| 5 | CPAN, Hackage, R-universe, fpm |
 | 6 | C/C++ via GitHub Releases (+ optional vcpkg) |
 
 ### Wave 5 secrets / one-time setup
@@ -70,8 +70,9 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 | CPAN | `CPAN_USER`, `CPAN_PASSWORD` | PAUSE credentials |
 | Hackage | `HACKAGE_TOKEN` | Account → Manage → API token |
 | R-universe | `RUNIVERSE_TOKEN` (optional), `RUNIVERSE_OWNER` (repo var, default `dotmonk`) | Builds `r/` always; token updates `OWNER/universe` `packages.json`. Also install the [R-universe GitHub App](https://docs.r-universe.dev/publish/set-up.html). |
-| Alire | `ALIRE_GITHUB_TOKEN` | Classic PAT with `public_repo` (forks alire-index + opens PR) |
-| fpm | `FPM_TOKEN` | Token from the [fpm registry](https://fpm.fortran-lang.org/registry/publish.html); without it, git/`folder` installs still work |
+| fpm | `FPM_TOKEN` | Token from the [fpm registry](https://fpm.fortran-lang.org/registry/publish.html); without it, git install from `fortran/` still works |
+
+Ada has no package registry in this project — install from git + `gprbuild` (see `ada/README.md`).
 
 Configure trusted publishers (or secrets), then bump `VERSION` and push to `main`.
 

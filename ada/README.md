@@ -1,11 +1,9 @@
 # wildling
 
-GNAT Ada library and CLI for pattern-based string generation. **Zero third-party crates** — Ada standard library only (`Ada.*`) with a hand-rolled JSON parser for `--template`. Pattern splitting is hand-rolled (no regex package).
+GNAT Ada library and CLI for pattern-based string generation. **Zero third-party dependencies** — Ada standard library only (`Ada.*`) with a hand-rolled JSON parser for `--template`. Pattern splitting is hand-rolled (no regex package).
 
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/ada)
-
-**Registry:** [Alire](https://alire.ada.dev/crates/wildling.html) — `alr with wildling`
 
 ## Example
 

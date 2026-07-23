@@ -788,54 +788,6 @@ jobs:
           fi
           exit "$status"
 
-  alire:
-    name: Alire
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ada
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-      - name: Publish
-        env:
-          GH_TOKEN: ${{ secrets.ALIRE_GITHUB_TOKEN }}
-        run: |
-          if [ -z "${GH_TOKEN}" ]; then
-            echo "ALIRE_GITHUB_TOKEN not set; skipping Alire"
-            exit 0
-          fi
-          curl -fsSL https://github.com/alire-project/alire/releases/download/v2.1.1/alr-2.1.1-bin-x86_64-linux.zip -o /tmp/alr.zip
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq unzip gnat gprbuild
-          unzip -qo /tmp/alr.zip -d /tmp/alr
-          # Zip may nest bin/ under a versioned dir
-          ALR_BIN="$(find /tmp/alr -type f -name alr | head -n 1)"
-          export PATH="$(dirname "$ALR_BIN"):$PATH"
-          alr --version
-          alr settings --set --global user.github_login "${GITHUB_REPOSITORY_OWNER}"
-          TAG="${{ github.event.release.tag_name || inputs.tag }}"
-          if [ -z "$TAG" ]; then
-            TAG="v$(tr -d '[:space:]' < ../VERSION)"
-          fi
-          COMMIT="$(git rev-list -n 1 "$TAG" 2>/dev/null || git rev-parse HEAD)"
-          set +e
-          # Non-interactive publish submits an index PR when GH_TOKEN is set.
-          out="$(alr -n publish "https://github.com/${GITHUB_REPOSITORY}" "$COMMIT" 2>&1)"
-          status=$?
-          set -e
-          printf '%s\n' "$out"
-          if [ "$status" -eq 0 ]; then
-            exit 0
-          fi
-          if printf '%s\n' "$out" | grep -Eqi 'already exists|already present|duplicate|pull request already'; then
-            echo "Version already submitted to Alire; skipping"
-            exit 0
-          fi
-          exit "$status"
-
   fpm:
     name: fpm registry
     runs-on: ubuntu-latest
