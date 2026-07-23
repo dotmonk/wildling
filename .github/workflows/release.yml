@@ -413,7 +413,7 @@ jobs:
           } catch {
             $msg = $_.Exception.Message + "`n" + $_.ToString()
             Write-Host $msg
-            if ($msg -match '(?i)already exists|cannot be overwritten|409|conflict') {
+            if ($msg -match '(?i)already (exists|available)|cannot be published|cannot be overwritten|409|conflict') {
               Write-Host "Version already on PowerShell Gallery; skipping"
               exit 0
             }
