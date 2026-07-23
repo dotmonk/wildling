@@ -10,5 +10,5 @@ licenses = "MIT"
 website = "https://github.com/dotmonk/wildling"
 tags = ["pattern", "generator", "text"]
 
-[available]
+[[depends-on]]
 gnat = ">=12"
