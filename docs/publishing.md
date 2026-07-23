@@ -68,7 +68,7 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 | Job | Secret / var | Notes |
 |-----|--------------|--------|
 | CPAN | `CPAN_USER`, `CPAN_PASSWORD` | PAUSE credentials |
-| R-universe | `RUNIVERSE_TOKEN` (optional), `RUNIVERSE_OWNER` (repo var, default `dotmonk`) | Builds `r/` always; token updates `OWNER/universe` `packages.json`. Also install the [R-universe GitHub App](https://docs.r-universe.dev/publish/set-up.html). |
+| R-universe | `RUNIVERSE_TOKEN` (optional); vars `RUNIVERSE_OWNER` (default `dotmonk`), `RUNIVERSE_REPO` (default `OWNER/OWNER.r-universe.dev`) | Builds `r/` always; token upserts `packages.json` on the registry repo (e.g. [dotmonk/dotmonk.r-universe.dev](https://github.com/dotmonk/dotmonk.r-universe.dev)). Also install the [R-universe GitHub App](https://docs.r-universe.dev/publish/set-up.html). |
 
 Ada, Fortran, and Haskell have no package registries in this project — install from git (see their READMEs).
 

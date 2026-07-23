@@ -674,6 +674,7 @@ jobs:
         env:
           RUNIVERSE_TOKEN: ${{ secrets.RUNIVERSE_TOKEN }}
           RUNIVERSE_OWNER: ${{ vars.RUNIVERSE_OWNER }}
+          RUNIVERSE_REPO: ${{ vars.RUNIVERSE_REPO }}
         run: |
           mkdir -p inst
           cp ../docs/help.txt inst/help.txt
@@ -685,15 +686,15 @@ jobs:
             exit 1
           fi
           echo "Built $tarball"
+          owner="${RUNIVERSE_OWNER:-dotmonk}"
+          repo="${RUNIVERSE_REPO:-${owner}/${owner}.r-universe.dev}"
           if [ -z "${RUNIVERSE_TOKEN}" ]; then
             echo "RUNIVERSE_TOKEN not set; package built but universe registry not updated"
-            echo "One-time: install the R-universe GitHub App and add to packages.json:"
+            echo "One-time: install the R-universe GitHub App and add to ${repo} packages.json:"
             echo '  {"package":"wildling","url":"https://github.com/dotmonk/wildling","subdir":"r"}'
             exit 0
           fi
           export GH_TOKEN="$RUNIVERSE_TOKEN"
-          owner="${RUNIVERSE_OWNER:-dotmonk}"
-          repo="${owner}/universe"
           tmp="$(mktemp)"
           if gh api "repos/${repo}/contents/packages.json" --jq .content 2>/dev/null | base64 -d >"$tmp" 2>/dev/null; then
             :
