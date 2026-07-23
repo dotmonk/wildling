@@ -1,3 +1,4 @@
+rockspec_format = "3.0"
 package = "wildling"
 version = "2.0.2-1"
 source = {
@@ -5,14 +6,16 @@ source = {
    tag = "v2.0.2",
    dir = "lua",
 }
-description = "Pattern based string generator library and CLI"
-detailed_description = [[
+description = {
+   summary = "Pattern based string generator library and CLI",
+   detailed = [[
 Enumerate pattern combinations for wordlists, domains, and test data.
 POSIX-friendly Lua implementation with zero rock dependencies.
-]]
-homepage = "https://github.com/dotmonk/wildling"
-license = "MIT"
-labels = { "pattern", "generator", "wildcard" }
+]],
+   homepage = "https://github.com/dotmonk/wildling",
+   license = "MIT",
+   labels = { "pattern", "generator", "wildcard" },
+}
 
 dependencies = {
    "lua >= 5.1",
