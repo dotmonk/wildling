@@ -233,13 +233,33 @@ sync_optional elixir/mix.exs \
     's/version:\s*"[^"]+"/version: "$ENV{VERSION}"/' \
     "version: \"$VERSION\""
 
-sync_optional lua/wildling.rockspec \
-    's/version\s*=\s*"[^"]+"/version = "$ENV{VERSION}-1"/' \
-    "version = \"$VERSION-1\""
-
-sync_optional lua/wildling.rockspec \
-    's/tag\s*=\s*"[^"]+"/tag = "v$ENV{VERSION}"/' \
-    "tag = \"v$VERSION\""
+# LuaRocks requires filename package-version-revision.rockspec
+lua_rockspec=""
+for _cand in "lua/wildling-${VERSION}-1.rockspec" lua/wildling-*-*.rockspec lua/wildling.rockspec; do
+    # Expand globs carefully
+    for _f in $_cand; do
+        if [ -f "$_f" ]; then
+            lua_rockspec="$_f"
+            break 2
+        fi
+    done
+done
+if [ -n "$lua_rockspec" ]; then
+    if [ "$CHECK" -eq 1 ]; then
+        check_contains "$lua_rockspec" "version = \"$VERSION-1\""
+        if [ "$lua_rockspec" != "lua/wildling-${VERSION}-1.rockspec" ]; then
+            echo "DRIFT $lua_rockspec (expected filename lua/wildling-${VERSION}-1.rockspec)" >&2
+            fail=1
+        fi
+    else
+        VERSION="$VERSION" perl -i -pe \
+            's/version\s*=\s*"[^"]+"/version = "$ENV{VERSION}-1"/; s/tag\s*=\s*"[^"]+"/tag = "v$ENV{VERSION}"/' \
+            "$lua_rockspec"
+        if [ "$lua_rockspec" != "lua/wildling-${VERSION}-1.rockspec" ]; then
+            mv "$lua_rockspec" "lua/wildling-${VERSION}-1.rockspec"
+        fi
+    fi
+fi
 
 sync_optional powershell/Wildling.psd1 \
     "s/ModuleVersion\s*=\s*'[^']+'/ModuleVersion = '\$ENV{VERSION}'/" \

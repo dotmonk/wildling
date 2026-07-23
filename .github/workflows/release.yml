@@ -367,8 +367,14 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq luarocks
           cp ../docs/help.txt lib/wildling/help.txt
+          VERSION="$(tr -d '[:space:]' < ../VERSION)"
+          rockspec="wildling-${VERSION}-1.rockspec"
+          if [ ! -f "$rockspec" ]; then
+            echo "Missing $rockspec" >&2
+            exit 1
+          fi
           set +e
-          out="$(luarocks upload wildling.rockspec --api-key="$LUAROCKS_API_KEY" 2>&1)"
+          out="$(luarocks upload "$rockspec" --api-key="$LUAROCKS_API_KEY" 2>&1)"
           status=$?
           set -e
           printf '%s\n' "$out"
