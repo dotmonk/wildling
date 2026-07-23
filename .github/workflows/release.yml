@@ -395,12 +395,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Publish
-        continue-on-error: true
         shell: pwsh
-        run: |
-          Publish-Module -Path ./powershell -NuGetApiKey $env:PSGALLERY_API_KEY -Repository PSGallery -Force
         env:
           PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:PSGALLERY_API_KEY)) {
+            Write-Host "PSGALLERY_API_KEY secret not set; skipping PowerShell Gallery publish"
+            exit 0
+          }
+          Copy-Item ../docs/help.txt ./powershell/help.txt -Force
+          # Gallery expects the folder name to match the module name.
+          $stage = Join-Path $env:RUNNER_TEMP "Wildling"
+          if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
+          Copy-Item ./powershell $stage -Recurse
+          try {
+            Publish-Module -Path $stage -NuGetApiKey $env:PSGALLERY_API_KEY -Repository PSGallery -Force -ErrorAction Stop
+          } catch {
+            $msg = $_.Exception.Message + "`n" + $_.ToString()
+            Write-Host $msg
+            if ($msg -match '(?i)already exists|cannot be overwritten|409|conflict') {
+              Write-Host "Version already on PowerShell Gallery; skipping"
+              exit 0
+            }
+            throw
+          }
 
   # --- Wave 4: Maven Central (Java first) ---
 
