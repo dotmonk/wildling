@@ -403,7 +403,7 @@ jobs:
             Write-Host "PSGALLERY_API_KEY secret not set; skipping PowerShell Gallery publish"
             exit 0
           }
-          Copy-Item ../docs/help.txt ./powershell/help.txt -Force
+          Copy-Item ./docs/help.txt ./powershell/help.txt -Force
           # Gallery expects the folder name to match the module name.
           $stage = Join-Path $env:RUNNER_TEMP "Wildling"
           if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
