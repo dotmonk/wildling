@@ -787,39 +787,3 @@ jobs:
             exit 0
           fi
           exit "$status"
-
-  fpm:
-    name: fpm registry
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: fortran
-    steps:
-      - uses: actions/checkout@v4
-      - name: Publish
-        env:
-          FPM_TOKEN: ${{ secrets.FPM_TOKEN }}
-        run: |
-          if [ -z "${FPM_TOKEN}" ]; then
-            echo "FPM_TOKEN not set; skipping fpm registry (git install still works)"
-            exit 0
-          fi
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq gfortran
-          curl -fsSL https://github.com/fortran-lang/fpm/releases/download/v0.13.0/fpm-0.13.0-linux-x86_64-gcc-12 -o /tmp/fpm
-          chmod +x /tmp/fpm
-          sudo mv /tmp/fpm /usr/local/bin/fpm
-          fpm --version
-          set +e
-          out="$(fpm publish --token="$FPM_TOKEN" 2>&1)"
-          status=$?
-          set -e
-          printf '%s\n' "$out"
-          if [ "$status" -eq 0 ]; then
-            exit 0
-          fi
-          if printf '%s\n' "$out" | grep -Eqi 'already (exists|uploaded|published)|version .+ already'; then
-            echo "Version already on fpm registry; skipping"
-            exit 0
-          fi
-          exit "$status"

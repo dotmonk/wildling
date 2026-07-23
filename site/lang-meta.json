@@ -225,13 +225,7 @@
     },
     "fortran": {
       "label": "Fortran",
-      "registries": [
-        {
-          "name": "fpm",
-          "url": "https://fpm.fortran-lang.org/registry/",
-          "install": null
-        }
-      ]
+      "registries": []
     },
     "ada": {
       "label": "Ada",

@@ -65,7 +65,6 @@ pascal/help.txt
 ada/dist
 ada/obj
 fortran/dist
-fortran/build/
 fsharp/dist
 fsharp/help.txt
 fsharp/obj

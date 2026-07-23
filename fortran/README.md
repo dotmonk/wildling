@@ -5,14 +5,6 @@ Fortran library and CLI for pattern-based string generation. **Zero third-party 
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/fortran)
 
-**Registry:** [fpm registry](https://fpm.fortran-lang.org/registry/) (when `FPM_TOKEN` is configured) or clone the `fortran/` tree
-
-```bash
-git clone --branch v2.0.2 --depth 1 https://github.com/dotmonk/wildling.git
-cd wildling/fortran
-fpm install
-```
-
 ## Example
 
 ```text

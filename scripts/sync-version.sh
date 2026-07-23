@@ -277,10 +277,6 @@ sync_optional r/DESCRIPTION \
     's/^Version:\s*.*/Version: $ENV{VERSION}/' \
     "Version: $VERSION"
 
-sync_optional fortran/fpm.toml \
-    's/^version\s*=\s*"[^"]+"/version = "$ENV{VERSION}"/' \
-    "version = \"$VERSION\""
-
 sync_optional_slurp() {
     _file="$1"
     _expr="$2"
