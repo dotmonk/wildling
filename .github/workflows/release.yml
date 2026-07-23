@@ -746,3 +746,29 @@ jobs:
             exit 0
           fi
           exit "$status"
+
+  github-release-native:
+    name: GitHub Release (C/C++)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package and upload C/C++ assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: |
+          if [ -z "$TAG" ]; then
+            echo "No release tag; skipping C/C++ GitHub Release assets"
+            exit 0
+          fi
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG not found yet; skipping"
+            exit 0
+          fi
+          chmod +x scripts/package-c-cpp-release.sh
+          VERSION="${TAG#v}"
+          ./scripts/package-c-cpp-release.sh "$VERSION"
+          gh release upload "$TAG" dist/release/*.tar.gz --clobber
+          ls -la dist/release/

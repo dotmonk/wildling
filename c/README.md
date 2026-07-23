@@ -39,9 +39,25 @@ cd c
 From a release tag:
 
 ```bash
-git clone --branch v2.0.0 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.2 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling
 ./build.sh c
+```
+
+**GitHub Release assets** (Linux x86_64 CLI + source tarballs) are attached to each [`vX.Y.Z` release](https://github.com/dotmonk/wildling/releases).
+
+**CMake** (library + CLI), including `FetchContent` from the monorepo:
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+  wildling
+  GIT_REPOSITORY https://github.com/dotmonk/wildling.git
+  GIT_TAG v2.0.2
+  SOURCE_SUBDIR c
+)
+FetchContent_MakeAvailable(wildling)
+target_link_libraries(myapp PRIVATE wildling)
 ```
 
 Produces `dist/wildling`. Link the sources under `src/` (except `cli.c`) to use as a library.

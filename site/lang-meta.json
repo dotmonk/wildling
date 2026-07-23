@@ -56,7 +56,13 @@
     },
     "cpp": {
       "label": "C++",
-      "registries": []
+      "registries": [
+        {
+          "name": "GitHub Releases",
+          "url": "https://github.com/dotmonk/wildling/releases",
+          "install": null
+        }
+      ]
     },
     "php": {
       "label": "PHP",
@@ -70,7 +76,13 @@
     },
     "c": {
       "label": "C",
-      "registries": []
+      "registries": [
+        {
+          "name": "GitHub Releases",
+          "url": "https://github.com/dotmonk/wildling/releases",
+          "install": null
+        }
+      ]
     },
     "go": {
       "label": "Go",

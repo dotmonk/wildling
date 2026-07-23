@@ -72,6 +72,19 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 
 Ada, Fortran, and Haskell have no package registries in this project — install from git (see their READMEs).
 
+### Wave 6 — C / C++ (GitHub Releases)
+
+No registry account required. The Release workflow builds Linux x86_64 CLI binaries and source trees, then uploads:
+
+| Asset | Contents |
+|-------|----------|
+| `wildling-c-X.Y.Z-linux-x86_64.tar.gz` | `wildling` CLI + `help.txt` |
+| `wildling-cpp-X.Y.Z-linux-x86_64.tar.gz` | same for C++ |
+| `wildling-c-X.Y.Z-src.tar.gz` | `src/` + `CMakeLists.txt` |
+| `wildling-cpp-X.Y.Z-src.tar.gz` | same for C++ |
+
+Consumers can also use CMake `FetchContent` with `SOURCE_SUBDIR` `c` or `cpp` (see language READMEs). **vcpkg** is deferred until these assets are stable.
+
 Configure trusted publishers (or secrets), then bump `VERSION` and push to `main`.
 
 ## Install

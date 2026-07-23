@@ -273,6 +273,14 @@ sync_optional r/DESCRIPTION \
     's/^Version:\s*.*/Version: $ENV{VERSION}/' \
     "Version: $VERSION"
 
+sync_optional c/CMakeLists.txt \
+    's/^project\(wildling_c VERSION [^ )]+/project(wildling_c VERSION $ENV{VERSION}/' \
+    "project(wildling_c VERSION $VERSION"
+
+sync_optional cpp/CMakeLists.txt \
+    's/^project\(wildling_cpp VERSION [^ )]+/project(wildling_cpp VERSION $ENV{VERSION}/' \
+    "project(wildling_cpp VERSION $VERSION"
+
 sync_optional_slurp() {
     _file="$1"
     _expr="$2"
