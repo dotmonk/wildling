@@ -469,3 +469,51 @@ jobs:
             exit 0
           fi
           exit "$status"
+
+  maven-central-kotlin:
+    name: Maven Central (Kotlin)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: kotlin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+      - name: Publish
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          if [ -z "${CENTRAL_USERNAME}" ] || [ -z "${CENTRAL_PASSWORD}" ] || [ -z "${GPG_PASSPHRASE}" ]; then
+            echo "CENTRAL_USERNAME / CENTRAL_PASSWORD / GPG_PASSPHRASE not set; skipping Maven Central"
+            exit 0
+          fi
+          if ! gpg --batch --list-secret-keys 2>/dev/null | grep -q sec; then
+            echo "GPG_PRIVATE_KEY not imported; skipping Maven Central"
+            exit 0
+          fi
+          cp ../docs/help.txt help.txt
+          set +e
+          out="$(mvn -B -DskipTests deploy -Pcentral 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|published)|Deployment .* already exists|409 Conflict|component .* already exists'; then
+            echo "Version already on Maven Central; skipping"
+            exit 0
+          fi
+          exit "$status"
