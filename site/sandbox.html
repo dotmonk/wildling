@@ -24,6 +24,7 @@
         <nav class="nav" aria-label="Primary">
           <a href="./">Home</a>
           <a href="syntax.html">Syntax</a>
+          <a href="cookbook.html">Cookbook</a>
           <a href="sandbox.html" aria-current="page">Sandbox</a>
           <a href="./#languages">Languages</a>
         </nav>
@@ -45,10 +46,13 @@
             </div>
             <div class="panel" style="margin-top: 1rem">
               <label class="panel__label" for="dictionaries">Dictionaries (JSON object)</label>
-              <textarea class="field" id="dictionaries" rows="5" spellcheck="false">{
-  "colors": ["red", "blue", "green"],
-  "tld": ["com", "net", "org"]
-}</textarea>
+              <p class="panel__hint">
+                Demo lists from <code>dictionaries/</code> load automatically:
+                <code>colors</code>, <code>planets</code>, <code>passwords</code>.
+                Click a name to insert <code>%{'name'}</code>.
+              </p>
+              <div class="examples" id="dict-list" aria-label="Loaded dictionaries"></div>
+              <textarea class="field" id="dictionaries" rows="8" spellcheck="false">{}</textarea>
             </div>
             <div class="sandbox__meta">
               <span>Total: <strong id="count">—</strong></span>
@@ -87,6 +91,8 @@
           <a href="./">← Home</a>
           ·
           <a href="syntax.html">Syntax</a>
+          ·
+          <a href="cookbook.html">Cookbook</a>
           ·
           <a href="https://github.com/dotmonk/wildling">GitHub</a>
         </p>

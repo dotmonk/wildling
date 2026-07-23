@@ -306,6 +306,35 @@ sync_optional_slurp scala/pom.xml \
     's/(<!-- WILDLING_PROJECT_VERSION -->\s*<version>)[^<]+(<\/version>)/${1}$ENV{VERSION}${2}/'
 sync_optional_slurp groovy/pom.xml \
     's/(<!-- WILDLING_PROJECT_VERSION -->\s*<version>)[^<]+(<\/version>)/${1}$ENV{VERSION}${2}/'
+
+# Documented git/registry install pins in language READMEs (tag / @v / #v / branch / git-ref).
+for _readme in */README.md; do
+    [ -f "$_readme" ] || continue
+    if [ "$CHECK" -eq 1 ]; then
+        if grep -Eq '(tag\s*[=:]\s*"|#|@|--branch |--git-ref=)v[0-9]+\.[0-9]+\.[0-9]+' "$_readme"; then
+            check_contains "$_readme" "v$VERSION"
+        fi
+        continue
+    fi
+    VERSION="$VERSION" perl -i -pe '
+        s/(tag\s*[=:]\s*")v\d+\.\d+\.\d+(")/${1}v$ENV{VERSION}$2/g;
+        s/(#|@|--branch |--git-ref=)v\d+\.\d+\.\d+/${1}v$ENV{VERSION}/g;
+    ' "$_readme"
+done
+
+# SwiftPM "from:" in site language meta (semver without leading v).
+if [ -f site/lang-meta.json ]; then
+    if [ "$CHECK" -eq 1 ]; then
+        if grep -Eq 'from: \\?"[0-9]+\.[0-9]+\.[0-9]+' site/lang-meta.json; then
+            check_contains site/lang-meta.json "from: \\\"$VERSION\\\""
+        fi
+    else
+        VERSION="$VERSION" perl -i -pe \
+            's/(from:\s*\\?")\d+\.\d+\.\d+/${1}$ENV{VERSION}/g' \
+            site/lang-meta.json
+    fi
+fi
+
 if [ "$CHECK" -eq 1 ]; then
     if [ "$fail" -ne 0 ]; then
         echo "Version check failed against VERSION=$VERSION" >&2

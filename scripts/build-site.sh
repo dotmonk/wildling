@@ -6,6 +6,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SITE_SRC="$ROOT/site"
 OUT="$ROOT/_site"
 LANGS_FILE="$ROOT/languages.txt"
+META_FILE="$ROOT/site/lang-meta.json"
 
 cd "$ROOT"
 
@@ -32,79 +33,70 @@ npx --yes esbuild@0.25.0 \
 } > "$OUT/assets/wildling.js"
 rm -f "$OUT/assets/wildling.raw.js"
 
+# --- demo dictionaries (from repo dictionaries/*.txt) ---
+python3 - "$ROOT/dictionaries" "$SITE_SRC/assets/demo-dictionaries.json" <<'PY'
+import json, pathlib, sys
+src, dst = map(pathlib.Path, sys.argv[1:3])
+out = {}
+for path in sorted(src.glob("*.txt")):
+    words = [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    out[path.stem] = words
+dst.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+PY
+
 # --- static assets ---
 cp "$SITE_SRC/assets/site.css" "$OUT/assets/site.css"
 cp "$SITE_SRC/assets/sandbox.js" "$OUT/assets/sandbox.js"
+cp "$SITE_SRC/assets/demo-dictionaries.json" "$OUT/assets/demo-dictionaries.json"
 # Prefer the site-tuned (lime) logo for Pages; keep assets/logo.svg for README.
 cp "$SITE_SRC/assets/logo.svg" "$OUT/assets/logo.svg"
 find "$SITE_SRC/assets/icons" -maxdepth 1 -type f \( -name '*.svg' -o -name 'NOTICE.md' \) \
     -exec cp {} "$OUT/assets/icons/" \;
 cp "$SITE_SRC/syntax.html" "$OUT/syntax.html"
 cp "$SITE_SRC/sandbox.html" "$OUT/sandbox.html"
+cp "$SITE_SRC/cookbook.html" "$OUT/cookbook.html"
 
-# --- language display names ---
-lang_label() {
-    case "$1" in
-        javascript) echo "JavaScript" ;;
-        python) echo "Python" ;;
-        java) echo "Java" ;;
-        csharp) echo "C#" ;;
-        visualbasic) echo "Visual Basic" ;;
-        cpp) echo "C++" ;;
-        php) echo "PHP" ;;
-        c) echo "C" ;;
-        go) echo "Go" ;;
-        rust) echo "Rust" ;;
-        kotlin) echo "Kotlin" ;;
-        ruby) echo "Ruby" ;;
-        swift) echo "Swift" ;;
-        scala) echo "Scala" ;;
-        dart) echo "Dart" ;;
-        posix-shell) echo "POSIX shell" ;;
-        powershell) echo "PowerShell" ;;
-        lua) echo "Lua" ;;
-        assembly) echo "Assembly" ;;
-        r) echo "R" ;;
-        groovy) echo "Groovy" ;;
-        perl) echo "Perl" ;;
-        elixir) echo "Elixir" ;;
-        pascal) echo "Pascal" ;;
-        zig) echo "Zig" ;;
-        fortran) echo "Fortran" ;;
-        ada) echo "Ada" ;;
-        fsharp) echo "F#" ;;
-        haskell) echo "Haskell" ;;
-        *) echo "$1" ;;
-    esac
-}
+# --- language wall from languages.txt + lang-meta.json ---
+python3 - "$LANGS_FILE" "$META_FILE" "$OUT" <<'PY'
+import json, pathlib, sys
 
-# --- language icon wall HTML ---
-WALL="$OUT/.lang-wall.html"
-: > "$WALL"
-while IFS= read -r lang || [ -n "$lang" ]; do
-    case "$lang" in ''|\#*) continue ;; esac
-    label="$(lang_label "$lang")"
-    icon="assets/icons/${lang}.svg"
-    if [ ! -f "$OUT/$icon" ]; then
-        icon="assets/icons/_fallback.svg"
-    fi
-    icon_file="$(basename "$icon")"
-    cat >> "$WALL" <<EOF
-<a class="lang-tile" href="languages/${lang}/">
-  <img class="lang-tile__icon" src="assets/icons/${icon_file}" alt="" width="36" height="36" decoding="async" />
-  <span class="lang-tile__name">${label}</span>
-</a>
-EOF
-done < "$LANGS_FILE"
+langs_file, meta_file, out_dir = map(pathlib.Path, sys.argv[1:4])
+meta = json.loads(meta_file.read_text(encoding="utf-8"))
+lang_meta = meta.get("languages") or {}
 
-WALL_INNER="$(
-    printf '%s\n' '<div class="lang-wall">'
-    cat "$WALL"
-    printf '%s\n' '</div>'
-)"
+def publish_kind(entry):
+    regs = (entry or {}).get("registries") or []
+    if not regs:
+        return "git"
+    names = [str(r.get("name") or "") for r in regs]
+    if any(n == "GitHub Releases" for n in names):
+        return "releases"
+    if all(n.startswith("Git") for n in names):
+        return "git"
+    return "registry"
 
-# Escape for Python triple-quoted? We'll use a file and Python replace.
-printf '%s\n' "$WALL_INNER" > "$OUT/.lang-wall-block.html"
+lines = ['<div class="lang-wall">']
+for raw in langs_file.read_text(encoding="utf-8").splitlines():
+    lang = raw.strip()
+    if not lang or lang.startswith("#"):
+        continue
+    entry = lang_meta.get(lang) or {}
+    label = entry.get("label") or lang
+    kind = publish_kind(entry)
+    icon = f"assets/icons/{lang}.svg"
+    if not (out_dir / icon).is_file():
+        icon = "assets/icons/_fallback.svg"
+    icon_file = pathlib.Path(icon).name
+    lines.append(
+        f'<a class="lang-tile" href="languages/{lang}/">\n'
+        f'  <img class="lang-tile__icon" src="assets/icons/{icon_file}" alt="" width="36" height="36" decoding="async" />\n'
+        f'  <span class="lang-tile__name">{label}</span>\n'
+        f'  <span class="lang-tile__badge">{kind}</span>\n'
+        f"</a>"
+    )
+lines.append("</div>")
+(out_dir / ".lang-wall-block.html").write_text("\n".join(lines) + "\n", encoding="utf-8")
+PY
 
 python3 - "$SITE_SRC/index.html" "$OUT/index.html" "$OUT/.lang-wall-block.html" <<'PY'
 import pathlib, sys

@@ -64,11 +64,8 @@ export npm_config_cache=/tmp/.npm
 npm ci --include=dev
 npm run build
 cp /docs/help.txt dist/help.txt
-cp package.json /tmp/package.json.bak
-node -e "const fs=require(\"fs\"); const p=JSON.parse(fs.readFileSync(\"package.json\",\"utf8\")); p.private=false; fs.writeFileSync(\"package.json\", JSON.stringify(p,null,2)+\"\\n\")"
 npm pack --pack-destination /tmp
 ls /tmp/wildling-*.tgz
-mv /tmp/package.json.bak package.json
 ' -e HOME=/tmp -e npm_config_cache=/tmp/.npm
 }
 

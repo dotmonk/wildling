@@ -48,3 +48,8 @@ sentinel.
 Library `get` / equivalent APIs may still return a **typed** false / `None` /
 `nil` / `undef` (Perl) for out-of-range access; that is distinct from the
 string `"false"`.
+
+Library `next` exhaustion uses that same typed sentinel. An **empty string**
+combination (for example from `#{0-1}`) is a real value — truthy loops such as
+`while ((value = wildling.next()))` in JavaScript stop too early; compare to
+`!== false` / `is not False` / `(value, ok)` / `Option` instead.

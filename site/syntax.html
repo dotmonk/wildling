@@ -24,6 +24,7 @@
         <nav class="nav" aria-label="Primary">
           <a href="./">Home</a>
           <a href="syntax.html" aria-current="page">Syntax</a>
+          <a href="cookbook.html">Cookbook</a>
           <a href="sandbox.html">Sandbox</a>
           <a href="./#languages">Languages</a>
         </nav>
@@ -102,8 +103,11 @@
 %{'colors',0-1}</code></pre>
         <p>
           Named word lists supplied by the host (CLI <code>--dictionary</code>,
-          template JSON, or library options). Built-in demo dictionaries include
-          <code>colors</code>, <code>planets</code>, and <code>passwords</code>.
+          template JSON, or library options). The engine has no built-ins; sample
+          lists such as <code>colors</code>, <code>planets</code>, and
+          <code>passwords</code> live under <code>dictionaries/</code> in the repo.
+          The <a href="sandbox.html">sandbox</a> loads those samples by default.
+          <a class="try" href="sandbox.html?pattern=%25%7B%27planets%27%7D">try planets</a>
         </p>
 
         <h2>Escaping</h2>
@@ -141,6 +145,8 @@
       <footer class="site-footer">
         <p>
           <a href="./">← Home</a>
+          ·
+          <a href="cookbook.html">Cookbook</a>
           ·
           <a href="sandbox.html">Sandbox</a>
           ·

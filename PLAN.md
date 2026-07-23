@@ -57,5 +57,6 @@ wildling [options] [pattern ...]
 ```
 
 Options (see `docs/help.txt`): `--select`, `--range`, `--check`, `--dictionary`,
-`--template`, `--help`, `--version`. Out-of-range select/range → lowercase
-`false`.
+`--template`, `--help`, `--version`. Out-of-range select/range → empty stdout for
+that index, stderr `out of range: N`, exit `1` if any index was invalid (see
+`docs/cli.md`). Do not print the word `false` on stdout.

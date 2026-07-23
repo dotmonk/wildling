@@ -1,7 +1,6 @@
 {
   "name": "wildling",
   "version": "2.0.2",
-  "private": true,
   "description": "Pattern based string generator library and CLI",
   "license": "MIT",
   "main": "./dist/index.js",

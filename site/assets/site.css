@@ -252,6 +252,34 @@ a:hover {
   line-height: 1.2;
 }
 
+.lang-tile__badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mist);
+  border: 1px solid var(--line);
+  padding: 0.12rem 0.35rem;
+  line-height: 1.2;
+}
+.lang-tile:hover .lang-tile__badge {
+  color: var(--fog);
+  border-color: rgba(200, 245, 66, 0.35);
+}
+
+.panel__hint {
+  margin: 0 0 0.65rem;
+  font-size: 0.85rem;
+  color: var(--mist);
+  line-height: 1.45;
+}
+.panel__hint code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  color: var(--fog);
+}
+
 /* —— prose / syntax —— */
 .prose {
   max-width: 48rem;

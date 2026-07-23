@@ -47,11 +47,11 @@ On **GitHub Release** (`vX.Y.Z`), [`.github/workflows/release.yml`](../.github/w
 2. Publish npm from `javascript/`
 3. Publish artifacts (PyPI, crates.io, NuGet, …)
 
-Manual mirror re-run: Actions → Release → Run workflow → set `tag` to `v2.0.0`.
+Manual mirror re-run: Actions → Release → Run workflow → set `tag` to `v2.0.2`.
 
 ```bash
 source scripts/ecosystem-repos.env
-./scripts/mirror-all-ecosystem.sh v2.0.0
+./scripts/mirror-all-ecosystem.sh v2.0.2
 ```
 
 | Script | Mirror |

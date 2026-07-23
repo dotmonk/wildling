@@ -11,6 +11,7 @@
 
   var patternsEl = document.getElementById("patterns");
   var dictsEl = document.getElementById("dictionaries");
+  var dictListEl = document.getElementById("dict-list");
   var outputEl = document.getElementById("output");
   var countEl = document.getElementById("count");
   var shownEl = document.getElementById("shown");
@@ -21,6 +22,7 @@
   var page = 1;
   var pageCount = 1;
   var debounceTimer = null;
+  var demoDictionaries = null;
 
   var EXAMPLES = [
     { label: "Year 19##", patterns: "Year 19##" },
@@ -28,6 +30,8 @@
     { label: "!!", patterns: "!!" },
     { label: "words", patterns: "${'blue,red,green',1-2}" },
     { label: "dict", patterns: "%{'colors'}#" },
+    { label: "planets", patterns: "%{'planets'}" },
+    { label: "passwords", patterns: "%{'passwords'}" },
     { label: "multi", patterns: "abrakadabra\nYear 19##" },
     { label: "escape", patterns: "\\##" },
   ];
@@ -76,6 +80,31 @@
     pagesEl.textContent = String(pages);
     pageEl.max = String(pages);
     pageEl.value = String(page);
+  }
+
+  function renderDictList(dicts) {
+    if (!dictListEl) return;
+    dictListEl.innerHTML = "";
+    var names = Object.keys(dicts).sort();
+    if (names.length === 0) {
+      dictListEl.textContent = "No dictionaries loaded.";
+      return;
+    }
+    names.forEach(function (name) {
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.textContent = name + " (" + dicts[name].length + ")";
+      chip.title = "Insert %{'" + name + "'} into patterns";
+      chip.addEventListener("click", function () {
+        var token = "%{'" + name + "'}";
+        var cur = patternsEl.value;
+        patternsEl.value = cur && !/\n$/.test(cur) ? cur + "\n" + token : cur + token;
+        page = 1;
+        refresh();
+      });
+      dictListEl.appendChild(chip);
+    });
   }
 
   function refresh() {
@@ -146,7 +175,14 @@
   }
 
   patternsEl.addEventListener("input", scheduleRefresh);
-  dictsEl.addEventListener("input", scheduleRefresh);
+  dictsEl.addEventListener("input", function () {
+    try {
+      renderDictList(parseDictionaries(dictsEl.value));
+    } catch (_err) {
+      /* keep last good list while typing */
+    }
+    scheduleRefresh();
+  });
 
   pageEl.addEventListener("change", function () {
     page = clampPage(pageEl.value, pageCount);
@@ -160,9 +196,37 @@
     }
   });
 
-  var params = new URLSearchParams(window.location.search);
-  if (params.has("pattern")) {
-    patternsEl.value = params.get("pattern");
+  function applyQueryAndStart() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.has("pattern")) {
+      patternsEl.value = params.get("pattern");
+    }
+    refresh();
   }
-  refresh();
+
+  function loadDemoDictionaries() {
+    return fetch("assets/demo-dictionaries.json")
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+          throw new Error("invalid demo dictionaries");
+        }
+        demoDictionaries = data;
+        dictsEl.value = JSON.stringify(data, null, 2);
+        renderDictList(data);
+      })
+      .catch(function () {
+        /* Fall back to whatever is already in the textarea. */
+        try {
+          renderDictList(parseDictionaries(dictsEl.value));
+        } catch (_err) {
+          if (dictListEl) dictListEl.textContent = "Could not load demo dictionaries.";
+        }
+      });
+  }
+
+  loadDemoDictionaries().then(applyQueryAndStart);
 })();

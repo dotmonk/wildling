@@ -135,7 +135,7 @@
         {
           "name": "Git (SwiftPM)",
           "url": "https://github.com/dotmonk/wildling-swift",
-          "install": ".package(url: \"https://github.com/dotmonk/wildling-swift.git\", from: \"2.0.1\")"
+          "install": ".package(url: \"https://github.com/dotmonk/wildling-swift.git\", from: \"2.0.2\")"
         }
       ]
     },

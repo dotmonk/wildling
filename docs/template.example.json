@@ -1,0 +1,14 @@
+{
+  "$schema": "./template.schema.json",
+  "patterns": [
+    "abrakadabra",
+    "%{'colors'}-##"
+  ],
+  "dictionaries": {
+    "colors": ["red", "blue", "green"],
+    "planets": "dictionaries/planets.txt"
+  },
+  "select": [0, 1],
+  "range": ["10-12"],
+  "check": false
+}

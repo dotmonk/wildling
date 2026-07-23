@@ -27,6 +27,8 @@ Shared contracts:
 
 - [`docs/cli.md`](docs/cli.md) — `--check` format, out-of-range stderr + exit 1
 - [`docs/help.txt`](docs/help.txt) — `--help` text (copied into build artifacts)
+- [`docs/template.schema.json`](docs/template.schema.json) — `--template` JSON shape (docs-only)
+- [`docs/template.example.json`](docs/template.example.json) — example template file
 
 ## Versioning
 
@@ -38,7 +40,8 @@ Publishing: [`docs/publishing.md`](docs/publishing.md). Maintainer conventions: 
 ## Adding or changing a language
 
 1. Keep **zero third-party runtime dependencies** outside that language’s stdlib
-   (hand-roll template JSON unless the stdlib already includes JSON).
+   (hand-roll template JSON unless the stdlib already includes JSON; see
+   [`docs/template.schema.json`](docs/template.schema.json)).
 2. Provide `\<lang>/build.sh` (Docker), `\<lang>/bin/wildling`, and a README.
 3. Add the id to [`languages.txt`](languages.txt) (popularity / status-table order).
 4. Pass `./build.sh <lang> && ./test.sh <lang>` including the shared fixtures.

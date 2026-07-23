@@ -251,7 +251,8 @@ function M.main(argv)
     local args = M.parse_args(argv)
 
     if args.help then
-        print(M.load_help_text():gsub("%s+$", ""))
+        local help = M.load_help_text():gsub("%s+$", "")
+        print(help)
         os.exit(0)
     end
 

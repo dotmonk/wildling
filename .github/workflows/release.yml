@@ -88,7 +88,6 @@ jobs:
           npm ci --include=dev
           npm run build
           cp ../docs/help.txt dist/help.txt
-          node -e "const p=require('./package.json'); p.private=false; require('fs').writeFileSync('package.json', JSON.stringify(p,null,2)+'\n')"
           npm publish --access public --provenance
 
   # --- Wave 2: OIDC trusted publishing (artifact registries; no extra git repos) ---

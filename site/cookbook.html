@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cookbook — wildling</title>
+    <meta
+      name="description"
+      content="Short wildling pattern recipes using today’s shared grammar."
+    />
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="./">
+          <img class="brand__mark" src="assets/logo.svg" alt="" width="28" height="28" />
+          wildling
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="./">Home</a>
+          <a href="syntax.html">Syntax</a>
+          <a href="cookbook.html" aria-current="page">Cookbook</a>
+          <a href="sandbox.html">Sandbox</a>
+          <a href="./#languages">Languages</a>
+        </nav>
+      </header>
+
+      <main class="prose">
+        <h1>Cookbook</h1>
+        <p>
+          Short recipes with the shared grammar — no extensions. Open any
+          <em>try</em> link in the sandbox (demo dictionaries are preloaded).
+        </p>
+
+        <h2>Year ranges</h2>
+        <pre><code>Year 19##
+Year 20#{0-2}</code></pre>
+        <p>
+          Two-digit and short three-digit year suffixes.
+          <a class="try" href="sandbox.html?pattern=Year%2019%23%23%0AYear%2020%23%7B0-2%7D">try</a>
+        </p>
+
+        <h2>Staging-style hosts</h2>
+        <pre><code>http://${'dev,stage,prod'}\-${'api,web'}#{0-1}.example.com</code></pre>
+        <p>
+          Environments × services × optional digit. Escape <code>\-</code> so
+          bare <code>-</code> is not the alnum wildcard.
+          <a
+            class="try"
+            href="sandbox.html?pattern=http%3A%2F%2F%24%7B%27dev%2Cstage%2Cprod%27%7D%5C-%24%7B%27api%2Cweb%27%7D%23%7B0-1%7D.example.com"
+            >try</a
+          >
+        </p>
+
+        <h2>Password-ish candidates</h2>
+        <pre><code>%{'passwords'}
+%{'passwords'}#</code></pre>
+        <p>
+          Sample list from <code>dictionaries/passwords.txt</code>, with and
+          without a trailing digit.
+          <a class="try" href="sandbox.html?pattern=%25%7B%27passwords%27%7D%0A%25%7B%27passwords%27%7D%23">try</a>
+        </p>
+
+        <h2>Named colors × digit</h2>
+        <pre><code>%{'colors'}#</code></pre>
+        <p>
+          <a class="try" href="sandbox.html?pattern=%25%7B%27colors%27%7D%23">try</a>
+        </p>
+
+        <h2>Inline word combinations</h2>
+        <pre><code>${'blue,red,green',1-2}</code></pre>
+        <p>
+          Length range over a comma-separated list (no dictionary file).
+          <a class="try" href="sandbox.html?pattern=%24%7B%27blue%2Cred%2Cgreen%27%2C1-2%7D">try</a>
+        </p>
+
+        <h2>Multipattern list</h2>
+        <pre><code>abrakadabra
+Year 19##</code></pre>
+        <p>
+          Patterns expand in order as separate generators.
+          <a class="try" href="sandbox.html?pattern=abrakadabra%0AYear%2019%23%23">try</a>
+        </p>
+
+        <h2>Select a single combination</h2>
+        <pre><code>wildling --select 0 --select 99 "Year 19##"</code></pre>
+        <p>
+          Prints only those indices (CLI). See
+          <a href="syntax.html">syntax</a> for <code>--range</code> and
+          <code>--check</code>.
+        </p>
+
+        <h2>Template JSON</h2>
+        <pre><code>{
+  "patterns": ["%{'planets'}-##"],
+  "dictionaries": {
+    "planets": ["earth", "mars"]
+  },
+  "select": [0, 1]
+}</code></pre>
+        <p>
+          Schema:
+          <a href="https://github.com/dotmonk/wildling/blob/main/docs/template.schema.json"
+            ><code>docs/template.schema.json</code></a
+          >
+          · example:
+          <a href="https://github.com/dotmonk/wildling/blob/main/docs/template.example.json"
+            ><code>docs/template.example.json</code></a
+          >.
+        </p>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          <a href="./">← Home</a>
+          ·
+          <a href="syntax.html">Syntax</a>
+          ·
+          <a href="sandbox.html">Sandbox</a>
+          ·
+          <a href="https://github.com/dotmonk/wildling">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

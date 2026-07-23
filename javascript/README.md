@@ -39,7 +39,7 @@ npm install wildling
 **Git (monorepo subdirectory):**
 
 ```bash
-npm install "git+https://github.com/dotmonk/wildling.git#v2.0.0:javascript"
+npm install "git+https://github.com/dotmonk/wildling.git#v2.0.2:javascript"
 ```
 
 `prepare` builds `dist/` when missing (Node 18+, network for TypeScript on first install).
@@ -47,7 +47,7 @@ npm install "git+https://github.com/dotmonk/wildling.git#v2.0.0:javascript"
 In `package.json`:
 
 ```json
-"wildling": "github:dotmonk/wildling#v2.0.0:javascript"
+"wildling": "github:dotmonk/wildling#v2.0.2:javascript"
 ```
 
 From this repository:
@@ -77,7 +77,7 @@ wildling.count(); // 101
 wildling.get(0); // "abrakadabra"
 
 let value;
-while ((value = wildling.next())) {
+while ((value = wildling.next()) !== false) {
   console.log(value);
 }
 

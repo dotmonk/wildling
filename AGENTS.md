@@ -14,10 +14,12 @@ CI runs `scripts/check-monorepo-root.sh` in the `version` job.
 |------|---------|
 | `README.md` | Project overview |
 | `docs/cli.md`, `docs/help.txt` | Shared CLI contracts |
+| `docs/template.schema.json`, `docs/template.example.json` | `--template` JSON (docs-only) |
 | `docs/publishing.md` | Versioning and releases |
 | `docs/ecosystem-repos.md` | PHP/Swift mirror setup |
 | `docs/snippets/example.md` | Shared pattern example for READMEs + Pages |
 | `site/lang-meta.json` | Per-language registry / docs links |
+| `site/cookbook.html` | Short pattern recipes (GitHub Pages) |
 | `<language>/README.md` | Install, git dependencies, library usage |
 
 Do not add `docs/README.md` or a central git-install index. Prefer extending
@@ -27,7 +29,7 @@ Do not add `docs/README.md` or a central git-install index. Prefer extending
 
 Only PHP and Swift need separate git repositories (Packagist and SwiftPM expect metadata at repo root). See `docs/ecosystem-repos.md`.
 
-JavaScript publishes to npm from `javascript/` in CI. `javascript/package.json` is `private: true` in git; the release workflow sets `private: false` only when publishing.
+JavaScript publishes to npm from `javascript/` in CI (`npm publish --access public`).
 
 ## Releases
 

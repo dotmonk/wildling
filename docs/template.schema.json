@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dotmonk.github.io/wildling/template.schema.json",
+  "title": "wildling CLI template",
+  "description": "JSON loaded by wildling --template. Docs-only contract for authors; ports parse a subset with their stdlib JSON.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "patterns": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "One or more patterns to expand (merged with CLI pattern args)."
+    },
+    "dictionaries": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Inline word list."
+          },
+          {
+            "type": "string",
+            "description": "Path to a dictionary file (one word per line)."
+          }
+        ]
+      }
+    },
+    "select": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0 },
+      "description": "Combination indices to print (same as --select)."
+    },
+    "range": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9]+-[0-9]+$"
+      },
+      "description": "Inclusive index ranges as \"start-end\" strings (same as --range)."
+    },
+    "check": {
+      "type": "boolean",
+      "description": "If true, print generation info instead of combinations (same as --check)."
+    }
+  }
+}

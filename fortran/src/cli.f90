@@ -44,20 +44,20 @@ program wildling_cli
     help_text = load_help_text()
     write(*, '(A)') help_text
     call cli_args_free(args)
-    stop 0
+    call c_exit(0)
   end if
 
   if (args%version) then
     write(*, '(A)') 'wildling ' // WILDLING_VERSION
     call cli_args_free(args)
-    stop 0
+    call c_exit(0)
   end if
 
   if (args%patterns%n == 0) then
     write(error_unit, '(A)') &
       'No pattern provided. Use --help for usage information.'
     call cli_args_free(args)
-    stop 1
+    call c_exit(1)
   end if
 
   call wildling_init(w, args%patterns, args%dicts)
@@ -281,18 +281,18 @@ contains
 
     if (.not. file_exists(path)) then
       write(error_unit, '(A)') 'Template file not found: ' // path
-      stop 1
+      call c_exit(1)
     end if
     raw = read_file(path, ok)
     if (.not. ok) then
       write(error_unit, '(A)') 'Template file not found: ' // path
-      stop 1
+      call c_exit(1)
     end if
     root => json_parse(raw)
     if (.not. associated(root) .or. root%value_type /= JSON_OBJECT) then
       if (associated(root)) call json_free(root)
       write(error_unit, '(A)') 'Invalid JSON template: ' // path
-      stop 1
+      call c_exit(1)
     end if
 
     node => json_object_get(root, 'check')
@@ -391,7 +391,7 @@ contains
         i = i + 1
         if (i > n) then
           write(error_unit, '(A)') 'Missing path for --template'
-          stop 1
+          call c_exit(1)
         end if
         call apply_template(a, get_arg(i))
         i = i + 1

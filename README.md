@@ -17,6 +17,8 @@
   ·
   <a href="https://dotmonk.github.io/wildling/sandbox.html">Sandbox</a>
   ·
+  <a href="https://dotmonk.github.io/wildling/cookbook.html">Cookbook</a>
+  ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
@@ -34,8 +36,23 @@ Docs and a live browser sandbox are published with GitHub Pages:
 - [Home (language wall)](https://dotmonk.github.io/wildling/)
 - [Pattern syntax](https://dotmonk.github.io/wildling/syntax.html)
 - [Sandbox](https://dotmonk.github.io/wildling/sandbox.html)
+- [Cookbook](https://dotmonk.github.io/wildling/cookbook.html)
 
 Build the site locally with `./scripts/build-site.sh` (output in `_site/`). In the repo **Settings → Pages**, set the source to **GitHub Actions**.
+
+## Install
+
+Pick a published channel when you can; otherwise clone and build that language directory.
+
+| Channel | Install |
+|---------|---------|
+| **npm** | `npm install wildling` |
+| **PyPI** | `pip install wildling` |
+| **crates.io** | `cargo install wildling` |
+| **Go** | `go get github.com/dotmonk/wildling/go/v2@latest` |
+| **NuGet** | `dotnet tool install -g DotMonk.Wildling` |
+
+More registries (Maven, Packagist, RubyGems, pub.dev, Hex, LuaRocks, …) and git-only ports are listed on the [website language wall](https://dotmonk.github.io/wildling/#languages) and in each `<language>/README.md`.
 
 ## Status
 
@@ -96,7 +113,7 @@ const wildling = createWildling({
 });
 
 let value;
-while ((value = wildling.next())) {
+while ((value = wildling.next()) !== false) {
   console.log(value);
 }
 ```
@@ -230,7 +247,7 @@ cd go && ./build.sh
 ```
 
 ```go
-import "github.com/dotmonk/wildling/go/wildling"
+import "github.com/dotmonk/wildling/go/v2/wildling"
 
 w := wildling.New([]string{"Year 19##"}, nil)
 for {
