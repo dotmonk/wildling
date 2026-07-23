@@ -209,7 +209,20 @@ jobs:
         uses: rubygems/configure-rubygems-credentials@main
       - name: Push gem
         if: steps.rubygems-auth.outcome == 'success'
-        run: gem push wildling-*.gem
+        run: |
+          set +e
+          out="$(gem push wildling-*.gem 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|been pushed)|Repushing of gem versions is not allowed'; then
+            echo "Version already on RubyGems; skipping"
+            exit 0
+          fi
+          exit "$status"
 
   pubdev:
     name: pub.dev
