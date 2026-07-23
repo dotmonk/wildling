@@ -322,13 +322,28 @@ jobs:
           elixir-version: "1.16"
           otp-version: "26"
       - name: Publish
-        continue-on-error: true
-        run: |
-          mix local.hex --force
-          mix deps.get || true
-          mix hex.publish --yes
         env:
           HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+        run: |
+          if [ -z "${HEX_API_KEY}" ]; then
+            echo "HEX_API_KEY secret not set; skipping Hex.pm publish"
+            exit 0
+          fi
+          mix local.hex --force
+          cp ../docs/help.txt lib/wildling/help.txt
+          set +e
+          out="$(mix hex.publish package --yes 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|published)|Package already exists|Version .+ already exists'; then
+            echo "Version already on Hex.pm; skipping"
+            exit 0
+          fi
+          exit "$status"
 
   luarocks:
     name: LuaRocks
