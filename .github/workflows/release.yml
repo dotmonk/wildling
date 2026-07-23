@@ -348,15 +348,38 @@ jobs:
   luarocks:
     name: LuaRocks
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lua
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - name: Publish
-        continue-on-error: true
+        env:
+          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
         run: |
+          if [ -z "${LUAROCKS_API_KEY}" ]; then
+            echo "LUAROCKS_API_KEY secret not set; skipping LuaRocks publish"
+            exit 0
+          fi
           sudo apt-get update -qq
           sudo apt-get install -y -qq luarocks
-          cd lua
-          luarocks upload wildling.rockspec --api-key="${{ secrets.LUAROCKS_API_KEY }}"
+          cp ../docs/help.txt lib/wildling/help.txt
+          set +e
+          out="$(luarocks upload wildling.rockspec --api-key="$LUAROCKS_API_KEY" 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|uploaded)|File already exists|module .+ already exists|version already exists'; then
+            echo "Version already on LuaRocks; skipping"
+            exit 0
+          fi
+          exit "$status"
 
   psgallery:
     name: PowerShell Gallery
