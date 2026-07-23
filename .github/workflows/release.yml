@@ -228,19 +228,22 @@ jobs:
     name: pub.dev
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
+      actions: write
       contents: read
-    defaults:
-      run:
-        working-directory: dart
     steps:
-      - uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
-      - name: Publish
+      - name: Trigger Publish pub.dev
         continue-on-error: true
-        run: dart pub publish --force
         env:
-          PUB_TOKEN: ${{ secrets.PUB_CREDENTIALS }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name || github.ref_name }}
+        run: |
+          if [ -z "$TAG" ]; then
+            echo "No tag to publish" >&2
+            exit 1
+          fi
+          # pub.dev OIDC expects tag push or workflow_dispatch (not workflow_call).
+          gh workflow run publish-pub.yml --repo "$GITHUB_REPOSITORY" -f "tag=$TAG"
+          echo "Triggered Publish pub.dev for $TAG"
 
   nuget-vb:
     name: NuGet (VB)

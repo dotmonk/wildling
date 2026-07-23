@@ -1,0 +1,58 @@
+# Publish the Dart package under dart/ to pub.dev via OIDC.
+# Tag pattern on pub.dev must be: v{{version}}
+#
+# First-time: publish once manually (`cd dart && dart pub publish`), then enable
+# "publishing from GitHub Actions" on the package Admin tab.
+name: Publish pub.dev
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Git tag to publish (e.g. v2.0.2)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: pub.dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dart
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Prepare
+        run: |
+          cp ../docs/help.txt help.txt 2>/dev/null || true
+          dart pub get
+
+      - name: Publish
+        run: |
+          set +e
+          out="$(dart pub publish --force 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$out"
+          if [ "$status" -eq 0 ]; then
+            exit 0
+          fi
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|been published)|Version .+ of .+ already exists'; then
+            echo "Version already on pub.dev; skipping"
+            exit 0
+          fi
+          exit "$status"
