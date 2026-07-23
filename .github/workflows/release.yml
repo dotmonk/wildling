@@ -366,6 +366,8 @@ jobs:
           fi
           sudo apt-get update -qq
           sudo apt-get install -y -qq luarocks
+          # luarocks upload needs a JSON library (API responses).
+          sudo luarocks install dkjson
           cp ../docs/help.txt lib/wildling/help.txt
           VERSION="$(tr -d '[:space:]' < ../VERSION)"
           rockspec="wildling-${VERSION}-1.rockspec"
