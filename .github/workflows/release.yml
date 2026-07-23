@@ -339,7 +339,7 @@ jobs:
           if [ "$status" -eq 0 ]; then
             exit 0
           fi
-          if printf '%s\n' "$out" | grep -Eqi 'already (exists|published)|Package already exists|Version .+ already exists'; then
+          if printf '%s\n' "$out" | grep -Eqi 'already (exists|published)|Package already exists|Version .+ already exists|must include the --replace flag'; then
             echo "Version already on Hex.pm; skipping"
             exit 0
           fi
