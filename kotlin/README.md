@@ -41,7 +41,7 @@ cd kotlin
 From a release tag:
 
 ```bash
-git clone --branch v2.0.3 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.4 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling
 ./build.sh kotlin
 ```
@@ -51,7 +51,7 @@ cd wildling
 
 ```kotlin
 dependencies {
-    implementation("io.github.dotmonk:wildling-kotlin:2.0.3")
+    implementation("io.github.dotmonk:wildling-kotlin:2.0.4")
 }
 ```
 

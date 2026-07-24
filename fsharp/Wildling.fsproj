@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>WildlingLib</RootNamespace>
     <AssemblyName>wildling</AssemblyName>
-    <Version>2.0.3</Version>
+    <Version>2.0.4</Version>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <PackageId>DotMonk.Wildling.FSharp</PackageId>
     <Authors>dotmonk</Authors>

@@ -10,7 +10,7 @@ namespace wildling {
 
 class Wildling {
 public:
-    static constexpr const char* kVersion = "2.0.3";
+    static constexpr const char* kVersion = "2.0.4";
 
     Wildling(const std::vector<std::string>& patterns, const Dictionaries& dictionaries);
 

@@ -1,9 +1,9 @@
 rockspec_format = "3.0"
 package = "wildling"
-version = "2.0.3-1"
+version = "2.0.4-1"
 source = {
    url = "git+https://github.com/dotmonk/wildling.git",
-   tag = "v2.0.3",
+   tag = "v2.0.4",
    dir = "lua",
 }
 description = {

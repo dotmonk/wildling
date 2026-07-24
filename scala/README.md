@@ -41,7 +41,7 @@ cd scala
 From a release tag:
 
 ```bash
-git clone --branch v2.0.3 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.4 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling
 ./build.sh scala
 ```
@@ -50,7 +50,7 @@ cd wildling
 **Registry:** Maven Central — `io.github.dotmonk:wildling-scala`
 
 ```scala
-libraryDependencies += "io.github.dotmonk" % "wildling-scala" % "2.0.3"
+libraryDependencies += "io.github.dotmonk" % "wildling-scala" % "2.0.4"
 ```
 
 Produces `dist/wildling.jar` via `./build.sh` (includes `scala-library`). Requires a JRE to run, or Docker (the launcher falls back to Temurin if `java` is not on `PATH`).

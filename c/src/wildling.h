@@ -4,7 +4,7 @@
 #include "generator.h"
 #include "util.h"
 
-#define WILDLING_VERSION "2.0.3"
+#define WILDLING_VERSION "2.0.4"
 
 typedef struct {
     Generator *generators;

@@ -1,7 +1,7 @@
 use crate::generator::Generator;
 use crate::parse_pattern::Dictionaries;
 
-pub const VERSION: &str = "2.0.3";
+pub const VERSION: &str = "2.0.4";
 
 pub struct Wildling {
     generators: Vec<Generator>,

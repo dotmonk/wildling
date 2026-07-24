@@ -1169,7 +1169,7 @@ fmt_range_item:         db " %lld-%lld", 0
 fmt_total:              db "total: %d", 0
 fmt_generator_line:     db 10, "generator: %s %d", 0
 fmt_version:            db "wildling %s", 10, 0
-version_str:            db "2.0.3", 0
+version_str:            db "2.0.4", 0
 no_pattern_msg:         db "No pattern provided. Use --help for usage information.", 10, 0
 init_fail_msg:          db "Failed to initialize wildling", 10, 0
 tmpl_not_found_fmt:     db "Template file not found: %s", 10, 0

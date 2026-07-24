@@ -7,7 +7,7 @@
   <groupId>io.github.dotmonk</groupId>
   <artifactId>wildling-scala</artifactId>
   <!-- WILDLING_PROJECT_VERSION -->
-  <version>2.0.3</version>
+  <version>2.0.4</version>
   <packaging>jar</packaging>
 
   <name>wildling-scala</name>
