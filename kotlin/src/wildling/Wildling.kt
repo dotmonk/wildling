@@ -59,7 +59,7 @@ class Wildling(
     }
 
     companion object {
-        const val VERSION: String = "2.0.2"
+        const val VERSION: String = "2.0.3"
 
         fun create(
             patterns: List<String>,

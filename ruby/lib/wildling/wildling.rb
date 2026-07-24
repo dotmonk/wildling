@@ -3,7 +3,7 @@
 require_relative "generator"
 
 module Wildling
-  VERSION = "2.0.2"
+  VERSION = "2.0.3"
 
   # Main enumerator. Prefer Wildling.create(...) from callers.
   class Client

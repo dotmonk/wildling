@@ -37,7 +37,7 @@ install.packages("wildling", repos = "https://dotmonk.r-universe.dev")
 Or from GitHub:
 
 ```r
-remotes::install_github("dotmonk/wildling", subdir = "r", ref = "v2.0.2")
+remotes::install_github("dotmonk/wildling", subdir = "r", ref = "v2.0.3")
 ```
 
 From this repository:

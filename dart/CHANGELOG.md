@@ -2,6 +2,10 @@
 
 All notable changes are documented in [GitHub Releases](https://github.com/dotmonk/wildling/releases).
 
+## 2.0.3
+
+- See [GitHub Releases](https://github.com/dotmonk/wildling/releases)
+
 ## 2.0.2
 
 - NuGet packages include README; see GitHub Releases for full notes

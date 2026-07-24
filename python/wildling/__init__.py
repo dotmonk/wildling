@@ -5,7 +5,7 @@ from typing import List, Optional, Union
 from .generator import Generator, create_generator
 from .parse_pattern import Dictionaries
 
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 
 WildlingResult = Union[str, bool]
 

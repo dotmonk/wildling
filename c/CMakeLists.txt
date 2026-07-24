@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(wildling_c VERSION 2.0.2 LANGUAGES C)
+project(wildling_c VERSION 2.0.3 LANGUAGES C)
 
 add_library(wildling
   src/util.c

@@ -7,7 +7,7 @@
   <groupId>io.github.dotmonk</groupId>
   <artifactId>wildling-groovy</artifactId>
   <!-- WILDLING_PROJECT_VERSION -->
-  <version>2.0.2</version>
+  <version>2.0.3</version>
   <packaging>jar</packaging>
 
   <name>wildling-groovy</name>

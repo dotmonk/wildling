@@ -311,14 +311,23 @@ sync_optional_slurp groovy/pom.xml \
 for _readme in */README.md; do
     [ -f "$_readme" ] || continue
     if [ "$CHECK" -eq 1 ]; then
-        if grep -Eq '(tag\s*[=:]\s*"|#|@|--branch |--git-ref=)v[0-9]+\.[0-9]+\.[0-9]+' "$_readme"; then
+        if grep -Eq '(tag\s*[=:]\s*"|#|@|--branch |--git-ref=|GIT_TAG |ref\s*=\s*")v[0-9]+\.[0-9]+\.[0-9]+' "$_readme"; then
             check_contains "$_readme" "v$VERSION"
+        fi
+        if grep -Eq '(wildling(-[a-z]+)?:|[%] "wildling[^"]*" % "|from: "|wildling-)[0-9]+\.[0-9]+\.[0-9]+' "$_readme"; then
+            check_contains "$_readme" "$VERSION"
         fi
         continue
     fi
     VERSION="$VERSION" perl -i -pe '
         s/(tag\s*[=:]\s*")v\d+\.\d+\.\d+(")/${1}v$ENV{VERSION}$2/g;
         s/(#|@|--branch |--git-ref=)v\d+\.\d+\.\d+/${1}v$ENV{VERSION}/g;
+        s/(GIT_TAG\s+)v\d+\.\d+\.\d+/${1}v$ENV{VERSION}/g;
+        s/(ref\s*=\s*")v\d+\.\d+\.\d+(")/${1}v$ENV{VERSION}$2/g;
+        s/(wildling(?:-[a-z]+)?:)\d+\.\d+\.\d+/${1}$ENV{VERSION}/g;
+        s/(% "wildling[^"]*" % ")\d+\.\d+\.\d+"/${1}$ENV{VERSION}"/g;
+        s/(wildling-)\d+\.\d+\.\d+(-1\.rockspec)/${1}$ENV{VERSION}$2/g;
+        s/(from:\s*")\d+\.\d+\.\d+"/${1}$ENV{VERSION}"/g;
     ' "$_readme"
 done
 
