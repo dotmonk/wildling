@@ -2,7 +2,11 @@
 # Tag pattern on pub.dev must be: v{{version}}
 #
 # First-time: publish once manually (`cd dart && dart pub publish`), then enable
-# "publishing from GitHub Actions" on the package Admin tab.
+# "publishing from GitHub Actions" on the package Admin tab (repo + tag pattern).
+#
+# pub.dev only accepts OIDC when the workflow run's ref_type is tag. Trigger via:
+#   - push of tag vX.Y.Z, or
+#   - `gh workflow run publish-pub.yml --ref vX.Y.Z` (must use --ref, not main)
 name: Publish pub.dev
 
 on:
@@ -10,11 +14,6 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "Git tag to publish (e.g. v2.0.2)"
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -28,10 +27,16 @@ jobs:
       run:
         working-directory: dart
     steps:
+      - name: Require tag ref (pub.dev OIDC)
+        run: |
+          echo "ref=${GITHUB_REF} ref_type=${GITHUB_REF_TYPE} ref_name=${GITHUB_REF_NAME}"
+          if [ "${GITHUB_REF_TYPE}" != "tag" ]; then
+            echo "::error::pub.dev OIDC requires a tag ref. Re-run with: gh workflow run publish-pub.yml --ref vX.Y.Z"
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
@@ -40,6 +45,15 @@ jobs:
         run: |
           cp ../docs/help.txt help.txt 2>/dev/null || true
           dart pub get
+
+      - name: Verify pubspec version matches tag
+        run: |
+          PUBSPEC_VERSION="$(sed -n 's/^version:[[:space:]]*//p' pubspec.yaml | tr -d '[:space:]')"
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$PUBSPEC_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::pubspec version ($PUBSPEC_VERSION) does not match tag ($GITHUB_REF_NAME)"
+            exit 1
+          fi
 
       - name: Publish
         run: |

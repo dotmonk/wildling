@@ -33,6 +33,10 @@ You can also run Actions → Release → Run workflow with `tag` set (e.g. `v2.0
 or publish a GitHub Release manually (the `release` event also starts the same
 workflow when the actor is not `GITHUB_TOKEN`).
 
+**pub.dev:** OIDC only accepts runs whose GitHub ref is a **tag** (not `main`).
+Release dispatches `publish-pub.yml` with `--ref vX.Y.Z`. To republish manually:
+`gh workflow run publish-pub.yml --ref v2.0.3`.
+
 Never hand-edit per-language version constants. CI runs `./scripts/sync-version.sh --check`.
 
 ## Release notes

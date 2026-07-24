@@ -78,7 +78,6 @@ jobs:
       - name: Upgrade npm for trusted publishing
         run: npm install -g npm@latest
       - name: Publish to npm
-        continue-on-error: true
         working-directory: javascript
         run: |
           npm ci --include=dev
@@ -227,7 +226,6 @@ jobs:
       contents: read
     steps:
       - name: Trigger Publish pub.dev
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ inputs.tag || github.event.release.tag_name || github.ref_name }}
@@ -236,9 +234,10 @@ jobs:
             echo "No tag to publish" >&2
             exit 1
           fi
-          # pub.dev OIDC expects tag push or workflow_dispatch (not workflow_call).
-          gh workflow run publish-pub.yml --repo "$GITHUB_REPOSITORY" -f "tag=$TAG"
-          echo "Triggered Publish pub.dev for $TAG"
+          # pub.dev OIDC requires ref_type=tag. Dispatch on the tag ref (not main),
+          # otherwise publish fails with "only allowed from a 'tag' refType".
+          gh workflow run publish-pub.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG"
+          echo "Triggered Publish pub.dev on ref $TAG"
 
   nuget-vb:
     name: NuGet (VB)
