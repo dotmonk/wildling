@@ -23,11 +23,9 @@ jobs:
   publish:
     name: pub.dev
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dart
     steps:
       - name: Require tag ref (pub.dev OIDC)
+        # Must not use working-directory: dart — that path does not exist until checkout.
         run: |
           echo "ref=${GITHUB_REF} ref_type=${GITHUB_REF_TYPE} ref_name=${GITHUB_REF_NAME}"
           if [ "${GITHUB_REF_TYPE}" != "tag" ]; then
@@ -42,11 +40,13 @@ jobs:
         uses: dart-lang/setup-dart@v1
 
       - name: Prepare
+        working-directory: dart
         run: |
           cp ../docs/help.txt help.txt 2>/dev/null || true
           dart pub get
 
       - name: Verify pubspec version matches tag
+        working-directory: dart
         run: |
           PUBSPEC_VERSION="$(sed -n 's/^version:[[:space:]]*//p' pubspec.yaml | tr -d '[:space:]')"
           TAG_VERSION="${GITHUB_REF_NAME#v}"
@@ -56,6 +56,7 @@ jobs:
           fi
 
       - name: Publish
+        working-directory: dart
         run: |
           set +e
           out="$(dart pub publish --force 2>&1)"
