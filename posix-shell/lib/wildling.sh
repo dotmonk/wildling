@@ -53,21 +53,22 @@ wildling_load_dictionary_file() {
     if [ ! -f "$_path" ]; then
         return 1
     fi
+    # Include CR so CRLF dictionary files match LF-trimmed ports.
+    _wl_cr=$(printf '\r')
+    _wl_tab=$(printf '\t')
     while IFS= read -r _line || [ -n "$_line" ]; do
         _trimmed="$_line"
         while [ -n "$_trimmed" ]; do
             _c="${_trimmed%"${_trimmed#?}"}"
             case "$_c" in
-                ''|' '|'	'|'
-') _trimmed="${_trimmed#?}" ;;
+                ''|' '|"$_wl_tab"|"$_wl_cr") _trimmed="${_trimmed#?}" ;;
                 *) break ;;
             esac
         done
         while [ -n "$_trimmed" ]; do
             _c="${_trimmed#"${_trimmed%?}"}"
             case "$_c" in
-                ''|' '|'	'|'
-') _trimmed="${_trimmed%?}" ;;
+                ''|' '|"$_wl_tab"|"$_wl_cr") _trimmed="${_trimmed%?}" ;;
                 *) break ;;
             esac
         done

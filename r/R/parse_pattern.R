@@ -219,7 +219,7 @@ words_tokenizer <- function(part) {
       }
     }
     variants <- c(variants, work_string)
-    options$variants <- gsub("\\\\,", ",", variants, fixed = TRUE)
+    options$variants <- gsub("\\,", ",", variants, fixed = TRUE)
   }
 
   create_token(options)

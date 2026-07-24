@@ -613,51 +613,6 @@ jobs:
           fi
           exit "$status"
 
-  cpan:
-    name: CPAN
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: perl
-    steps:
-      - uses: actions/checkout@v4
-      - name: Publish
-        env:
-          CPAN_USER: ${{ secrets.CPAN_USER }}
-          CPAN_PASSWORD: ${{ secrets.CPAN_PASSWORD }}
-        run: |
-          if [ -z "${CPAN_USER}" ] || [ -z "${CPAN_PASSWORD}" ]; then
-            echo "CPAN_USER / CPAN_PASSWORD not set; skipping CPAN"
-            exit 0
-          fi
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq cpanminus
-          sudo cpanm --notest ExtUtils::MakeMaker CPAN::Uploader
-          mkdir -p lib/Wildling
-          cp ../docs/help.txt lib/Wildling/help.txt
-          cp ../LICENSE LICENSE
-          perl Makefile.PL
-          make manifest
-          make dist
-          tarball="$(ls -1 Wildling-*.tar.gz | head -n 1)"
-          if [ -z "$tarball" ]; then
-            echo "No Wildling-*.tar.gz produced" >&2
-            exit 1
-          fi
-          set +e
-          out="$(cpan-upload -u "$CPAN_USER" -p "$CPAN_PASSWORD" "$tarball" 2>&1)"
-          status=$?
-          set -e
-          printf '%s\n' "$out"
-          if [ "$status" -eq 0 ]; then
-            exit 0
-          fi
-          if printf '%s\n' "$out" | grep -Eqi 'already exists|This version .+ already exists|duplicate'; then
-            echo "Version already on CPAN; skipping"
-            exit 0
-          fi
-          exit "$status"
-
   runiverse:
     name: R-universe
     runs-on: ubuntu-latest

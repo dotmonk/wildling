@@ -189,6 +189,8 @@ split_keeping_delimiters:
     inc ecx
     jmp .brace_scan
 .brace_closed:
+    ; ecx = index of closing '}' — must survive push_substr (caller-saved).
+    mov dword [rsp], ecx
     cmp r14d, r15d
     jbe .brace_no_prefix
     mov rdi, r13
@@ -201,12 +203,13 @@ split_keeping_delimiters:
 .brace_no_prefix:
     mov rdi, r13
     lea rsi, [r12 + r14]
-    mov edx, ecx
+    mov edx, dword [rsp]
     sub edx, r14d
     inc edx
     call push_substr
     test eax, eax
     js .fail
+    mov ecx, dword [rsp]
     lea r14d, [ecx + 1]
     mov r15d, r14d
     jmp .scan_loop

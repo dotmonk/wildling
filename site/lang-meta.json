@@ -130,11 +130,6 @@
         {
           "name": "Swift Package Index",
           "url": "https://swiftpackageindex.com/dotmonk/wildling-swift",
-          "install": null
-        },
-        {
-          "name": "Git (SwiftPM)",
-          "url": "https://github.com/dotmonk/wildling-swift",
           "install": ".package(url: \"https://github.com/dotmonk/wildling-swift.git\", from: \"2.0.2\")"
         }
       ]
@@ -209,13 +204,7 @@
     },
     "perl": {
       "label": "Perl",
-      "registries": [
-        {
-          "name": "CPAN",
-          "url": "https://metacpan.org/pod/Wildling",
-          "install": "cpanm Wildling"
-        }
-      ]
+      "registries": []
     },
     "elixir": {
       "label": "Elixir",

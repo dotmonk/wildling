@@ -5,7 +5,7 @@ Swift library and CLI for pattern-based string generation. **Zero third-party pa
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/swift)
 
-**Registry:** [Swift Package Index](https://swiftpackageindex.com/dotmonk/wildling-swift) · [Git (SwiftPM)](https://github.com/dotmonk/wildling-swift)
+**Registry:** [Swift Package Index](https://swiftpackageindex.com/dotmonk/wildling-swift)
 
 ## Example
 
@@ -38,7 +38,7 @@ cd swift
 ./bin/wildling "Year 19##"
 ```
 
-SwiftPM ([`dotmonk/wildling-swift`](https://github.com/dotmonk/wildling-swift)):
+**Registry** ([Swift Package Index](https://swiftpackageindex.com/dotmonk/wildling-swift) via [`dotmonk/wildling-swift`](https://github.com/dotmonk/wildling-swift)):
 
 ```swift
 dependencies: [

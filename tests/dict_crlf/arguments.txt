@@ -1,0 +1,1 @@
+--dictionary d:tests/dict_crlf/words.txt %{'d'}

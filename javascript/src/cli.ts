@@ -286,7 +286,8 @@ function main() {
 
   let string = wildcard.next();
 
-  while (string) {
+  // Empty string is a real combination (e.g. #{0-1}); only `false` means exhaustion.
+  while (string !== false) {
     console.log(string);
     string = wildcard.next();
   }

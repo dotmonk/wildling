@@ -60,17 +60,16 @@ See **[ecosystem-repos.md](ecosystem-repos.md)** for mirror setup.
 | 2 | PyPI, crates.io, NuGet, RubyGems, pub.dev |
 | 3 | Hex.pm, LuaRocks, PowerShell Gallery |
 | 4 | Maven Central (Java, then Kotlin/Scala/Groovy) |
-| 5 | CPAN, R-universe |
+| 5 | R-universe |
 | 6 | C/C++ via GitHub Releases (+ optional vcpkg) |
 
 ### Wave 5 secrets / one-time setup
 
 | Job | Secret / var | Notes |
 |-----|--------------|--------|
-| CPAN | `CPAN_USER`, `CPAN_PASSWORD` | PAUSE credentials |
 | R-universe | `RUNIVERSE_TOKEN` (optional); vars `RUNIVERSE_OWNER` (default `dotmonk`), `RUNIVERSE_REPO` (default `OWNER/OWNER.r-universe.dev`) | Builds `r/` always; token upserts `packages.json` on the registry repo (e.g. [dotmonk/dotmonk.r-universe.dev](https://github.com/dotmonk/dotmonk.r-universe.dev)). Also install the [R-universe GitHub App](https://docs.r-universe.dev/publish/set-up.html). |
 
-Ada, Fortran, and Haskell have no package registries in this project — install from git (see their READMEs).
+Ada, Fortran, Haskell, and Perl have no package registries in this project — install from git (see their READMEs).
 
 ### Wave 6 — C / C++ (GitHub Releases)
 
