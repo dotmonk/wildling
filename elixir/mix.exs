@@ -6,7 +6,7 @@ defmodule Wildling.MixProject do
   def project do
     [
       app: :wildling,
-      version: "2.0.4",
+      version: "2.0.5",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),

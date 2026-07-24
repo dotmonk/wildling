@@ -1,7 +1,7 @@
 package wildling
 
 class Wildling {
-    public static final String VERSION = "2.0.4"
+    public static final String VERSION = "2.0.5"
 
     private final List<Generator> generators
     private final int patternCount

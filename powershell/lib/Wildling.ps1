@@ -1,4 +1,4 @@
-$Script:WildlingVersion = '2.0.4'
+$Script:WildlingVersion = '2.0.5'
 
 class WildlingClient {
     [WildlingGenerator[]] $Generators

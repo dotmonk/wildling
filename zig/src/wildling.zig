@@ -3,7 +3,7 @@ const Allocator = std.mem.Allocator;
 const Generator = @import("generator.zig").Generator;
 const Dictionaries = @import("parse_pattern.zig").Dictionaries;
 
-pub const VERSION = "2.0.4";
+pub const VERSION = "2.0.5";
 
 pub const Wildling = struct {
     generators: []Generator,

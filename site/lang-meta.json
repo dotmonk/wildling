@@ -130,7 +130,7 @@
         {
           "name": "Swift Package Index",
           "url": "https://swiftpackageindex.com/dotmonk/wildling-swift",
-          "install": ".package(url: \"https://github.com/dotmonk/wildling-swift.git\", from: \"2.0.4\")"
+          "install": ".package(url: \"https://github.com/dotmonk/wildling-swift.git\", from: \"2.0.5\")"
         }
       ]
     },

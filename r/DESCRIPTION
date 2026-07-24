@@ -1,6 +1,6 @@
 Package: wildling
 Title: Pattern Based String Generator
-Version: 2.0.4
+Version: 2.0.5
 Authors@R: person(
     "dotmonk",
     email = "dotmonk@users.noreply.github.com",

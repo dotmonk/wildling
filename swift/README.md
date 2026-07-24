@@ -42,7 +42,7 @@ cd swift
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/dotmonk/wildling-swift.git", from: "2.0.4"),
+    .package(url: "https://github.com/dotmonk/wildling-swift.git", from: "2.0.5"),
 ],
 targets: [
     .target(name: "MyApp", dependencies: [

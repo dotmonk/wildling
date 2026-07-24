@@ -41,8 +41,8 @@ cd go
 **Module** (tags `vX.Y.Z` and `go/vX.Y.Z` on the monorepo — see [`docs/publishing.md`](../docs/publishing.md)):
 
 ```bash
-go get github.com/dotmonk/wildling/go/v2@v2.0.4
-go install github.com/dotmonk/wildling/go/v2/cmd/wildling@v2.0.4
+go get github.com/dotmonk/wildling/go/v2@v2.0.5
+go install github.com/dotmonk/wildling/go/v2/cmd/wildling@v2.0.5
 ```
 
 As a library:
