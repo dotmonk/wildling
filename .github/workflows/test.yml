@@ -181,17 +181,26 @@ jobs:
           chmod +x scripts/create-github-release.sh
           ./scripts/create-github-release.sh
 
-  # GITHUB_TOKEN cannot trigger release.yml via the release event; call it directly.
+  # GITHUB_TOKEN cannot start release.yml via the release event. Dispatch it as
+  # workflow_dispatch (not workflow_call) so OIDC trusted publishers see JWT
+  # workflow filename release.yml — reusable calls report test.yml and fail npm/PyPI/crates.
   publish:
     name: Publish
     needs: [create-release]
     if: needs.create-release.outputs.created == 'true'
+    runs-on: ubuntu-latest
     permissions:
-      # Must cover every permission release.yml jobs request (reusable-workflow ceiling).
-      contents: write
-      id-token: write
       actions: write
-    uses: ./.github/workflows/release.yml
-    with:
-      tag: ${{ needs.create-release.outputs.tag }}
-    secrets: inherit
+      contents: read
+    steps:
+      - name: Dispatch Release workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.create-release.outputs.tag }}
+        run: |
+          if [ -z "$TAG" ]; then
+            echo "No tag from create-release" >&2
+            exit 1
+          fi
+          gh workflow run release.yml --repo "$GITHUB_REPOSITORY" -f "tag=$TAG"
+          echo "Triggered Release for $TAG"

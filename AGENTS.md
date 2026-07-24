@@ -36,9 +36,11 @@ JavaScript publishes to npm from `javascript/` in CI (`npm publish --access publ
 Version in root `VERSION`; sync with `scripts/sync-version.sh`.
 Push to `main` after bumping `VERSION`: when Test + publish-artifact smoke pass,
 `scripts/create-github-release.sh` creates `vX.Y.Z`, `go/vX.Y.Z`, and a GitHub Release
-(skipped if the tag already exists). The same workflow then calls `release.yml`
-(`workflow_call`) to publish mirrors/registries — a `GITHUB_TOKEN` release event
-cannot start another workflow.
+(skipped if the tag already exists). The same workflow then **dispatches**
+`release.yml` (`gh workflow run`, not `workflow_call`) to publish
+mirrors/registries — a `GITHUB_TOKEN` release event cannot start another
+workflow, and reusable `workflow_call` from `test.yml` breaks OIDC trusted
+publishers (JWT workflow claim would be `test.yml`).
 
 Go module path for major ≥ 2 is `github.com/dotmonk/wildling/go/v2`.
 

@@ -10,15 +10,9 @@ on:
         required: false
         default: "manual"
       tag:
-        description: "Release tag for ecosystem mirrors (e.g. v2.0.1); required for manual mirror runs"
+        description: "Release tag (e.g. v2.0.3); required for mirrors/OIDC publish when not a release event"
         required: false
         default: ""
-  workflow_call:
-    inputs:
-      tag:
-        description: "Release tag (e.g. v2.0.1)"
-        required: true
-        type: string
 
 concurrency:
   group: release-${{ inputs.tag || github.event.release.tag_name || github.ref }}
@@ -27,6 +21,8 @@ concurrency:
 permissions:
   contents: read
   id-token: write
+  # pub.dev job dispatches publish-pub.yml via gh workflow run
+  actions: write
 
 jobs:
   # --- Ecosystem mirrors (PHP, Swift) ---

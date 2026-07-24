@@ -23,9 +23,15 @@ pass, CI creates:
 If `vX.Y.Z` already exists, CI skips creating a new release.
 
 Publishing mirrors and registry packages runs from
-[`.github/workflows/release.yml`](../.github/workflows/release.yml), invoked
-directly after a new release is created (and also via Actions → Release → Run
-workflow, or a manually published GitHub Release).
+[`.github/workflows/release.yml`](../.github/workflows/release.yml). After Test
+creates a GitHub Release, it **dispatches** that workflow (`gh workflow run`) so
+OIDC trusted publishers (npm, PyPI, crates.io) see workflow filename
+`release.yml`. Calling it as a reusable workflow from `test.yml` breaks those
+publishers (JWT claims `test.yml`).
+
+You can also run Actions → Release → Run workflow with `tag` set (e.g. `v2.0.3`),
+or publish a GitHub Release manually (the `release` event also starts the same
+workflow when the actor is not `GITHUB_TOKEN`).
 
 Never hand-edit per-language version constants. CI runs `./scripts/sync-version.sh --check`.
 
