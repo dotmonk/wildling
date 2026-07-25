@@ -66,8 +66,7 @@ published_epoch="$(date -u -d "$PUBLISHED_AT" +%s 2>/dev/null || date -u -j -f "
 now_epoch="$(date -u +%s)"
 age=$((now_epoch - published_epoch))
 utc_hour="$(date -u +%H)"
-# strip leading zero for decimal arithmetic
-utc_hour=$((utc_hour + 0))
+# Keep zero-padded form; do not use $((utc_hour)) — 08/09 are illegal octal in dash.
 
 POST_MIN=$((24 * 3600 + 10 * 60))   # 24h10m
 POST_MAX=$((25 * 3600 + 10 * 60))   # 25h10m
@@ -80,7 +79,7 @@ if [ "$age" -ge "$POST_MIN" ] && [ "$age" -lt "$POST_MAX" ]; then
     exit 0
 fi
 
-if [ "$age" -ge "$STALE" ] && [ "$utc_hour" -eq 3 ]; then
+if [ "$age" -ge "$STALE" ] && [ "$utc_hour" = "03" ]; then
     set_output should_run true
     set_output reason daily
     set_output tag "$TAG"
