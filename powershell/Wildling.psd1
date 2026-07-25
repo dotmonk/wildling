@@ -1,6 +1,6 @@
 @{
     RootModule        = 'Wildling.psm1'
-    ModuleVersion = '2.0.6'
+    ModuleVersion = '2.0.7'
     GUID              = 'a7c3e8f1-2b4d-4e9a-9c1f-8d6e5a4b3c2d'
     Author            = 'dotmonk'
     CompanyName       = 'dotmonk'

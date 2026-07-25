@@ -41,7 +41,7 @@ cd rust
 **Git / path:** Cargo does not allow `git` and `path` on the same dependency. Clone the tag (or add the monorepo as a git submodule) and depend on the `rust/` crate path:
 
 ```bash
-git clone --branch v2.0.6 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.7 --depth 1 https://github.com/dotmonk/wildling.git
 ```
 
 ```toml

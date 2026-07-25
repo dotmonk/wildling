@@ -2,6 +2,10 @@
 
 All notable changes are documented in [GitHub Releases](https://github.com/dotmonk/wildling/releases).
 
+## 2.0.7
+
+- See [GitHub Releases](https://github.com/dotmonk/wildling/releases)
+
 ## 2.0.6
 
 - See [GitHub Releases](https://github.com/dotmonk/wildling/releases)

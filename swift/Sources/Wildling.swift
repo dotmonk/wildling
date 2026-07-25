@@ -1,5 +1,5 @@
 public final class Wildling {
-    public static let version = "2.0.6"
+    public static let version = "2.0.7"
 
     private let generators: [Generator]
     private let patternCount: Int

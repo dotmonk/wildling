@@ -46,7 +46,7 @@ The CLI is `./bin/wildling`.
 **Git:**
 
 ```bash
-pip install "git+https://github.com/dotmonk/wildling.git@v2.0.6#subdirectory=python"
+pip install "git+https://github.com/dotmonk/wildling.git@v2.0.7#subdirectory=python"
 ```
 
 ## Library

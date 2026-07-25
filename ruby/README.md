@@ -41,7 +41,7 @@ cd ruby
 **Git (Bundler):**
 
 ```ruby
-gem "wildling", git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.6", glob: "ruby/wildling.gemspec"
+gem "wildling", git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.7", glob: "ruby/wildling.gemspec"
 ```
 
 **Registry:**

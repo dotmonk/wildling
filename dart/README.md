@@ -46,7 +46,7 @@ Produces a standalone AOT binary at `dist/wildling`.
 dart pub add wildling \
   --git-url=https://github.com/dotmonk/wildling.git \
   --git-path=dart \
-  --git-ref=v2.0.6
+  --git-ref=v2.0.7
 ```
 
 **Registry:** `dart pub add wildling`
