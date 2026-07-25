@@ -5,7 +5,7 @@ WriteMakefile(
     NAME             => 'Wildling',
     VERSION_FROM     => 'lib/Wildling.pm',
     ABSTRACT         => 'Pattern based string generator library and CLI',
-    AUTHOR           => 'dotmonk <dotmonk@users.noreply.github.com>',
+    AUTHOR           => 'Magnus Weinberg <magnus.weinberg@gmail.com>',
     LICENSE          => 'mit',
     MIN_PERL_VERSION => '5.014',
     EXE_FILES        => ['bin/wildling.pl'],

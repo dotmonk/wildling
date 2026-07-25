@@ -5,7 +5,7 @@ R library and CLI for pattern-based string generation. **Zero third-party depend
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/r)
 
-**Registry:** [R-universe](https://dotmonk.r-universe.dev/wildling) (after registration)
+**Registry:** [R-universe](https://dotmonk.r-universe.dev/wildling)
 
 ## Example
 

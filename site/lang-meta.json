@@ -109,7 +109,7 @@
       "registries": [
         {
           "name": "Maven Central",
-          "url": "https://central.sonatype.com/search?q=wildling",
+          "url": "https://central.sonatype.com/artifact/io.github.dotmonk/wildling-kotlin",
           "install": null
         }
       ]
@@ -139,7 +139,7 @@
       "registries": [
         {
           "name": "Maven Central",
-          "url": "https://central.sonatype.com/search?q=wildling",
+          "url": "https://central.sonatype.com/artifact/io.github.dotmonk/wildling-scala",
           "install": null
         }
       ]
@@ -204,7 +204,13 @@
     },
     "perl": {
       "label": "Perl",
-      "registries": []
+      "registries": [
+        {
+          "name": "CPAN",
+          "url": "https://metacpan.org/pod/Wildling",
+          "install": "cpanm Wildling"
+        }
+      ]
     },
     "elixir": {
       "label": "Elixir",

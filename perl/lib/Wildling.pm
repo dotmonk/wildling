@@ -86,3 +86,113 @@ sub get {
 }
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Wildling - pattern based string generator
+
+=head1 SYNOPSIS
+
+    use Wildling;
+
+    my $w = Wildling::create(
+        ['Year 19##'],
+        { colors => [qw(red blue)] },   # optional named dictionaries
+    );
+
+    while ( defined( my $value = $w->next() ) ) {
+        print "$value\n";
+    }
+
+    $w->reset();
+    print $w->get(0), "\n";   # first combination
+    print $w->count(), "\n";  # total combinations
+
+=head1 DESCRIPTION
+
+Wildling expands patterns with a shared wildcard grammar into every
+combination. Useful for wordlists, domain brainstorming, test data, and
+similar generation tasks.
+
+This is the Perl port of the multi-language
+L<wildling|https://github.com/dotmonk/wildling> project. Pattern syntax and
+CLI behaviour match the other ports; see the project docs:
+
+=over 4
+
+=item *
+
+L<https://dotmonk.github.io/wildling/syntax.html> — pattern syntax
+
+=item *
+
+L<https://dotmonk.github.io/wildling/sandbox.html> — browser sandbox
+
+=item *
+
+L<https://github.com/dotmonk/wildling/tree/main/perl> — this port
+
+=back
+
+The CLI ships as F<bin/wildling.pl> (C<wildling.pl> after install).
+
+=head1 FUNCTIONS
+
+=head2 create(\@patterns, \%dictionaries?)
+
+Returns a C<Wildling::Client> that enumerates all combinations of the given
+patterns. C<%dictionaries> maps names used by C<%{'name'}> tokens to
+arrayrefs of words. Omit or pass C<undef> for no dictionaries.
+
+=head2 is_false($value)
+
+True when C<$value> is C<undef> — the sentinel for exhausted C<next()> /
+out-of-range C<get()>. Empty string combinations are defined and are
+B<not> false in this sense.
+
+=head1 METHODS
+
+These methods are on the object returned by C<create>.
+
+=head2 next()
+
+Next combination, or C<undef> when exhausted.
+
+=head2 get($index)
+
+Combination at C<$index> (0-based), or C<undef> if out of range.
+
+=head2 count()
+
+Total number of combinations.
+
+=head2 reset()
+
+Rewind the C<next()> cursor to the start.
+
+=head2 index()
+
+Current C<next()> cursor position (number of values already yielded).
+
+=head2 generators()
+
+Arrayref of internal per-pattern generators (advanced use).
+
+=head1 SEE ALSO
+
+L<https://dotmonk.github.io/wildling/>,
+L<https://metacpan.org/dist/Wildling>
+
+=head1 AUTHOR
+
+Magnus Weinberg E<lt>magnus.weinberg@gmail.comE<gt>
+
+=head1 LICENSE
+
+MIT. See the F<LICENSE> file in the distribution.
+
+=cut

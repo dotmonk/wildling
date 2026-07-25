@@ -159,6 +159,24 @@ ls target/*.jar
 '
 }
 
+smoke_cpan() {
+    run_docker "perl:5.40-bookworm" "perl" '
+set -e
+mkdir -p lib/Wildling
+cp /docs/help.txt lib/Wildling/help.txt
+test -f LICENSE
+rm -f Wildling-*.tar.gz
+perl Makefile.PL
+make manifest
+make dist
+tarball="$(ls -1 Wildling-*.tar.gz | head -n 1)"
+test -n "$tarball"
+tar tzf "$tarball" | grep -q "/Makefile.PL$"
+tar tzf "$tarball" | grep -q "/bin/wildling.pl$"
+ls -la "$tarball"
+'
+}
+
 echo "Smoke-building publish artifacts (no upload)"
 echo
 
@@ -172,6 +190,7 @@ smoke "nuget (fsharp)" smoke_nuget fsharp
 smoke "nuget (visualbasic)" smoke_nuget visualbasic
 smoke hex smoke_hex
 smoke maven smoke_maven
+smoke cpan smoke_cpan
 
 echo
 if [ "$fail" -ne 0 ]; then

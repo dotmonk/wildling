@@ -42,9 +42,11 @@ groovy/dist
 groovy/.groovy
 groovy/lib/wildling/help.txt
 perl/lib/Wildling/help.txt
-perl/Wildling-*.tar.gz
+perl/Wildling-*
 perl/MYMETA.*
 perl/Makefile
+perl/Makefile.old
+perl/MANIFEST.bak
 perl/blib/
 perl/pm_to_blib
 elixir/ebin

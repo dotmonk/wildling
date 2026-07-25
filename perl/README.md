@@ -5,6 +5,8 @@ Perl library and CLI for pattern-based string generation. **Zero CPAN dependenci
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/perl)
 
+**Registry:** [CPAN](https://metacpan.org/pod/Wildling)
+
 ## Example
 
 ```text
@@ -27,6 +29,15 @@ Try it in the [sandbox](https://dotmonk.github.io/wildling/sandbox.html?pattern=
 <!-- /wildling:preamble -->
 
 ## Install
+
+**Registry (CPAN):**
+
+```bash
+cpanm Wildling
+# or: cpan Wildling
+```
+
+The CPAN distribution is named **`Wildling`** (PAUSE requires an uppercase package name).
 
 From this repository:
 

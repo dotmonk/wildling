@@ -5,6 +5,8 @@ C library and CLI for pattern-based string generation. **Zero third-party librar
 <!-- wildling:preamble -->
 **Docs:** [Website](https://dotmonk.github.io/wildling/) · [Sandbox](https://dotmonk.github.io/wildling/sandbox.html) · [Syntax](https://dotmonk.github.io/wildling/syntax.html) · [Source](https://github.com/dotmonk/wildling/tree/main/c)
 
+**Registry:** [GitHub Releases](https://github.com/dotmonk/wildling/releases)
+
 ## Example
 
 ```text
