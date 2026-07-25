@@ -629,7 +629,7 @@ jobs:
               echo "  - secret CPAN_USER is set"
             fi
             if [ -z "${CPAN_PASSWORD}" ]; then
-              echo "  - secret CPAN_PASSWORD is empty (PAUSE password or upload token)"
+              echo "  - secret CPAN_PASSWORD is empty"
             else
               echo "  - secret CPAN_PASSWORD is set"
             fi
