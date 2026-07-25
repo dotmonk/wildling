@@ -622,7 +622,17 @@ jobs:
           CPAN_PASSWORD: ${{ secrets.CPAN_PASSWORD }}
         run: |
           if [ -z "${CPAN_USER}" ] || [ -z "${CPAN_PASSWORD}" ]; then
-            echo "CPAN_USER / CPAN_PASSWORD not set; skipping CPAN"
+            echo "Skipping CPAN:"
+            if [ -z "${CPAN_USER}" ]; then
+              echo "  - secret CPAN_USER is empty (set to your PAUSE id, e.g. DOTMONK)"
+            else
+              echo "  - secret CPAN_USER is set"
+            fi
+            if [ -z "${CPAN_PASSWORD}" ]; then
+              echo "  - secret CPAN_PASSWORD is empty (PAUSE password or upload token)"
+            else
+              echo "  - secret CPAN_PASSWORD is set"
+            fi
             exit 0
           fi
           sudo apt-get update -qq
