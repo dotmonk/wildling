@@ -41,7 +41,7 @@ cd cpp
 From a release tag:
 
 ```bash
-git clone --branch v2.0.5 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.6 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling
 ./build.sh cpp
 ```
@@ -55,7 +55,7 @@ include(FetchContent)
 FetchContent_Declare(
   wildling
   GIT_REPOSITORY https://github.com/dotmonk/wildling.git
-  GIT_TAG v2.0.5
+  GIT_TAG v2.0.6
   SOURCE_SUBDIR cpp
 )
 FetchContent_MakeAvailable(wildling)

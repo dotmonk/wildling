@@ -41,7 +41,7 @@ cd rust
 **Git** (`Cargo.toml`):
 
 ```toml
-wildling = { git = "https://github.com/dotmonk/wildling", tag = "v2.0.5", path = "rust" }
+wildling = { git = "https://github.com/dotmonk/wildling", tag = "v2.0.6", path = "rust" }
 ```
 
 **Registry:** `cargo install wildling`
