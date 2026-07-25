@@ -59,7 +59,7 @@ jobs:
             done
 
             # Shared contract / fixture / harness changes affect every port.
-            if printf '%s\n' "$CHANGED" | grep -Eq '^(tests/|docs/|scripts/|VERSION$|test\.sh$|build\.sh$|release\.sh$|languages\.txt$|Package\.swift$)'; then
+            if printf '%s\n' "$CHANGED" | grep -Eq '^(tests/|docs/|scripts/|VERSION$|test\.sh$|build\.sh$|release\.sh$|post-release-smoke-test\.sh$|languages\.txt$|Package\.swift$)'; then
               SELECTED="$ALL"
             else
               ONLY_JS=1

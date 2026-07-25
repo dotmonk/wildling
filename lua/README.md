@@ -38,7 +38,7 @@ cd lua
 ./bin/wildling "Year 19##"
 ```
 
-**Git** (from monorepo root after clone):
+**Git** (from a monorepo clone; module paths in the rockspec are relative to the **repo root**):
 
 ```bash
 git clone --branch v2.0.6 --depth 1 https://github.com/dotmonk/wildling.git
@@ -47,6 +47,8 @@ luarocks make lua/wildling-2.0.6-1.rockspec
 ```
 
 **Registry:** `luarocks install wildling`
+
+Releases **through 2.0.6** on LuaRocks used `source.dir = "lua"` while packing the full monorepo, so a plain `luarocks install wildling` fails with “Could not determine source directory”. Workarounds for those rocks: clone and `luarocks make` as above, or `luarocks download wildling --source`, unpack, then `luarocks make` from the nested `lua/` tree. Newer publishes use repo-root module paths and install normally.
 
 ```lua
 package.path = "./lib/?.lua;" .. "./lib/?/init.lua;" .. package.path

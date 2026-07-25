@@ -46,7 +46,7 @@ dependencies: [
 ],
 targets: [
     .target(name: "MyApp", dependencies: [
-        .product(name: "Wildling", package: "wildling"),
+        .product(name: "Wildling", package: "wildling-swift"),
     ]),
 ]
 ```

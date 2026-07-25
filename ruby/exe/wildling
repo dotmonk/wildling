@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Gem executable (Rubygems wraps this as Ruby). Monorepo CLI remains bin/wildling (shell).
+load File.expand_path("../bin/wildling.rb", __dir__)

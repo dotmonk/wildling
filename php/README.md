@@ -44,12 +44,16 @@ cd php
 composer require dotmonk/wildling
 ```
 
-**Path** (monorepo clone):
+**Path** (monorepo clone): the path package has no `version` in `composer.json`, so Composer treats it as `dev-*`. Pin a version with `options.versions` (or set `"minimum-stability": "dev"`):
 
 ```json
 {
-  "repositories": [{ "type": "path", "url": "./php" }],
-  "require": { "dotmonk/wildling": "*" }
+  "repositories": [{
+    "type": "path",
+    "url": "./php",
+    "options": { "versions": { "dotmonk/wildling": "2.0.6" } }
+  }],
+  "require": { "dotmonk/wildling": "2.0.6" }
 }
 ```
 

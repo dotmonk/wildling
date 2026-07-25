@@ -18,6 +18,7 @@ one pattern grammar and one CLI contract.
 ./build.sh                 # all languages in languages.txt
 ./test.sh                  # all language fixtures + publish-artifact smoke
 ./test.sh --publish-artifacts   # registry packs only (npm/PyPI/crates/…, no upload)
+./post-release-smoke-test.sh    # install from git + registries; exercise CLI + library
 ```
 
 Fixtures live under `tests/`. Each case has `arguments.txt` and `expected.txt`.
@@ -42,7 +43,7 @@ Publishing: [`docs/publishing.md`](docs/publishing.md). Maintainer conventions: 
 1. Keep **zero third-party runtime dependencies** outside that language’s stdlib
    (hand-roll template JSON unless the stdlib already includes JSON; see
    [`docs/template.schema.json`](docs/template.schema.json)).
-2. Provide `\<lang>/build.sh` (Docker), `\<lang>/bin/wildling`, and a README.
+2. Provide `\<lang>/build.sh` (Docker), `\<lang>/bin/wildling`, `\<lang>/post-release-smoke.sh`, and a README.
 3. Add the id to [`languages.txt`](languages.txt) (popularity / status-table order).
 4. Pass `./build.sh <lang> && ./test.sh <lang>` including the shared fixtures.
 5. Update the root README status table and, if needed, `PLAN.md` stack notes.

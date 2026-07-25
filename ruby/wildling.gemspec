@@ -20,9 +20,9 @@ Gem::Specification.new do |spec|
   spec.metadata["changelog_uri"] = "https://github.com/dotmonk/wildling/releases"
 
   spec.files = Dir.chdir(__dir__) do
-    Dir["lib/**/*", "bin/*", "help.txt", "README.md"].select { |f| File.file?(f) }
+    Dir["lib/**/*", "bin/wildling.rb", "exe/*", "help.txt", "README.md"].select { |f| File.file?(f) }
   end
-  spec.bindir = "bin"
+  spec.bindir = "exe"
   spec.executables = ["wildling"]
   spec.require_paths = ["lib"]
 end

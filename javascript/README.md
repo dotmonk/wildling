@@ -36,19 +36,18 @@ Try it in the [sandbox](https://dotmonk.github.io/wildling/sandbox.html?pattern=
 npm install wildling
 ```
 
-**Git (monorepo subdirectory):**
+**Git (monorepo subdirectory):** current npm does not reliably resolve the `#tag:subdir` / `github:…#tag:subdir` forms for this repo. Prefer a tagged clone, then install from the `javascript/` tree (run `npm ci --include=dev && npm run build` there first if `dist/` is missing):
 
 ```bash
-npm install "git+https://github.com/dotmonk/wildling.git#v2.0.6:javascript"
+git clone --branch v2.0.6 --depth 1 https://github.com/dotmonk/wildling.git
+cd wildling/javascript
+npm ci --include=dev
+npm run build
+cd /path/to/your-app
+npm install /path/to/wildling/javascript
 ```
 
-`prepare` builds `dist/` when missing (Node 18+, network for TypeScript on first install).
-
-In `package.json`:
-
-```json
-"wildling": "github:dotmonk/wildling#v2.0.6:javascript"
-```
+`prepare` builds `dist/` when missing on install (Node 18+, network for TypeScript on first install).
 
 From this repository:
 
@@ -58,7 +57,7 @@ npm ci --include=dev
 npm run build
 ```
 
-The CLI is `./bin/wildling`. The library entry is `dist/index.js`.
+The CLI is `./bin/wildling` (or `npx wildling` after install). The library entry is `dist/index.js`.
 
 ## Library
 

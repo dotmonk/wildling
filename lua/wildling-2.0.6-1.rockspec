@@ -2,9 +2,10 @@ rockspec_format = "3.0"
 package = "wildling"
 version = "2.0.6-1"
 source = {
+   -- Clone creates a directory named after the repo ("wildling"). Module paths
+   -- below are relative to that monorepo root (not the lua/ subdirectory alone).
    url = "git+https://github.com/dotmonk/wildling.git",
    tag = "v2.0.6",
-   dir = "lua",
 }
 description = {
    summary = "Pattern based string generator library and CLI",
@@ -24,16 +25,16 @@ dependencies = {
 build = {
    type = "builtin",
    modules = {
-      wildling = "lib/wildling/init.lua",
-      ["wildling.generator"] = "lib/wildling/generator.lua",
-      ["wildling.parse_pattern"] = "lib/wildling/parse_pattern.lua",
-      ["wildling.token"] = "lib/wildling/token.lua",
-      ["wildling.json"] = "lib/wildling/json.lua",
-      ["wildling.cli"] = "lib/wildling/cli.lua",
+      wildling = "lua/lib/wildling/init.lua",
+      ["wildling.generator"] = "lua/lib/wildling/generator.lua",
+      ["wildling.parse_pattern"] = "lua/lib/wildling/parse_pattern.lua",
+      ["wildling.token"] = "lua/lib/wildling/token.lua",
+      ["wildling.json"] = "lua/lib/wildling/json.lua",
+      ["wildling.cli"] = "lua/lib/wildling/cli.lua",
    },
    install = {
       bin = {
-         wildling = "bin/wildling.lua",
+         wildling = "lua/bin/wildling.lua",
       },
    },
 }

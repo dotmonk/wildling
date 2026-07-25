@@ -38,15 +38,27 @@ cd rust
 ./bin/wildling "Year 19##"
 ```
 
-**Git** (`Cargo.toml`):
+**Git / path:** Cargo does not allow `git` and `path` on the same dependency. Clone the tag (or add the monorepo as a git submodule) and depend on the `rust/` crate path:
 
-```toml
-wildling = { git = "https://github.com/dotmonk/wildling", tag = "v2.0.6", path = "rust" }
+```bash
+git clone --branch v2.0.6 --depth 1 https://github.com/dotmonk/wildling.git
 ```
 
-**Registry:** `cargo install wildling`
+```toml
+# Cargo.toml in your app
+wildling = { path = "../wildling/rust" }  # adjust relative path
+```
 
-Or after clone: `cargo install --path .`
+```bash
+cargo install --path path/to/wildling/rust   # CLI from that clone
+```
+
+**Registry:**
+
+```bash
+cargo add wildling          # library
+cargo install wildling      # CLI
+```
 
 ```rust
 use wildling::{Dictionaries, Wildling};

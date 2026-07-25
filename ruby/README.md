@@ -44,10 +44,15 @@ cd ruby
 gem "wildling", git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.6", glob: "ruby/wildling.gemspec"
 ```
 
-**Registry:** `gem install wildling`
+**Registry:**
+
+```bash
+gem install wildling
+wildling "Year 19##"
+```
 
 ```ruby
-require_relative "lib/wildling"
+require "wildling"
 
 wildling = Wildling.create(["Year 19##"])
 value = wildling.next
@@ -56,6 +61,8 @@ while value != false
   value = wildling.next
 end
 ```
+
+The published gem’s executable is a Ruby stub under `exe/` (so `gem install` + `wildling` works). The monorepo `./bin/wildling` is a separate shell launcher with a Docker fallback when `ruby` is missing. Gems through **2.0.6** shipped a shell script as the Rubygems executable (broken under `gem install`); use `ruby "$(gem contents wildling | grep bin/wildling.rb)"` as a workaround, or install a newer gem once published.
 
 ## CLI
 

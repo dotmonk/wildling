@@ -46,12 +46,14 @@ cd wildling
 ./build.sh fsharp
 ```
 
+**Registry (CLI):** NuGet package `DotMonk.Wildling.FSharp` is a .NET tool (`PackAsTool`), not a library `PackageReference`:
 
-**Registry:** NuGet (when published)
+```bash
+dotnet tool install -g DotMonk.Wildling.FSharp
+wildling-fs "Year 19##"
+```
 
-Produces `dist/wildling.dll` (and dependencies). Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
-
-As a library, reference the project or published assembly:
+**Library:** reference the project from a clone (or the built `dist/` assembly).
 
 ```fsharp
 open WildlingLib
@@ -62,6 +64,8 @@ while not (match value with :? bool as b -> b = false | _ -> false) do
     printfn "%O" value
     value <- wildling.Next()
 ```
+
+Produces `dist/wildling.dll` when built from this tree. Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
 
 ## CLI
 

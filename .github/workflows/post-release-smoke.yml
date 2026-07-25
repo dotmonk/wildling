@@ -1,0 +1,92 @@
+name: Post-release smoke
+
+on:
+  schedule:
+    # Hourly at :10 so the 24h10m post-release window is hit once.
+    - cron: "10 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run even if the schedule gate would skip"
+        type: boolean
+        default: true
+      tag:
+        description: "Release tag to smoke (default: latest)"
+        required: false
+        default: ""
+
+concurrency:
+  group: post-release-smoke
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: Schedule gate
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+      reason: ${{ steps.gate.outputs.reason }}
+      tag: ${{ steps.gate.outputs.tag }}
+      languages: ${{ steps.langs.outputs.languages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Decide whether to run
+        id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_OVERRIDE: ${{ inputs.tag || '' }}
+        run: |
+          chmod +x scripts/should-run-post-release-smoke.sh
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            export FORCE=1
+          else
+            export FORCE=0
+          fi
+          ./scripts/should-run-post-release-smoke.sh
+
+      - name: Language matrix
+        id: langs
+        if: steps.gate.outputs.should_run == 'true'
+        run: |
+          set -e
+          ALL="$(grep -v '^[[:space:]]*#' languages.txt | grep -v '^[[:space:]]*$' | tr '\n' ' ')"
+          JSON='['
+          FIRST=1
+          for lang in $ALL; do
+            if [ "$FIRST" = 1 ]; then FIRST=0; else JSON="$JSON,"; fi
+            JSON="$JSON\"$lang\""
+          done
+          JSON="$JSON]"
+          echo "languages=$JSON" >> "$GITHUB_OUTPUT"
+          echo "Matrix: $JSON"
+          echo "Gate reason=${{ steps.gate.outputs.reason }} tag=${{ steps.gate.outputs.tag }}"
+
+  smoke:
+    name: Smoke (${{ matrix.language }})
+    needs: [gate]
+    if: needs.gate.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(needs.gate.outputs.languages) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Post-release smoke ${{ matrix.language }}
+        env:
+          WILDLING_SMOKE_TAG: ${{ needs.gate.outputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x post-release-smoke-test.sh scripts/post-release-smoke.sh
+          ./post-release-smoke-test.sh "${{ matrix.language }}"

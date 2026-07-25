@@ -97,6 +97,37 @@ Consumers can also use CMake `FetchContent` with `SOURCE_SUBDIR` `c` or `cpp` (s
 
 Configure trusted publishers (or secrets), then bump `VERSION` and push to `main`.
 
+## Post-release smoke
+
+After packages propagate, CI verifies **consumer** installs (not in-repo `./build.sh`):
+
+```bash
+./post-release-smoke-test.sh              # all languages in languages.txt
+WILDLING_SMOKE_TAG=v2.0.6 ./post-release-smoke-test.sh javascript python
+```
+
+Each language owns `<language>/post-release-smoke.sh` (same idea as `build.sh`).
+Shared helpers live in [`scripts/post-release-smoke-lib.sh`](../scripts/post-release-smoke-lib.sh);
+the root harness is [`scripts/post-release-smoke.sh`](../scripts/post-release-smoke.sh).
+
+Workflow [`.github/workflows/post-release-smoke.yml`](../.github/workflows/post-release-smoke.yml)
+runs on an hourly cron (`:10`). A gate
+([`scripts/should-run-post-release-smoke.sh`](../scripts/should-run-post-release-smoke.sh))
+starts the matrix when:
+
+| Condition | Reason |
+|-----------|--------|
+| Latest GitHub Release age is in `[24h10m, 25h10m)` | `post-release` |
+| Latest release age ≥ 48h and UTC hour is 3 (03:10 cron) | `daily` |
+
+Manual runs: Actions → Post-release smoke → Run workflow (`force` defaults on).
+
 ## Install
 
-Each `<language>/README.md` documents registry packages, git dependencies, and clone-and-build steps.
+Each `<language>/README.md` documents registry packages, git dependencies, and
+clone-and-build steps. Prefer those READMEs over inventing install commands:
+several ecosystems have sharp edges (Cargo forbids combining `git`+`path`, NuGet
+`PackAsTool` packages are CLI-only, Composer path repos need a version pin, npm
+`#tag:subdir` for this monorepo is unreliable, LuaRocks ≤2.0.6 rocks need a
+make workaround). Post-release smoke (`./post-release-smoke-test.sh`) exercises
+the documented consumer paths.

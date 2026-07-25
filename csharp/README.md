@@ -46,14 +46,17 @@ cd wildling
 ./build.sh csharp
 ```
 
+**Registry (CLI):** the NuGet package is a [.NET tool](https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools) (`PackAsTool`), not a library you can `dotnet add package` into an app:
 
-**Registry:** NuGet (when published)
+```bash
+dotnet tool install -g DotMonk.Wildling
+wildling "Year 19##"
+```
 
-Produces `dist/wildling.dll` (and dependencies). Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
-
-As a library, reference the project or published assembly:
+**Library:** reference the project from a clone (or the built `dist/` assembly). Do not use `PackageReference` to `DotMonk.Wildling` — that package identity is tool-only and restore will fail with `NU1212`.
 
 ```csharp
+// e.g. after clone: dotnet add reference path/to/wildling/csharp/Wildling.csproj
 using WildlingLib;
 
 var wildling = Wildling.Create(new[] { "Year 19##" });
@@ -64,6 +67,8 @@ while (value is not false)
     value = wildling.Next();
 }
 ```
+
+Produces `dist/wildling.dll` when built from this tree. Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
 
 ## CLI
 

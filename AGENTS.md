@@ -45,3 +45,10 @@ publishers (JWT workflow claim would be `test.yml`).
 Go module path for major ≥ 2 is `github.com/dotmonk/wildling/go/v2`.
 
 Publish-artifact smoke (no upload): `./test.sh --publish-artifacts` → `scripts/smoke-publish-artifacts.sh`.
+
+Post-release consumer smoke: `./post-release-smoke-test.sh` → `scripts/post-release-smoke.sh`
+→ `<language>/post-release-smoke.sh` (shared helpers in `scripts/post-release-smoke-lib.sh`).
+Installs each language as documented (git/GitHub + registry) and exercises CLI + library.
+CI: `.github/workflows/post-release-smoke.yml` (hourly cron) runs when the latest
+release is 24h10m–25h10m old, or once daily at 03:10 UTC if the latest release is
+older than 48h. Gate: `scripts/should-run-post-release-smoke.sh`.

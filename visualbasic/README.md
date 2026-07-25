@@ -46,12 +46,14 @@ cd wildling
 ./build.sh visualbasic
 ```
 
+**Registry (CLI):** NuGet package `DotMonk.Wildling.VisualBasic` is a .NET tool (`PackAsTool`), not a library `PackageReference`:
 
-**Registry:** NuGet (when published)
+```bash
+dotnet tool install -g DotMonk.Wildling.VisualBasic
+wildling-vb "Year 19##"
+```
 
-Produces `dist/wildling.dll` (and dependencies). Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
-
-As a library, reference the project or published assembly:
+**Library:** reference the project from a clone (or the built `dist/` assembly).
 
 ```vb
 Imports WildlingLib
@@ -63,6 +65,8 @@ While Not (TypeOf value Is Boolean AndAlso Not CBool(value))
     value = wildling.Next()
 End While
 ```
+
+Produces `dist/wildling.dll` when built from this tree. Requires the .NET 8 runtime, or Docker (the launcher falls back to the runtime image if `dotnet` is not on `PATH`).
 
 ## CLI
 

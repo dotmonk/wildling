@@ -50,7 +50,7 @@
         {
           "name": "NuGet",
           "url": "https://www.nuget.org/packages/DotMonk.Wildling.VisualBasic",
-          "install": null
+          "install": "dotnet tool install -g DotMonk.Wildling.VisualBasic"
         }
       ]
     },
@@ -244,7 +244,7 @@
         {
           "name": "NuGet",
           "url": "https://www.nuget.org/packages/DotMonk.Wildling.FSharp",
-          "install": null
+          "install": "dotnet tool install -g DotMonk.Wildling.FSharp"
         }
       ]
     },
