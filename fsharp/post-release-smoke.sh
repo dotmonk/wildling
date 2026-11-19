@@ -21,7 +21,7 @@ smoke_fsharp_git() {
 
 smoke_fsharp_registry() {
     _wd="$(workdir fsharp-registry)"
-    run_docker "mcr.microsoft.com/dotnet/sdk:8.0-alpine" "${_wd}" '
+    run_dotnet_docker "mcr.microsoft.com/dotnet/sdk:8.0-alpine" "${_wd}" '
 set -eu
 export DOTNET_CLI_HOME=/tmp
 dotnet tool install -g DotMonk.Wildling.FSharp --version "'"${VERSION}"'"

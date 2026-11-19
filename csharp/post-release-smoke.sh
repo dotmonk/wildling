@@ -16,9 +16,9 @@ smoke_csharp() {
 }
 
 smoke_csharp_git() {
-    smoke_clone_build_cli csharp
+    smoke_clone_build_cli csharp || return 1
     _wd="${SMOKE_ROOT}/csharp-git"
-    run_docker "mcr.microsoft.com/dotnet/sdk:8.0-alpine" "${_wd}/repo/csharp" '
+    run_dotnet_docker "mcr.microsoft.com/dotnet/sdk:8.0-alpine" "${_wd}/repo/csharp" '
 set -eu
 dotnet new console -n LibSmoke -o /tmp/LibSmoke --force
 cd /tmp/LibSmoke
@@ -37,7 +37,7 @@ dotnet run -c Release
 smoke_csharp_registry() {
     # Documented registry install is the global tool (PackAsTool); not a library PackageReference.
     _wd="$(workdir csharp-registry)"
-    run_docker "mcr.microsoft.com/dotnet/sdk:8.0-alpine" "${_wd}" '
+    run_dotnet_docker "mcr.microsoft.com/dotnet/sdk:8.0-alpine" "${_wd}" '
 set -eu
 export DOTNET_CLI_HOME=/tmp
 dotnet tool install -g DotMonk.Wildling --version "'"${VERSION}"'"

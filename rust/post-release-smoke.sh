@@ -18,7 +18,7 @@ smoke_rust() {
 smoke_rust_git() {
     # Cargo forbids combining git= and path=; install from a tagged clone (documented monorepo layout).
     _wd="$(workdir rust-git)"
-    clone_tag "${_wd}/repo"
+    clone_tag "${_wd}/repo" || return 1
     run_docker "rust:1.83-bookworm" "${_wd}" '
 set -eu
 mkdir -p app && cd app

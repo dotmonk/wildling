@@ -18,7 +18,7 @@ smoke_lua() {
 smoke_lua_git() {
     # Rockspecs through 2.0.6 used paths relative to lua/; newer ones use repo-root paths.
     _wd="$(workdir lua-git)"
-    clone_tag "${_wd}/repo"
+    clone_tag "${_wd}/repo" || return 1
     run_docker_root "python:3.13-alpine" "${_wd}" '
 set -eu
 apk add --no-cache lua5.4 lua5.4-dev luarocks5.4 gcc musl-dev git >/dev/null

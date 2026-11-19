@@ -16,7 +16,7 @@ smoke_java() {
 }
 
 smoke_java_git() {
-    smoke_clone_build_cli java
+    smoke_clone_build_cli java || return 1
     _wd="${SMOKE_ROOT}/java-git"
     run_docker_root "eclipse-temurin:21-jdk-alpine" "${_wd}/repo/java" '
 set -eu

@@ -17,7 +17,7 @@ smoke_php() {
 
 smoke_php_git() {
     _wd="$(workdir php-git)"
-    clone_tag "${_wd}/repo"
+    clone_tag "${_wd}/repo" || return 1
     run_docker_root "composer:2" "${_wd}" '
 set -eu
 git config --global --add safe.directory /work/repo

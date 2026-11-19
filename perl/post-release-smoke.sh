@@ -16,7 +16,7 @@ smoke_perl() {
 }
 
 smoke_perl_git() {
-    smoke_clone_build_cli perl
+    smoke_clone_build_cli perl || return 1
     _wd="${SMOKE_ROOT}/perl-git"
     run_docker_root "perl:5.40-bookworm" "${_wd}/repo/perl" '
 set -eu

@@ -123,6 +123,10 @@ dart pub publish --dry-run
 
 smoke_nuget() {
     _dir="$1"
+    # shellcheck disable=SC1091
+    . "${ROOT}/scripts/dotnet-passwd.sh"
+    _passwd="$(dotnet_passwd_file)"
+    _rc=0
     run_docker "${DOTNET_SDK_IMAGE}" "${_dir}" '
 set -e
 export HOME=/tmp
@@ -134,7 +138,10 @@ cp /docs/help.txt help.txt
 rm -rf nupkg
 dotnet pack -c Release -o ./nupkg
 ls ./nupkg/*.nupkg
-' -e HOME=/tmp -e DOTNET_CLI_HOME=/tmp/dotnet -e DOTNET_NOLOGO=1 -e DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+' -e HOME=/tmp -e DOTNET_CLI_HOME=/tmp/dotnet -e DOTNET_NOLOGO=1 -e DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 \
+        -v "${_passwd}:/etc/passwd:ro" || _rc=$?
+    rm -f "${_passwd}"
+    return "${_rc}"
 }
 
 smoke_hex() {

@@ -80,6 +80,16 @@ run_docker() {
         sh -c "${_cmd}"
 }
 
+# run_dotnet_docker IMAGE WORKDIR_ON_HOST CMD [extra docker args...]
+# run_docker for the .NET SDK image: the non-root uid needs an /etc/passwd entry
+# (see scripts/dotnet-passwd.sh).
+run_dotnet_docker() {
+    # shellcheck disable=SC1091
+    . "${ROOT}/scripts/dotnet-passwd.sh"
+    _passwd="$(dotnet_passwd_file "${SMOKE_ROOT}/dotnet-passwd")"
+    run_docker "$@" -v "${_passwd}:/etc/passwd:ro"
+}
+
 run_docker_root() {
     _image="$1"
     _workdir="$2"
@@ -172,7 +182,8 @@ clone_tag() {
 smoke_clone_build_cli() {
     _lang="$1"
     _wd="$(workdir "${_lang}-git")"
-    clone_tag "${_wd}/repo"
-    (cd "${_wd}/repo" && ./build.sh "${_lang}")
+    # Explicit returns: channel() runs this under `if !`, where set -e is off.
+    clone_tag "${_wd}/repo" || return 1
+    (cd "${_wd}/repo" && ./build.sh "${_lang}") || return 1
     assert_cli "${_wd}/repo/${_lang}/bin/wildling" "${_lang}-git"
 }
