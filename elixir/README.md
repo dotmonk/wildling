@@ -41,7 +41,7 @@ cd elixir
 **Git (`mix.exs`):**
 
 ```elixir
-{:wildling, git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.7", path: "elixir"}
+{:wildling, git: "https://github.com/dotmonk/wildling.git", tag: "v2.0.8", path: "elixir"}
 ```
 
 **Registry:** `{:wildling, "~> 2.0"}` on Hex

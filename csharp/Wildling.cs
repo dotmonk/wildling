@@ -2,7 +2,7 @@ namespace WildlingLib;
 
 public sealed class Wildling
 {
-    public const string Version = "2.0.7";
+    public const string Version = "2.0.8";
 
     private readonly List<Generator> _generators;
     private readonly int _patternCount;

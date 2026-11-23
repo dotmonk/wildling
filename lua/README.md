@@ -41,9 +41,9 @@ cd lua
 **Git** (from a monorepo clone; module paths in the rockspec are relative to the **repo root**):
 
 ```bash
-git clone --branch v2.0.7 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.8 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling
-luarocks make lua/wildling-2.0.7-1.rockspec
+luarocks make lua/wildling-2.0.8-1.rockspec
 ```
 
 **Registry:** `luarocks install wildling`

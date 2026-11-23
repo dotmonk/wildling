@@ -39,7 +39,7 @@ npm install wildling
 **Git (monorepo subdirectory):** current npm does not reliably resolve the `#tag:subdir` / `github:…#tag:subdir` forms for this repo. Prefer a tagged clone, then install from the `javascript/` tree (run `npm ci --include=dev && npm run build` there first if `dist/` is missing):
 
 ```bash
-git clone --branch v2.0.7 --depth 1 https://github.com/dotmonk/wildling.git
+git clone --branch v2.0.8 --depth 1 https://github.com/dotmonk/wildling.git
 cd wildling/javascript
 npm ci --include=dev
 npm run build

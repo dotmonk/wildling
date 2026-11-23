@@ -1,7 +1,7 @@
 #!/bin/sh
 # wildling library and CLI helpers (POSIX sh + awk)
 
-WILDLING_VERSION="2.0.7"
+WILDLING_VERSION="2.0.8"
 
 _wildling_libdir() {
     if [ -n "$WILDLING_LIBDIR" ]; then

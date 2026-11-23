@@ -1,4 +1,4 @@
-WILDLING_VERSION <- "2.0.7"
+WILDLING_VERSION <- "2.0.8"
 
 create_wildling <- function(patterns, dictionaries = NULL) {
   if (is.null(dictionaries)) {

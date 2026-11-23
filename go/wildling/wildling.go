@@ -1,7 +1,7 @@
 package wildling
 
 // Version is the library/CLI version string.
-const Version = "2.0.7"
+const Version = "2.0.8"
 
 // Wildling enumerates combinations across one or more patterns.
 type Wildling struct {

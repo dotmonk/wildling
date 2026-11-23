@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(wildling_cpp VERSION 2.0.7 LANGUAGES CXX)
+project(wildling_cpp VERSION 2.0.8 LANGUAGES CXX)
 
 add_library(wildling
   src/token.cpp

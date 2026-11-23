@@ -6,7 +6,7 @@ namespace Wildling;
 
 final class Wildling
 {
-    public const VERSION = '2.0.7';
+    public const VERSION = '2.0.8';
 
     /** @var list<Generator> */
     private array $generators;
